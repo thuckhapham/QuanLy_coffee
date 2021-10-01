@@ -1,0 +1,32 @@
+.sidebar {
+    width: 240px;
+    background-color: #011627;
+    position: absolute;
+    height: 100%;
+    padding: 0 30px;
+    transition: ease-in-out 0.8s;
+    left: -100%;
+    color: var(--white-color);
+}
+.sidebar.active {
+    left: 0;
+}
+.sidebar__list {
+    padding: 0;
+}
+.sidebar__item {
+    list-style: none;
+    margin: 10px 0;
+}
+.sidebar__item-link {
+    color: var(--white-color);
+    text-decoration: none;
+    font-size: 1.6rem;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+.sidebar__item-link:hover,
+.sidebar__item-link:active {
+    background: #172b4d;
+}
