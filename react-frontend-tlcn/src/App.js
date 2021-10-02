@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './Components/Header/Header'
 import Sidebar from './Components/Sidebar/Sidebar';
-import Member from './Pages/Member'
+import Member from './Pages/Member/Member'
 import Inventory from './Pages/Inventory'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 

@@ -5,7 +5,7 @@ import './Sidebar.css'
 import { Link } from 'react-router-dom'
 
 function Sidebar({show}) {
-    return (
+     return (
         <>
         <div className={show ? 'sidebar active' : 'sidebar'}>
             <ul className="sidebar__list">
