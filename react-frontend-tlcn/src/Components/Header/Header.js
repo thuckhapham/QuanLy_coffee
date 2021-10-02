@@ -1,6 +1,6 @@
 import React from 'react'
 import * as FaIcons from "react-icons/fa";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as FiIcons from "react-icons/fi";
 import './Header.css';
 import Sidebar from '../Sidebar/Sidebar'
 import { useState } from 'react'
@@ -37,7 +37,7 @@ function Header() {
                             </li>
                             <li className="header__navbar-item header__navbar-item--strong">
                                 Log out
-                                {/* <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" /> */}
+                                <FiIcons.FiLogOut className="header__navbar-icon"/>
                             </li>
                         </ul>
                     </nav>

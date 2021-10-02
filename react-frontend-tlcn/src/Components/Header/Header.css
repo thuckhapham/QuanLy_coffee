@@ -35,6 +35,7 @@
 .header__navbar-icon {
     font-size: 1.8rem;
     transform:translateY(15%);
+    margin: 0 5px 0 5px;
 }
 .header__navbar-logo-no-hover:hover{
     cursor: pointer;
