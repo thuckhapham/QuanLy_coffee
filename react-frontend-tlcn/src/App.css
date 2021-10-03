@@ -47,3 +47,6 @@ html {
   z-index: 1;
   border-radius: 5px;
 }
+.main {
+  display: flex;
+}
