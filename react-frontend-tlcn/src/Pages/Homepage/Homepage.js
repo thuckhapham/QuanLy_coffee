@@ -4,13 +4,12 @@ import Member from '../Member/Member'
 import { Link } from 'react-router-dom'
 
 function Homepage() {
-    const [currentNumber, setCurrentNumber] = useState(false)
     return (
         <>
             <div className="homepage">
                 <h1>Homepage</h1>
                 <div className="homepage__contain">
-                    <Link className="homepage__order-link" to="/member">
+                    <Link className="homepage__order-link" to="/order/1">
                             1
                     </Link>
                     <Link className="homepage__order-link">2</Link>

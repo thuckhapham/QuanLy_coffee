@@ -7,6 +7,7 @@ import Footer from './Components/Footer/Footer'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import OrderHistory from './Components/OrderHistory/OrderHistory';
 import Homepage from './Pages/Homepage/Homepage';
+import Order from './Pages/Order/Order'
 
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 
@@ -20,6 +21,7 @@ function App() {
           <div className="main">
             <Route path="/" exact={true} component={Homepage} />
             <Route path="/member" exact={true} component={Member} />
+            <Route path="/order/:id" exact={true} component={Order} />
             <OrderHistory />
           </div>
           <Footer />
