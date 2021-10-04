@@ -1,9 +1,12 @@
-import React from 'react'
+import  React from 'react'
 import './Order.css'
 import { useParams } from 'react-router-dom'
+import {useState} from 'react'
 
 function Order() {
     const { id } = useParams();
+    const [ selectedCate, setCate] = useState("COFFEE")
+    console.log(selectedCate)
     const datas = [
         {
             "drink_id": 1,
@@ -20,7 +23,7 @@ function Order() {
         {
             "drink_id": 3,
             "drink_category": "COOKIES",
-            "drink_name": "Milk Coffee",
+            "drink_name": "Brown Coffee",
             "drink_price": 35000
         }
     ]
@@ -77,7 +80,12 @@ function Order() {
                                     COOKIES
                                 </li> */}
                                 {datas.map(data => (
-                                    <li className="category__item">{data.drink_category}</li>
+                                    <li 
+                                    className="category__item" 
+                                    onClick={() => setCate(data.drink_category)}
+                                    >
+                                        {data.drink_category}
+                                    </li>
                                 ))}
                             </ul>
                         </div>
@@ -89,9 +97,10 @@ function Order() {
                                 <li className="category__name-item">
                                     Milk Coffee
                                 </li> */}
-                                {datas.map(data => (
-                                    <li className="category__name-item">{data.drink_name}</li>
-                                ))}
+                                {datas.map((data) => 
+                                        data.drink_category == selectedCate &&
+                                        <li className="category__name-item">{data.drink_name}</li>
+                                )}
                             </ul>
                         </div>
                     </div>
