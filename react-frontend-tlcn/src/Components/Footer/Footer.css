@@ -7,7 +7,7 @@
     left: 0;
     right: 0;
     color: var(--white-color);
-    display: none;
+    /* display: none; */
 }
 .footer__content {
     display: flex;
