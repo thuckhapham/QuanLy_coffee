@@ -1,12 +1,21 @@
-import  React from 'react'
+import React from 'react'
 import './Order.css'
 import { useParams } from 'react-router-dom'
-import {useState} from 'react'
+import { useState } from 'react'
 
 function Order() {
     const { id } = useParams();
-    const [ selectedCate, setCate] = useState("COFFEE")
-    console.log(selectedCate)
+    const [selectedCate, setCate] = useState("COFFEE")
+    const [billOrder, setBillOrder] = useState([])
+    const onAdd = (data) => {
+        const exist = billOrder.find(x => x.drink_id === data.drink_id);
+        if (exist) {
+            setBillOrder(billOrder.map(x => x.drink_id === data.drink_id ? { ...exist, qty: exist.qty + 1 } : x))
+        } else {
+            setBillOrder([...billOrder, { ...data, qty: 1 }])
+        }
+    }
+
     const datas = [
         {
             "drink_id": 1,
@@ -27,7 +36,7 @@ function Order() {
             "drink_price": 35000
         }
     ]
-    
+
     return (
         <>
             <div className="order">
@@ -45,7 +54,18 @@ function Order() {
                         </tr>
                     </thead>
                     <tbody className="order__body">
-                        <tr className="order__row">
+                        {billOrder.map((item) => (
+                            <tr className="order__row">
+                            <td>1 </td>
+                            <td>{item.drink_id}</td>
+                            <td>{item.drink_name}</td>
+                            <td>{item.qty}</td>
+                            <td>{item.drink_price}</td>
+                            <td></td>
+                            <td>39000</td>
+                        </tr>
+                        ))}
+                        {/* <tr className="order__row">
                             <td>1 </td>
                             <td>KH12</td>
                             <td>Milk Coffee</td>
@@ -62,7 +82,7 @@ function Order() {
                             <td>39000</td>
                             <td></td>
                             <td>39000</td>
-                        </tr>
+                        </tr> */}
                     </tbody>
                 </table>
                 <div className="category__container">
@@ -80,9 +100,9 @@ function Order() {
                                     COOKIES
                                 </li> */}
                                 {datas.map(data => (
-                                    <li 
-                                    className="category__item" 
-                                    onClick={() => setCate(data.drink_category)}
+                                    <li
+                                        className="category__item"
+                                        onClick={() => setCate(data.drink_category)}
                                     >
                                         {data.drink_category}
                                     </li>
@@ -97,9 +117,13 @@ function Order() {
                                 <li className="category__name-item">
                                     Milk Coffee
                                 </li> */}
-                                {datas.map((data) => 
-                                        data.drink_category == selectedCate &&
-                                        <li className="category__name-item">{data.drink_name}</li>
+                                {datas.map((data) =>
+                                    data.drink_category == selectedCate &&
+                                    <li className="category__name-item"
+                                    onClick = {() => onAdd(data)}
+                                    >
+                                        {data.drink_name}
+                                    </li>
                                 )}
                             </ul>
                         </div>
