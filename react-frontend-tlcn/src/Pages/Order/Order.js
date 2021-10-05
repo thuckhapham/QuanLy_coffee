@@ -15,6 +15,10 @@ function Order() {
             setBillOrder([...billOrder, { ...data, qty: 1 }])
         }
     }
+    const TotalPrice = billOrder.reduce((a, c) => a + c.drink_price * c.qty, 0)
+    function currencyFormat(num) {
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + ' đ'
+     }
 
     const datas = [
         {
@@ -41,64 +45,46 @@ function Order() {
         <>
             <div className="order">
                 <h1>Order - Number {id}</h1>
-                <table className="order__table">
-                    <thead className="order__head">
-                        <tr className="order__header">
-                            <th>Id</th>
-                            <th>Menu Id</th>
-                            <th>Name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Note</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody className="order__body">
-                        {billOrder.map((item) => (
-                            <tr className="order__row">
-                            <td>1 </td>
-                            <td>{item.drink_id}</td>
-                            <td>{item.drink_name}</td>
-                            <td>{item.qty}</td>
-                            <td>{item.drink_price}</td>
-                            <td></td>
-                            <td>39000</td>
-                        </tr>
-                        ))}
-                        {/* <tr className="order__row">
-                            <td>1 </td>
-                            <td>KH12</td>
-                            <td>Milk Coffee</td>
-                            <td>1</td>
-                            <td>39000</td>
-                            <td></td>
-                            <td>39000</td>
-                        </tr>
-                        <tr className="order__row">
-                            <td>2 </td>
-                            <td>KH13</td>
-                            <td>Black Coffee</td>
-                            <td>1</td>
-                            <td>39000</td>
-                            <td></td>
-                            <td>39000</td>
-                        </tr> */}
-                    </tbody>
-                </table>
+                <div className="order__table-height">
+                    <table className="order__table">
+                        <thead className="order__head">
+                            <tr className="order__header">
+                                <th>Id</th>
+                                <th>Menu Id</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Note</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody className="order__body">
+                            {billOrder.map((item, index) => (
+                                <tr className="order__row">
+                                    <td>{index + 1}</td>
+                                    <td>{item.drink_id}</td>
+                                    <td>{item.drink_name}</td>
+                                    <td>{item.qty}</td>
+                                    <td>{currencyFormat(item.drink_price)}</td>
+                                    <td></td>
+                                    <td>
+                                        {currencyFormat(item.drink_price * item.qty)}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="order__totalprice">
+                    <div className="order__summary">
+                        {currencyFormat(TotalPrice)}
+                    </div>
+                </div>
                 <div className="category__container">
                     <h2>Category</h2>
                     <div className="order__menu">
                         <div className="category__title">
                             <ul className="category__list">
-                                {/* <li className="category__item">
-                                    TEA
-                                </li>
-                                <li className="category__item category__item--active">
-                                    COFFEE
-                                </li>
-                                <li className="category__item">
-                                    COOKIES
-                                </li> */}
                                 {datas.map(data => (
                                     <li
                                         className="category__item"
@@ -111,16 +97,10 @@ function Order() {
                         </div>
                         <div className="category__name">
                             <ul className="category__name-list">
-                                {/* <li className="category__name-item">
-                                    Black Coffee
-                                </li>
-                                <li className="category__name-item">
-                                    Milk Coffee
-                                </li> */}
                                 {datas.map((data) =>
                                     data.drink_category == selectedCate &&
                                     <li className="category__name-item"
-                                    onClick = {() => onAdd(data)}
+                                        onClick={() => onAdd(data)}
                                     >
                                         {data.drink_name}
                                     </li>

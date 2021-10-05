@@ -2,6 +2,9 @@
     margin: 10px 10px 10px 250px;
     width: 780px;
 }
+.order__table-height{
+    height: 300px;
+}
 .order__table {
     border-collapse: collapse;
     font-size: 1.3rem;
@@ -64,7 +67,7 @@
     font-weight: 400;
 }
 .category__container{
-    margin-top: 150px;
+    /* margin-top: 150px; */
  }
 .category__name-list{ 
     padding: 0;
@@ -84,4 +87,13 @@
     background-color: aquamarine;
     color: black;
     transition: ease-in .4s;
+}
+.order__totalprice {
+    /* margin-top: 140px; */
+}
+.order__summary{
+    font-size: 1.7rem;
+    text-align: right;
+    font-weight: 500;
+    /* margin-right: 10px; */
 }
