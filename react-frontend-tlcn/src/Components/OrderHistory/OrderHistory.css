@@ -1,4 +1,6 @@
 .history {
+    position: fixed;
+    right: 2%;
     margin: 10px 5px 10px 10px;
 }
 .history__table {

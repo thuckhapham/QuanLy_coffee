@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Homepage.css'
-import Member from '../Member/Member'
 import { Link } from 'react-router-dom'
 
 function Homepage() {
