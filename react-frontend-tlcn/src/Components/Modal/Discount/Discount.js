@@ -6,7 +6,7 @@ function Discount(props) {
     const datas = [
         {
             discount_id: "d01",
-            percentage: "25"
+            percentage: "35"
         },
         {
             discount_id: "d02",

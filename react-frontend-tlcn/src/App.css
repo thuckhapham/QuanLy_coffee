@@ -60,6 +60,7 @@ html {
   margin: auto;
   z-index: 1;
   border-radius: 5px;
+  border: 2px solid var(--black-color);
 }
 .main {
   display: flex;

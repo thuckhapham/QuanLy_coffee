@@ -10,11 +10,12 @@ function Order() {
   const [selectedCate, setCate] = useState("COFFEE");
 
   const [billOrder, setBillOrder] = useState([]);
+  console.log(billOrder);
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
   const [selectedButt, setButt] = useState("");
   const callbackModal = (modalState) => {
-    setViewModal(modalState)
+    setViewModal(modalState);
   };
   const [priceVoucher, setVoucher] = useState(null);
   //Lọc dữ liệu Category trùng
@@ -50,7 +51,7 @@ function Order() {
   //Nếu có voucher giảm thì trừ tiền
   {
     if (priceVoucher) {
-      TotalPrice = TotalPrice - (TotalPrice * priceVoucher / 100);
+      TotalPrice = TotalPrice - (TotalPrice * priceVoucher) / 100;
     }
   }
   //Quy đổi số về tiền việt
@@ -221,13 +222,24 @@ function Order() {
       <div className={viewModal ? "modal--unactive" : "modal"}>
         <div className="modal__overlay"></div>
         <div className="modal__body">
-          <div style={{"display": "flex", "justify-content": "flex-end"}}>
-          <button className="modal__btn-close" onClick={() => setViewModal(!viewModal)}>X</button>
+          <div style={{ display: "flex", "justify-content": "flex-end" }}>
+            <button
+              className="modal__btn-close"
+              onClick={() => setViewModal(!viewModal)}
+            >
+              X
+            </button>
           </div>
           {selectedButt === "discount" ? (
-            <Discount ModalState={callbackModal} VoucherState={setVoucher} />
+            <Discount 
+            ModalState={callbackModal} 
+            VoucherState={setVoucher} 
+            />
           ) : selectedButt === "checkout" ? (
-            <CheckOut />
+            <CheckOut 
+            orderdetail={billOrder} 
+            orderid={id} 
+            />
           ) : (
             ""
           )}

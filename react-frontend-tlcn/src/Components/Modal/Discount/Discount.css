@@ -49,7 +49,6 @@
     cursor: pointer;
 }
 .discount__voucher-item--active {
-    background-color: salmon;
-    background-size: 0%;
+    background-position: left;
     color: var(--white-color);
 }

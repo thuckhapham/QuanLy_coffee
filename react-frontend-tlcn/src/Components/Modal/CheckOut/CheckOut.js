@@ -1,10 +1,15 @@
 import React from 'react'
 import './CheckOut.css'
 
-function CheckOut() {
+function CheckOut(props) {
+    console.log(props.orderdetail)
+    console.log(props.orderid)
     return (
         <>
-            <h1>Checkout</h1>
+            <div className="checkout">
+                <h1>Order number {props.orderid}</h1>
+                <h1>Hello</h1>
+            </div>
         </>
     )
 }
