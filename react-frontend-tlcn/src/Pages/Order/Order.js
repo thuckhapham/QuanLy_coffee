@@ -13,6 +13,10 @@ function Order() {
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
   const [selectedButt, setButt] = useState("");
+  const callbackModal = (modalState) => {
+    setViewModal(modalState)
+  };
+  const [priceVoucher, setVoucher] = useState(null);
   //Lọc dữ liệu Category trùng
   const duplicateCheck = [];
   //Thêm Nước
@@ -42,7 +46,13 @@ function Order() {
     }
   };
   //Tính tổng tiền
-  const TotalPrice = billOrder.reduce((a, c) => a + c.drink_price * c.qty, 0);
+  let TotalPrice = billOrder.reduce((a, c) => a + c.drink_price * c.qty, 0);
+  //Nếu có voucher giảm thì trừ tiền
+  {
+    if (priceVoucher) {
+      TotalPrice = TotalPrice - (TotalPrice * priceVoucher / 100);
+    }
+  }
   //Quy đổi số về tiền việt
   function currencyFormat(num) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
@@ -215,7 +225,7 @@ function Order() {
           <button className="modal__btn-close" onClick={() => setViewModal(!viewModal)}>X</button>
           </div>
           {selectedButt === "discount" ? (
-            <Discount />
+            <Discount ModalState={callbackModal} VoucherState={setVoucher} />
           ) : selectedButt === "checkout" ? (
             <CheckOut />
           ) : (

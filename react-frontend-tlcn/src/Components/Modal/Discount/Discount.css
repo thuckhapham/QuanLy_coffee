@@ -48,3 +48,8 @@
     transition: ease-in-out .3s;
     cursor: pointer;
 }
+.discount__voucher-item--active {
+    background-color: salmon;
+    background-size: 0%;
+    color: var(--white-color);
+}

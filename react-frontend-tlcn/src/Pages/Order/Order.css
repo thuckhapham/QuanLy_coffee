@@ -163,7 +163,7 @@
 .category__button-check { 
     width: 190px;
     height: 49px;
-    border: 1px solid;
+    border: 1px solid black;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -171,10 +171,14 @@
     font-size: 1.5rem;
     margin-bottom: 2px;
     cursor: pointer;
+
+    background-size: 200% 100%;
+    background-image: linear-gradient(to right, var(--white-color) 50%, #011627 50%);
+    transition: background-position .5s;
 }
 .category__button-member:hover,
 .category__button-discount:hover,
 .category__button-check:hover {
-    background-color: aqua;
-    transition: ease-in .4s;
+    background-position: -100% 0;
+    color: var(--white-color);
 }
