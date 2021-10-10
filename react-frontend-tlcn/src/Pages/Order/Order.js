@@ -10,7 +10,6 @@ function Order() {
   const [selectedCate, setCate] = useState("COFFEE");
 
   const [billOrder, setBillOrder] = useState([]);
-  console.log(billOrder);
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
   const [selectedButt, setButt] = useState("");
@@ -48,10 +47,12 @@ function Order() {
   };
   //Tính tổng tiền
   let TotalPrice = billOrder.reduce((a, c) => a + c.drink_price * c.qty, 0);
+  let DiscountPrice = 0;
   //Nếu có voucher giảm thì trừ tiền
   {
     if (priceVoucher) {
-      TotalPrice = TotalPrice - (TotalPrice * priceVoucher) / 100;
+      DiscountPrice = (TotalPrice * priceVoucher) / 100;
+      TotalPrice = TotalPrice - DiscountPrice;
     }
   }
   //Quy đổi số về tiền việt
@@ -231,14 +232,17 @@ function Order() {
             </button>
           </div>
           {selectedButt === "discount" ? (
-            <Discount 
-            ModalState={callbackModal} 
-            VoucherState={setVoucher} 
+            <Discount
+              ModalState={callbackModal}
+              VoucherState={setVoucher}
             />
           ) : selectedButt === "checkout" ? (
-            <CheckOut 
-            orderdetail={billOrder} 
-            orderid={id} 
+            <CheckOut
+              orderdetail={billOrder}
+              orderid={id}
+              totalprice={currencyFormat(TotalPrice)}
+              discountprice={currencyFormat(DiscountPrice)}
+              ModalState={callbackModal}
             />
           ) : (
             ""
