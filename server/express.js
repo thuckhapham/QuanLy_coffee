@@ -7,7 +7,8 @@ import cors from 'cors'
 import helmet from 'helmet'
 
 import template from './../template'
-
+import userRoutes from './routes/user.routes'
+import authRoutes from './routes/auth.routes'
 const app=express()
 
 // parse body params and attache them to req.body
@@ -19,7 +20,8 @@ app.use(compress())
 app.use(helmet())
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors())
-
+app.use('/',userRoutes)
+app.use('/',authRoutes)
 
 app.get('/',(req,res)=>{
     res.status(200).send(template())
