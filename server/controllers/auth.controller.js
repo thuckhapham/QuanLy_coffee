@@ -5,15 +5,20 @@ import config from './../../config/config'
 
 const signin = async (req, res) => {
   try {
+    console.log(`sigin: ${req.body.userName}`)
     let user = await User.findOne({
       "userName": req.body.userName
     })
     if (!user)
-      return res.status('401').json({
+      {
+        console.log(`sigin: ${req.body.userName} not found`)
+        return res.status('401').json({
         error: "User not found"
       })
+    }
 
     if (!user.authenticate(req.body.password)) {
+      console.log(`sigin: ${req.body.userName} password don't match`)
       return res.status('401').send({
         error: "Username and password don't match."
       })
@@ -26,7 +31,7 @@ const signin = async (req, res) => {
     res.cookie("t", token, {
       expire: new Date() + 9999
     })
-
+    console.log(`sigin: ${req.body.userName} finished`)
     return res.json({
       token,
       user: {
@@ -40,7 +45,7 @@ const signin = async (req, res) => {
     })
 
   } catch (err) {
-
+    console.log(err)
     return res.status('401').json({
       error: "Could not sign in"
     })
