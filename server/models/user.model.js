@@ -33,7 +33,11 @@ const UserSchema= new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    enable: Boolean
+    enable: Boolean,
+    role: {
+        type: String,
+        enum: ['WAITER','BARTENDER','MANAGER']
+    }
 })
 
 UserSchema
