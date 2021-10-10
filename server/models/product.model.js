@@ -6,7 +6,6 @@ const ProductSchema= new mongoose.Schema({
         trim: true,
         required: "Name is required"
     },
-    price : Float64Array,
     image: {
     data: Buffer,
     contentType: String

@@ -4,11 +4,11 @@ import authCtrl from '../controllers/auth.controller'
 const router = express.Router()
 
 router.route('/api/products')
-  .get(userCtrl.list)
-  .post(authCtrl.requireSignin,authCtrl.hasAuthorization,productCtrl.create)
+  .get(productCtrl.list)
+  .post(authCtrl.requireSignin,productCtrl.create)
 
 router.route('/api/products/:productId')
-  .get(userCtrl.read)
+  .get(productCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, productCtrl.update)
   .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, productCtrl.remove)
 

@@ -9,6 +9,7 @@ import helmet from 'helmet'
 import template from './../template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+import productRoutes from './routes/product.routes'
 const app=express()
 
 // parse body params and attache them to req.body
@@ -22,9 +23,12 @@ app.use(helmet())
 app.use(cors())
 app.use('/',userRoutes)
 app.use('/',authRoutes)
+app.use('/',productRoutes)
+
 
 app.get('/',(req,res)=>{
     res.status(200).send(template())
 })
+
 
 export default app

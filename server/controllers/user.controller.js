@@ -6,7 +6,7 @@ const create = async (req, res) => {
   const user = new User(req.body)
   try {
     await user.save()
-    console.log(`${user.userName} is registed`)
+    console.log(`UserName: ${user.userName} is registed`)
     return res.status(200).json({
       message: "Successfully signed up!"
     })
@@ -23,17 +23,17 @@ const create = async (req, res) => {
  */
 const userByID = async (req, res, next, id) => {
   try {
-    console.log(`find id: ${id}`)
+    console.log(`find userId: ${id}`)
 
     let user = await User.findById(id)
     if (!user){
-      console.log(`${id} not found`)
+      console.log(`UserId: ${id} not found`)
       return res.status('400').json({
         error: "User not found"
       })
     }
     req.profile = user
-    console.log(`id: ${id} found`)
+    console.log(`UserId: ${id} found`)
     next()
   } catch (err) {
     console.log(err)
@@ -68,14 +68,14 @@ const list = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    console.log(`update ${req.profile.id}`)
+    console.log(`update user: ${req.profile.id}`)
     let user = req.profile
     user = extend(user, req.body)
     user.updated = Date.now()
     await user.save()
     user.hashed_password = undefined
     user.salt = undefined
-    console.log(`update ${req.profile.id} finished`)
+    console.log(`update user: ${req.profile.id} finished`)
     res.json(user)
   } catch (err) {
     console.log(err)
@@ -87,12 +87,12 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    console.log(`delete ${req.profile.id}`)
+    console.log(`delete user:  ${req.profile.id}`)
     let user = req.profile
     let deletedUser = await user.remove()
     deletedUser.hashed_password = undefined
     deletedUser.salt = undefined
-    console.log(`delete ${req.profile.id} finished`)
+    console.log(`delete user: ${req.profile.id} finished`)
     res.json(deletedUser)
   } catch (err) {
     console.log(err)
