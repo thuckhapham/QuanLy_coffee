@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
 const UserSchema= new mongoose.Schema({
-    username: {
+    userName: {
         type:String,
         trim: true,
         unique: "UserName already exists",
@@ -69,10 +69,10 @@ UserSchema.methods = {
         } catch (err) {
         return ''
         }
-},
-makeSalt: function() {
-    return Math.round((new Date().valueOf() * Math.random())) + ''
-}
+    },
+    makeSalt: function() {
+        return Math.round((new Date().valueOf() * Math.random())) + ''
+    }
 }
 
 export default mongoose.model('User', UserSchema)
