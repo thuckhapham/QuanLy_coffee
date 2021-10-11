@@ -16,7 +16,9 @@ function Order() {
   const callbackModal = (modalState) => {
     setViewModal(modalState);
   };
+
   const [priceVoucher, setVoucher] = useState(null);
+  const [activeVoucher, setActive] = useState(false)
   //Lọc dữ liệu Category trùng
   const duplicateCheck = [];
   //Thêm Nước
@@ -235,6 +237,8 @@ function Order() {
             <Discount
               ModalState={callbackModal}
               VoucherState={setVoucher}
+              active={activeVoucher}
+              clickActive={setActive}
             />
           ) : selectedButt === "checkout" ? (
             <CheckOut

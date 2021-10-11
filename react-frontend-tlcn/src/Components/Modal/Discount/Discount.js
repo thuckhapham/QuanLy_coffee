@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import './Discount.css'
 
 function Discount(props) {
@@ -21,9 +21,9 @@ function Discount(props) {
             percentage: "0"
         },
     ]
-    
-    const [useVoucher, setVoucher] =useState()
-    const [activeVoucher, setActive] =useState(false)
+
+    const [useVoucher, setVoucher] = useState()
+    // const [activeVoucher, setActive] = useState(false)
     const sendData = (modalState, voucherState) => {
         props.ModalState(modalState)
         props.VoucherState(voucherState)
@@ -34,13 +34,13 @@ function Discount(props) {
                 <h2>Discount</h2>
                 <ul className="discount__voucher-list">
                     {datas.map(data => (
-                        <li className={data.discount_id === activeVoucher ? "discount__voucher-item discount__voucher-item--active" : "discount__voucher-item"}
-                         onClick={() => (
-                             setVoucher(data.percentage),
-                             setActive(data.discount_id)
-                             )}
-                         >
-                        {data.percentage}%
+                        <li className={data.discount_id === props.active ? "discount__voucher-item discount__voucher-item--active" : "discount__voucher-item"}
+                            onClick={() => (
+                                setVoucher(data.percentage),
+                                props.clickActive(data.discount_id)
+                            )}
+                        >
+                            {data.percentage}%
                         </li>
                     ))}
                 </ul>

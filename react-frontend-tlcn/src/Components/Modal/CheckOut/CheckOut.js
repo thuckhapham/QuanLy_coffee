@@ -57,7 +57,7 @@ function CheckOut(props) {
                     <ul className="checkout__payment-list">
                         <li className="checkout__payment-item">
                             <label className="payment__rb">
-                                <input type="radio" name="radio" checked="checked" />
+                                <input type="radio" name="radio" />
                                 <span className="checkmark"></span>
                                 <span className="icon">
                                     <FaIcons.FaRegMoneyBillAlt />
