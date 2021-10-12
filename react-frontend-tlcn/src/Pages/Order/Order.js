@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Discount from "../../Components/Modal/Discount/Discount";
 import CheckOut from "../../Components/Modal/CheckOut/CheckOut";
+import Member from "../../Components/Modal/Member/Member";
 
 function Order() {
   const { id } = useParams();
@@ -16,9 +17,9 @@ function Order() {
   const callbackModal = (modalState) => {
     setViewModal(modalState);
   };
-
+  //Voucher
   const [priceVoucher, setVoucher] = useState(null);
-  const [activeVoucher, setActive] = useState(false)
+  const [activeVoucher, setActive] = useState(false);
   //Lọc dữ liệu Category trùng
   const duplicateCheck = [];
   //Thêm Nước
@@ -196,7 +197,15 @@ function Order() {
             </div>
             <div className="category__button">
               <ul>
-                <li className="category__button-member">Member</li>
+                <li
+                  className="category__button-member"
+                  onClick={() => {
+                    setViewModal(!viewModal);
+                    setButt("member");
+                  }}
+                >
+                  Member
+                </li>
                 <li
                   className="category__button-discount"
                   onClick={() => {
@@ -249,7 +258,9 @@ function Order() {
               ModalState={callbackModal}
             />
           ) : (
-            ""
+            <Member
+              ModalState={callbackModal}
+            />
           )}
         </div>
       </div>
