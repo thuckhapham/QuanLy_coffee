@@ -1,28 +1,28 @@
 .homepage {
-    margin: 10px 10px 10px 250px;
-    width: 780px;
+  margin: 10px 0px 10px 0px;
+  width: 98%;
 }
 .homepage__contain {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 .homepage__order-link {
-    /* display: inline-block;
+  /* display: inline-block;
     text-decoration: none; */
-    /* background-color: transparent; */
-    margin: 10px 0 10px 50px;
-    border: none;
-    outline: none;
-    color: #fff;
-    background-color: rgb(9, 43, 117);
-    padding: 23px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: opacity .2s ease;
-    font-size: 1.5rem;
-    min-width: 30px;
-    text-decoration: none;
+  /* background-color: transparent; */
+  margin: 10px 0 10px 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background-color: rgb(9, 43, 117);
+  padding: 23px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  font-size: 1.5rem;
+  min-width: 30px;
+  text-decoration: none;
 }
 .homepage__order-link:hover {
-    opacity: .8;
+  opacity: 0.8;
 }

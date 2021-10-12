@@ -17,10 +17,12 @@ function App() {
         <Router>
           <Header />
           <div className="main">
-            <Route path="/" exact={true} component={Homepage} />
-            <Route path="/member" exact={true} component={Member} />
-            <Route path="/order/:id" exact={true} component={Order} />
-            {/* <OrderHistory /> */}
+            <div className="main__path">
+              <Route path="/" exact={true} component={Homepage} />
+              <Route path="/member" exact={true} component={Member} />
+              <Route path="/order/:id" exact={true} component={Order} />
+            </div>
+            <OrderHistory />
           </div>
           <Footer />
         </Router>

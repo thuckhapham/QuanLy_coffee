@@ -1,3 +1,57 @@
 .member {
-    margin: 10px 10px 10px 250px;
+  margin: 10px 0px 10px 0px;
+  width: 98%;
+}
+.table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 1.3rem;
+  width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.table thead .table__header {
+  background-color: #009879;
+  color: #fff;
+  text-align: left;
+  font-weight: bold;
+}
+.table__header th,
+.table__row td {
+  padding: 12px 15px;
+}
+.table__row {
+  border-bottom: 1px solid #dddddd;
+}
+.table__row:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+.table__row--active {
+  font-weight: bold;
+  color: #009879;
+}
+.table__row-btn {
+  width: 70px;
+  display: flex;
+}
+.table__btn-item {
+  margin: 0 7px 0 0;
+  background-color: #fff;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 500;
+}
+.table__btn-item--edit {
+  color: green;
+}
+.table__btn-item--seperate {
+  content: "";
+  display: block;
+  border-left: 1px solid #009879;
+}
+.table__btn-item--delete {
+  color: red;
 }

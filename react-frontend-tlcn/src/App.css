@@ -6,13 +6,13 @@
   --text-color: #333;
   --border-color: #dbdbdb;
 }
-*{
+* {
   box-sizing: inherit;
 }
 html {
   font-size: 62.5%;
   line-height: 1.6rem;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
 }
 .grid {
@@ -33,13 +33,13 @@ html {
   background-color: var(--white-color);
   font-size: 1.5rem;
 }
-.modal__btn-close:hover{
+.modal__btn-close:hover {
   background-color: red;
   color: var(--white-color);
   cursor: pointer;
-  transition: ease-out .3s;
+  transition: ease-out 0.3s;
 }
-.modal { 
+.modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -64,4 +64,7 @@ html {
 }
 .main {
   display: flex;
+}
+.main__path {
+  margin: 0 290px 0 250px;
 }
