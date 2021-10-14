@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUri)
 
-console.info('mongodb started on port %s.', config.mongoUri)
+console.info('mongodb start on port %s.', config.mongoUri)
 
 mongoose.connection.on('error', () => {
  throw new Error(`unable to connect to database: ${config.mongoUri}`)
@@ -13,7 +13,7 @@ mongoose.connection.on('error', () => {
 
 app.listen(config.port, (err) => {
   if (err) {
-    console.log(err)
+    console.error(err)
   }
   console.info('Server started on port %s.', config.port)
 })
