@@ -1,10 +1,8 @@
 import './App.css';
 import Header from './Components/Header/Header'
-import Sidebar from './Components/Sidebar/Sidebar';
 import Member from './Pages/Member/Member'
-import Inventory from './Pages/Homepage/Homepage'
 import Footer from './Components/Footer/Footer'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import OrderHistory from './Components/OrderHistory/OrderHistory';
 import Homepage from './Pages/Homepage/Homepage';
 import Order from './Pages/Order/Order'
@@ -19,9 +17,11 @@ function App() {
         <Router>
           <Header />
           <div className="main">
-            <Route path="/" exact={true} component={Homepage} />
-            <Route path="/member" exact={true} component={Member} />
-            <Route path="/order/:id" exact={true} component={Order} />
+            <div className="main__path">
+              <Route path="/" exact={true} component={Homepage} />
+              <Route path="/member" exact={true} component={Member} />
+              <Route path="/order/:id" exact={true} component={Order} />
+            </div>
             <OrderHistory />
           </div>
           <Footer />

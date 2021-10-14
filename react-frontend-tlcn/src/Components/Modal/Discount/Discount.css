@@ -1,0 +1,54 @@
+.discount {
+    /* width: 100%;
+    height: 100%; */
+    font-size: 1.5rem;
+}
+.discount h2 {
+    margin: 10px 0 0 0;
+    text-align: center;
+    font-weight: 400;
+}
+.discount__voucher-list {
+    display: flex;
+    list-style: none;
+    padding: 10px;
+     margin: 0;
+}
+.discount__voucher-item {
+    min-width: 80px;
+    padding: 10px 15px;
+    border: 1px solid black;
+    text-align: center;
+    margin: 8px;
+    font-weight: 500;
+    /* Animation left to right */
+    background: linear-gradient(to left, var(--white-color) 50%, salmon 50%) right;
+    background-size: 200%;
+    transition: .4s ease-out;
+}
+.discount__voucher-item:hover {
+    cursor: pointer;
+    background-position: left;
+    color: var(--white-color);
+}
+.discount__footer {
+    margin: 5px 0 15px 0;
+    display: flex;
+}
+.discount__close {
+    border: 1px solid black;
+    background-color: var(--white-color);
+    font-size: 1.7rem;
+    padding: 10px 15px;
+    margin: auto;
+}
+.discount__close:hover {
+    background-color: green;
+    color: var(--white-color);
+    transition: ease-in-out .3s;
+    cursor: pointer;
+}
+.discount__voucher-item--active {
+    background-position: left;
+    color: var(--white-color);
+}

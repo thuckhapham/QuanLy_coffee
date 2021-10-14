@@ -1,0 +1,55 @@
+.member__modal {
+  width: 300px;
+}
+.member__header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 5px 0;
+}
+.member__modal-info {
+  font-size: 1.5rem;
+  margin: 0 0 3px 5px;
+}
+.member__input {
+  margin-left: 20px;
+}
+.member__input {
+  width: 230px;
+}
+.member__icon {
+  border: 1px solid black;
+  background-color: var(--white-color);
+  margin-left: 5px;
+  font-size: 1.2rem;
+  transform: translateY(-5%);
+}
+.member__icon:hover {
+  cursor: pointer;
+  background-color: green;
+  color: var(--white-color);
+  transition: ease-in 0.3s;
+}
+.member__info-name {
+  margin-top: 5px;
+  text-align: center;
+  font-weight: 300;
+}
+.member__modal-button {
+  margin: 10px 0;
+  display: flex;
+}
+.member__close {
+  margin: auto;
+  border: 1px solid black;
+  padding: 10px 20px;
+  background-color: var(--white-color);
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.member__close:hover {
+  cursor: pointer;
+  background-color: green;
+  color: var(--white-color);
+  transition: ease-in 0.3s;
+}

@@ -1,0 +1,138 @@
+.checkout {
+  width: 300px;
+  margin: 0 5px;
+}
+.checkout__title {
+  text-align: center;
+  font-weight: 400;
+}
+.checkout__detail {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.checkout__table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 1.1rem;
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.checkout__header {
+  background-color: #011627;
+  color: #fff;
+  font-weight: 500;
+}
+.checkout__body {
+  text-align: center;
+}
+.checkout__header th,
+.checkout__body td {
+  padding: 3px 7px;
+}
+.checkout__row {
+  border-bottom: 1px solid #dddddd;
+}
+.checkout__total {
+  margin: 5px 0 3px 3px;
+  font-weight: 300;
+  font-size: 1.3rem;
+}
+.checkout__checkout {
+  margin: 3px 0 3px 3px;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+.checkout__payment-list {
+  display: flex;
+}
+.checkout__payment-list {
+  margin: 0;
+  padding: 0 20px 0 20px;
+  justify-content: space-between;
+}
+.checkout__payment-list li {
+  list-style: none;
+  font-size: 7rem;
+}
+.payment__rb {
+  display: flex;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 22px;
+}
+.payment__rb input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.payment__rb .icon {
+  font-size: 6rem;
+}
+.checkmark {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+.payment__rb:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+.payment__rb input:checked ~ .checkmark {
+  background-color: #011627;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.payment__rb input:checked ~ .checkmark:after {
+  display: block;
+}
+.payment__rb .checkmark:after {
+  top: 6px;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+.checkout__footer-list {
+  list-style: none;
+  display: flex;
+  margin: 0 0 20px 0;
+  padding: 0 20px;
+}
+.checkout__footer-item {
+  max-width: 46px;
+  margin-right: 100px;
+}
+.checkout__btn {
+  font-size: 1.8rem;
+  padding: 12px 30px;
+  border: 1px solid black;
+  background-color: var(--white-color);
+}
+.checkout__btn-print:hover {
+  cursor: pointer;
+  background-color: green;
+  color: var(--white-color);
+  font-weight: 500;
+  transition: ease-in 0.3s;
+}
+.checkout__btn-close:hover {
+  cursor: pointer;
+  background-color: red;
+  color: var(--white-color);
+  font-weight: 500;
+  transition: ease-in 0.3s;
+}

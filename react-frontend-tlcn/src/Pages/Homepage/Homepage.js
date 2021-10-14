@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Homepage.css'
-import Member from '../Member/Member'
 import { Link } from 'react-router-dom'
 
 function Homepage() {
@@ -12,7 +11,9 @@ function Homepage() {
                     <Link className="homepage__order-link" to="/order/1">
                             1
                     </Link>
-                    <Link className="homepage__order-link">2</Link>
+                    <Link className="homepage__order-link" to="/order/2">
+                            2
+                    </Link>
                     <Link className="homepage__order-link">3</Link>
                     <Link className="homepage__order-link">4</Link>
                     <Link className="homepage__order-link">5</Link>

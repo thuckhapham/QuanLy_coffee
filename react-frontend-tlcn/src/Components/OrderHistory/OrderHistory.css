@@ -1,34 +1,34 @@
 .history {
-    margin: 10px 5px 10px 10px;
+  position: fixed;
+  right: 2%;
+  margin: 0px 5px 10px 10px;
 }
 .history__table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 1.3rem;
-    width: 100%;
-    border-radius: 5px;
-    overflow: hidden;
-    min-width: 250px;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 1.3rem;
+  width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  min-width: 250px;
 }
 .history__head {
-
 }
 .history__header {
-    background-color: #011627;
-    color: #fff;
-    text-align: center;
-    font-weight: 500; 
+  background-color: #011627;
+  color: #fff;
+  text-align: center;
+  font-weight: 500;
 }
 .history__body {
-
 }
 .history__header th,
 .history__body td {
-    padding: 12px 15px;
+  padding: 12px 15px;
 }
 .history__row {
-    border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
 }
 .history__row:last-of-type {
-    border-bottom: 2px solid #011627;
+  border-bottom: 2px solid #011627;
 }
