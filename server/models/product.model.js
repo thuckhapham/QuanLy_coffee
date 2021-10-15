@@ -16,7 +16,7 @@ const ProductSchema= new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['tea','coffee','cookie','cake','other']
+        enum: ['TEA','COFFEE','COOKIES','FRUIT']
     },
     price: {
         type: Number,

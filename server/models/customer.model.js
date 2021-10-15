@@ -13,6 +13,16 @@ const CustomerSchema=new mongoose.Schema({
         length: 10,
         match: [/\d/g, "Please fill a valid phone number"]
     },
+    birthday: Date,
+    emai : String,
+    memberLevel: {
+        type : mongoose.Schema.ObjectId,
+        ref : 'MemberLevels'
+    },
+    memberCode: {
+        type : String,
+        unique : true
+    },
     updated: Date,
     created: {
         type: Date,

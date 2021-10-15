@@ -10,6 +10,7 @@ import template from './template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import productRoutes from './routes/product.routes'
+import customerRoutes from './routes/customer.routes'
 const app=express()
 
 // parse body params and attache them to req.body
@@ -24,7 +25,7 @@ app.use(cors())
 app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)
-
+app.use('/',customerRoutes)
 
 app.get('/',(req,res)=>{
     res.status(200).send(template())
