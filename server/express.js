@@ -6,7 +6,7 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 
-import template from './../template'
+import template from './template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import productRoutes from './routes/product.routes'
