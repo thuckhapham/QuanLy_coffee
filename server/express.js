@@ -11,6 +11,10 @@ import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import productRoutes from './routes/product.routes'
 import customerRoutes from './routes/customer.routes'
+
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+
 const app=express()
 
 // parse body params and attache them to req.body
@@ -22,6 +26,26 @@ app.use(compress())
 app.use(helmet())
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors())
+
+const options = {
+	definition: {
+		openapi: "3.0.0",
+		info: {
+			title: "Library API",
+			version: "1.0.0",
+			description: "A simple Express Library API",
+		},
+		servers: [
+			{
+				url: "http://localhost:5000",
+			},
+		],
+	},
+	apis: ['./routes/*.js'],
+};
+const specs = swaggerJsDoc(options);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)
