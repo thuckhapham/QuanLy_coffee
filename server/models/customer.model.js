@@ -17,7 +17,7 @@ const CustomerSchema=new mongoose.Schema({
     emai : String,
     memberLevel: {
         type : mongoose.Schema.ObjectId,
-        ref : 'MemberLevels'
+        ref : 'MemberLevel'
     },
     memberCode: {
         type : String,
