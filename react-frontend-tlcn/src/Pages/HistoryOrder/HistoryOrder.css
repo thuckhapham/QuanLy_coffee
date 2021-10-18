@@ -1,0 +1,45 @@
+.historyorder__table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.historyorder__header {
+  background-color: #011627;
+  color: #fff;
+  font-weight: 500;
+}
+.historyorder__detail {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.historyorder__body {
+  text-align: center;
+}
+.historyorder__header th,
+.historyorder__body td {
+  padding: 3px 7px;
+}
+.historyorder__row {
+  border-bottom: 1px solid #dddddd;
+}
+.historyoder__btn-cancel {
+  border: 1px solid black;
+  color: var(--white-color);
+  background-color: red;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.historyoder__btn-cancel:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.historyoder__btn-cancelicon {
+  margin-left: 5px;
+  transform: translateY(15%);
+}
