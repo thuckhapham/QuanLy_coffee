@@ -13,7 +13,7 @@ import productRoutes from './routes/product.routes'
 import customerRoutes from './routes/customer.routes'
 
 const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerFile = require('./swagger_output.json')
 
 const app=express()
 
@@ -43,9 +43,9 @@ const options = {
 	},
 	apis: ['./routes/*.js'],
 };
-const specs = swaggerJsDoc(options);
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
 app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)
