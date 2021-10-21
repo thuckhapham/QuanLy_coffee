@@ -39,7 +39,6 @@
     "webpack-node-externals": "3.0.0"
   },
   "scripts": {
-    "development": "nodemon",
-    "swagger-autogen": "node swagger.js"
+    "development": "nodemon"
   }
 }

@@ -4,11 +4,13 @@ import Product from '../models/product.model'
 const create= async(req,res) =>{
     const product=new Product(req.body)
     try{
-        await product.save()
-        return res.status(200).json({
-            message: "product is saved"
-        })
+      await product.save()
+      console.info("product is saved")
+      return res.status(200).json({
+          message: "product is saved"
+      })
     } catch(err){
+      console.error(err)
       return res.status(400).json(
         {error : "bad request"}
       )
@@ -42,12 +44,35 @@ const read = (req, res) => {
 }
 const list = async (req, res) => {
     try {
+      const current = parseInt(req.query.page)-1
+      const pagesize = parseInt(req.query.pagesize)
+      const name =  req.query.name
+      const category = req.query.category
+      const topprice = parseInt(req.query.topprice)
+      const botprice = parseInt(req.query.botprice)
       console.info('get list product')
-      let products = await Product.find().select('name category description price image')
-      
-      console.info('get list product finished')
+      let products = await Product.find().select('_id name category description price image')
+      products.filter(product =>(
+        (name===undefined || product.name.includes(name))
+        && (category === undefined || product.category.includes(category))
+        && (topprice===undefined || product.price <= topprice)
+        && (botprice === undefined || product.price >= botprice)
+      ))
+      const total = products.length
+      console.info(`total: ${total}`)
+
+      if(current*pagesize < products.length){
+        products=products.slice(current*pagesize, Math.min((current+1)*pagesize,products.length))
+      }
   
-      res.json(products)
+      console.info('get list customer finished')
+    
+      res.json({
+          page : (current+1) ,
+          pagesize : pagesize,
+          total: total,
+          products : products
+      })
     } catch (err) {
       console.error(err)
       return res.status(400).json(
