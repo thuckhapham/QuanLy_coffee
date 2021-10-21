@@ -1,5 +1,5 @@
 import Product from '../models/product.model'
-
+import extend from 'lodash/extend'
 
 const create= async(req,res) =>{
     const product=new Product(req.body)

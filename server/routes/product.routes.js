@@ -9,8 +9,8 @@ router.route('/api/products')
 
 router.route('/api/products/:productId')
   .get(productCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.hasAuthorization, productCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, productCtrl.remove)
+  .put(authCtrl.requireSignin, productCtrl.update)
+  .delete(authCtrl.requireSignin, productCtrl.remove)
 
 router.param('productId', productCtrl.productByID)
 

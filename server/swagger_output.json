@@ -272,10 +272,12 @@
             "type" : "string"
           },
           {
+            "in": "body",
             "name" : "body",
-            "in" : "body",
-            "schema" : "#/definitions/product"
+            "schema" : {
+              "$ref": "#/definitions/product"
           }
+        }
         ],
         "responses": {},
         "security" :
