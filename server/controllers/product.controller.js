@@ -22,7 +22,7 @@ const productByID = async (req, res, next, id) => {
       console.info(`find ProductId: ${id}`)
   
       let product = await Product.findById(id)
-      if (!user){
+      if (!product){
         console.info(`Product: ${id} not found`)
         return res.status('400').json({
           error: "Product not found"

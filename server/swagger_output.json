@@ -102,14 +102,73 @@
       "get": {
         "tags": ["member"],
         "description": "",
-        "parameters": [],
-        "responses": {}
+        "parameters": [{
+          "name" : "page",
+          "in" : "query",
+          "type": "integer",
+          "format": "int64",
+          "required" : "true",
+          "example" : 1
+        },{
+          "name" : "pagesize",
+          "in" : "query",
+          "type": "integer",
+          "format": "int64",
+          "required" : "true",
+          "example" : 10
+        },
+        {
+          "name" : "name",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "phone",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "created",
+          "in" : "query",
+          "type" : "date",
+          "format": "date"
+        },
+        {
+          "name" : "memberlevelName",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "memberlevelCode",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "email",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "birthday",
+          "in" : "query",
+          "type" : "date",
+          "format": "date"
+        }],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
       },
       "post": {
         "tags": ["member"],
         "description": "",
         "parameters": [],
-        "responses": {}
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
       }
     },
     "/api/member/level": {
@@ -123,7 +182,11 @@
         "tags": ["member"],
         "description": "",
         "parameters": [],
-        "responses": {}
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
       }
     },
     "/api/products": {
@@ -190,13 +253,30 @@
       "get": {
         "tags": ["products"],
         "description": "get product by id",
-        "parameters": [],
+        "parameters": [{
+          "name" : "productId",
+          "in" : "path",
+          "required" : "true",
+          "type" : "string"
+        }],
         "responses": {}
       },
       "put": {
         "tags": ["products"],
         "description": "update product ",
-        "parameters": [],
+        "parameters": [
+          {
+            "name" : "productId",
+            "in" : "path",
+            "required" : "true",
+            "type" : "string"
+          },
+          {
+            "name" : "body",
+            "in" : "body",
+            "schema" : "#/definitions/product"
+          }
+        ],
         "responses": {},
         "security" :
         [
@@ -206,7 +286,12 @@
       "delete": {
         "tags": ["products"],
         "description": "delete product",
-        "parameters": [],
+        "parameters": [{
+          "name" : "productId",
+          "in" : "path",
+          "required" : "true",
+          "type" : "string"
+        }],
         "responses": {},
         "security" :
         [
@@ -226,7 +311,7 @@
         ]
       },
       "post": {
-        "tags": [],
+        "tags": ["users"],
         "description": "",
         "parameters": [],
         "responses": {}

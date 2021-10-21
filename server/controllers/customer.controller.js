@@ -143,29 +143,30 @@ const getListMember = async(req,res) => {
         const pagesize = parseInt(req.query.pagesize)
         const name =  req.query.name
         const phone = req.query.phone
-        const id = req.query.id
         const created = req.query.created
+        const memberlevelName =req.query.memberLevelName
+        const memberlevelCode = req.query.memberLevelCode
+        const email = req.query.email
+        const birthday = req.query.birthday
 
         let members= await Customer.find({memberCode: {$exists:true}})
         .select('name phone memberCode emai birthday memberLevel created')
-        .populate('memberLevel', 'name') 
-        members =members.filter(member =>{
-            if((name!=='undefined' && member.name===name) 
-                || (phone!== 'undefined' && member.phone === phone)
-                || (id!== 'undefined' && member._id === id)
-                || (created !== 'undefined' && member.created > created)
-            )
-            return true
-            else return false
-        })
+        .populate('memberLevel', 'name code') 
+        members =members.filter(member =>
+            (   (name===undefined || member.name.includes(name)) 
+                && (phone=== undefined || member.phone.includes(phone))
+                && (email=== undefined || member.email.includes(email))
+                && (created === undefined || member.created >= new Date(created))
+                && (birthday === undefined || member.birthday === new Date(birthday))
+                && (memberlevelName=== undefined || member.memberLevel.name.includes(memberlevelName))
+                && (memberlevelCode=== undefined || member.memberLevel.code.includes(memberlevelCode))
+            ) 
+        )
 
-        const total = members.size()
+        const total = members.length
         console.info(total)
-        if(current*pagesize < members.size()){
-            members=members.subarray(current*pagesize, Math.min((current+1)*pagesize,members.size()))
-        }
-        else{
-            members.clear()
+        if(current*pagesize < members.length){
+            members=members.slice(current*pagesize, Math.min((current+1)*pagesize,members.length))
         }
 
         console.info('get list members finished')
@@ -197,7 +198,6 @@ const getListMemberLevel = async(req,res) => {
             }
             return isValid;
         })
-
         console.info('get list memberlevel finished')
         res.json(memberLevels)
     }
