@@ -1,3 +1,37 @@
+.historyorder__title {
+  font-size: 1.8rem;
+  margin: 10px 0;
+  font-weight: 500;
+}
+.historyorder__time-list {
+  display: flex;
+  font-size: 1.4rem;
+}
+.historyorder__time-item {
+  margin-right: 250px;
+}
+.historyorder__orderid {
+  font-size: 1.4rem;
+  margin: 10px 0;
+}
+.historyorder__orderid-input,
+.historyorder__orderid-icon {
+  margin: 0 10px;
+  border: 1px solid black;
+}
+.historyorder__orderid-input {
+}
+.historyorder__orderid-icon {
+  font-size: 2rem;
+  font-weight: 500;
+  transform: translateY(18%);
+}
+.historyorder__orderid-icon:hover {
+  cursor: pointer;
+  background-color: #011627;
+  transition: ease-in 0.3s;
+  color: var(--white-color);
+}
 .historyorder__table {
   table-layout: fixed;
   border-collapse: collapse;

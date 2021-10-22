@@ -47,14 +47,19 @@ function HistoryOrder() {
                     <div className="historyorder__time-list">
                         <div className="historyorder__time-item">
                             From
+                            <br />
+                            <input type="date" className="" id="datefrom" name="datefrom" />
                         </div>
                         <div className="historyorder__time-item">
                             To
+                            <br />
+                            <input type="date" className="" id="dateto" name="dateto" />
                         </div>
-                        <div className="historyorder__time-item">
-                            Order Id:
-                        </div>
-                        <AiIcons.AiOutlineSearch />
+                    </div>
+                    <div className="historyorder__orderid">
+                        Order Id:
+                        <input type="text" className="historyorder__orderid historyorder__orderid-input" id="orderid" name="orderid" placeholder="   Order ID" />
+                        <AiIcons.AiOutlineSearch className="historyorder__orderid historyorder__orderid-icon" />
                     </div>
                 </div>
                 <div className="historyorder__table-header">

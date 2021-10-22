@@ -4,6 +4,7 @@ import * as FiIcons from "react-icons/fi";
 import './Header.css';
 import Sidebar from '../Sidebar/Sidebar'
 import { useState } from 'react'
+import { Link } from "react-router-dom";
 
 function Header() {
     const [showSid, setShowSid] = useState(false)
@@ -20,9 +21,11 @@ function Header() {
                                 <FaIcons.FaBars onClick={() => setShowSid(!showSid)} className="header__navbar-icon" />
                             </li>
                             <li className="header__navbar-item">
-                                <span className="header__navbar-logo-no-hover">
-                                Homepage
-                                </span>
+                                <Link to="/" >
+                                    <span className="header__navbar-logo-no-hover">
+                                        Homepage
+                                    </span>
+                                </Link>
                             </li>
                         </ul>
                         <ul className="header__navbar-list">
@@ -30,20 +33,20 @@ function Header() {
                                 <a href="http://" className="header__navbar-item-link">
                                     <FaIcons.FaBell className="header__navbar-icon" />
                                     Notification
-                                    </a>
+                                </a>
                             </li>
                             <li className="header__navbar-item header__navbar-item--seperate">
                                 <a href="http://" className="header__navbar-item-link">About</a>
                             </li>
                             <li className="header__navbar-item header__navbar-item--strong">
                                 Log out
-                                <FiIcons.FiLogOut className="header__navbar-icon"/>
+                                <FiIcons.FiLogOut className="header__navbar-icon" />
                             </li>
                         </ul>
                     </nav>
                 </div>
             </header>
-            <Sidebar show = {showSid} />
+            <Sidebar show={showSid} setShow={setShowSid} />
 
             {/* Modal Layout */}
             {/* <div className="modal">
