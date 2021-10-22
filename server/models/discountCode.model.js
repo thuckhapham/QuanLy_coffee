@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
-
+require('mongoose-double')(mongoose)
+var SchemaTypes = mongoose.Schema.Types;
 const DiscountCodeSchema=new mongoose.Schema({
     name: {
         type: String,
@@ -7,11 +8,15 @@ const DiscountCodeSchema=new mongoose.Schema({
         required: 'Name is required'
     },
     discount:{
-        type: Float64Array,
+        type: SchemaTypes.Double,
         required: 'Discount is required',
         
     },
-    enable : Boolean,
+    category : {
+        type : String,
+        default : "DEFAULT",
+        enum : ["DEFAULT", "MEMBER", "EVENT"]
+    },
     expiry : Date,
     updated: Date,
     created: {

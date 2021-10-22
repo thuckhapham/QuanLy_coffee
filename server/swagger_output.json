@@ -460,6 +460,124 @@
           { "Authorization": []}
         ]
       }
+    },
+    "/api/discount": {
+      "get": {
+        "tags": ["discount"],
+        "summary" : "Get list discount",
+        "description": "get list discount",
+        "parameters": [{
+          "name" : "page",
+          "in" : "query",
+          "type": "integer",
+          "format": "int64",
+          "required" : "true",
+          "example" : 1
+        },{
+          "name" : "pagesize",
+          "in" : "query",
+          "type": "integer",
+          "format": "int64",
+          "required" : "true",
+          "example" : 10
+        },
+        {
+          "name" : "category",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "name",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "discount",
+          "in" : "query",
+          "type" : "interger",
+          "format": "int64"
+        },
+        {
+          "name" : "expiry",
+          "in" : "query",
+          "type" : "date",
+          "format": "date",
+          "description" : "  >= expiry"
+        }],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      },
+      "post": {
+        "tags": ["discount"],
+        "summary": "create new discount code",
+        "parameters": [{
+          "in": "body",
+          "name" : "body",
+          "schema" : {
+            "$ref": "#/definitions/discount"
+        }
+      }],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      }
+    },
+    "/api/discount/{discountCodeId}": {
+      "get": {
+        "tags": ["discount"],
+        "summary": "get discount by id",
+        "parameters": [{
+          "name" : "discountCodeId",
+          "in" : "path",
+          "required" : "true",
+          "type" : "string"
+        }],
+        "responses": {}
+      },
+      "put": {
+        "tags": ["discount"],
+        "summary": "update discount ",
+        "parameters": [
+          {
+            "name" : "discountCodeId",
+            "in" : "path",
+            "required" : "true",
+            "type" : "string"
+          },
+          {
+            "in": "body",
+            "name" : "body",
+            "schema" : {
+              "$ref": "#/definitions/discount"
+          }
+        }
+        ],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      },
+      "delete": {
+        "tags": ["discount"],
+        "summary": "delete discount",
+        "parameters": [{
+          "name" : "discountCodeId",
+          "in" : "path",
+          "required" : "true",
+          "type" : "string"
+        }],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      }
     }
   },
   "securityDefinitions": 
@@ -583,6 +701,28 @@
         "type" : "string",
         "example" : "AVAILABLE"
         }
+      }
+    },
+    "discount" : {
+      "type" : "object",
+      "properties" :
+      {
+        "name" :  {
+        "type" : "string",
+        "example" : "Mac dinh 20"
+        },
+        "discount" : {
+        "type" : "float",
+        "example" : 20
+        },
+        "category" : {
+        "type" : "string",
+        "example" : "DEFAULT"
+        },
+        "expiry" : {
+          "type" : "date",
+          "example" : "2022-1-30"
+          }
       }
     }
   }
