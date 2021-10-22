@@ -11,7 +11,7 @@ import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import productRoutes from './routes/product.routes'
 import customerRoutes from './routes/customer.routes'
-
+import tableRoutes from './routes/table.routes'
 const swaggerUI = require("swagger-ui-express");
 const swaggerFile = require('./swagger_output.json')
 
@@ -50,6 +50,7 @@ app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)
 app.use('/',customerRoutes)
+app.use('/',tableRoutes)
 
 app.get('/',(req,res)=>{
     res.status(200).send(template())

@@ -19,11 +19,11 @@ const create= async(req,res) =>{
 
 const productByID = async (req, res, next, id) => {
     try {
-      console.info(`find ProductId: ${id}`)
+      console.trace(`find ProductId: ${id}`)
   
       let product = await Product.findById(id)
       if (!product){
-        console.info(`Product: ${id} not found`)
+        console.error(`Product: ${id} not found`)
         return res.status('400').json({
           error: "Product not found"
         })
@@ -65,7 +65,7 @@ const list = async (req, res) => {
         products=products.slice(current*pagesize, Math.min((current+1)*pagesize,products.length))
       }
   
-      console.info('get list customer finished')
+      console.info('get list product finished')
     
       res.json({
           page : (current+1) ,

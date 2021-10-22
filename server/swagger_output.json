@@ -18,7 +18,7 @@
     "/auth/signin": {
       "post": {
         "tags": ["auth"],
-        "description": "Signin by username, password",
+        "summary": "Signin by username, password",
         "parameters": [
           {
             "in": "body",
@@ -34,7 +34,7 @@
     "/auth/signout": {
       "get": {
         "tags": ["auth"],
-        "description": "logout",
+        "summary": "logout",
         "parameters": [],
         "responses": {}
       }
@@ -42,7 +42,7 @@
     "/api/customer": {
       "get": {
         "tags": ["customer"],
-        "description": "get list customer",
+        "summary": "get list customer",
         "parameters": [{
           "name" : "page",
           "in" : "query",
@@ -82,7 +82,7 @@
         },
       "post": {
         "tags": ["customer"],
-        "description": "",
+        "summary": " create new customer ",
         "parameters": [
           {
             "in": "body",
@@ -101,7 +101,7 @@
     "/api/member": {
       "get": {
         "tags": ["member"],
-        "description": "",
+        "summary": "get list member",
         "parameters": [{
           "name" : "page",
           "in" : "query",
@@ -162,7 +162,7 @@
       },
       "post": {
         "tags": ["member"],
-        "description": "",
+        "summary": " create new member",
         "parameters": [],
         "responses": {},
         "security" :
@@ -174,13 +174,13 @@
     "/api/member/level": {
       "get": {
         "tags": ["member"],
-        "description": "",
+        "summary": " get list member level",
         "parameters": [],
         "responses": {}
       },
       "post": {
         "tags": ["member"],
-        "description": "",
+        "summary": "create new member level",
         "parameters": [],
         "responses": {},
         "security" :
@@ -192,7 +192,7 @@
     "/api/products": {
       "get": {
         "tags": ["products"],
-        "description": "get list products",
+        "summary": "get list products",
         "parameters": [{
           "name" : "page",
           "in" : "query",
@@ -234,7 +234,7 @@
       },
       "post": {
         "tags": ["products"],
-        "description": "create new product",
+        "summary": "create new product",
         "parameters": [{
           "in": "body",
           "name" : "body",
@@ -252,7 +252,7 @@
     "/api/products/{productId}": {
       "get": {
         "tags": ["products"],
-        "description": "get product by id",
+        "summary": "get product by id",
         "parameters": [{
           "name" : "productId",
           "in" : "path",
@@ -263,7 +263,7 @@
       },
       "put": {
         "tags": ["products"],
-        "description": "update product ",
+        "summary": "update product ",
         "parameters": [
           {
             "name" : "productId",
@@ -287,7 +287,7 @@
       },
       "delete": {
         "tags": ["products"],
-        "description": "delete product",
+        "summary": "delete product",
         "parameters": [{
           "name" : "productId",
           "in" : "path",
@@ -344,6 +344,116 @@
         "tags": ["users"],
         "description": "",
         "parameters": [],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      }
+    },
+    "/api/table": {
+      "get": {
+        "tags": ["table"],
+        "summary" : "Get list table",
+        "description": "get list table",
+        "parameters": [{
+          "name" : "page",
+          "in" : "query",
+          "type": "integer",
+          "format": "int64",
+          "required" : "true",
+          "example" : 1
+        },{
+          "name" : "pagesize",
+          "in" : "query",
+          "type": "integer",
+          "format": "int64",
+          "required" : "true",
+          "example" : 10
+        },
+        {
+          "name" : "status",
+          "in" : "query",
+          "type" : "string"
+        },
+        {
+          "name" : "topNo",
+          "in" : "query",
+          "type" : "interger",
+          "format": "int64",
+          "description" : " number <= topno"
+        },
+        {
+          "name" : "botNo",
+          "in" : "query",
+          "type" : "interger",
+          "format": "int64",
+          "description" : " number >= botno"
+        }],
+        "responses": {}
+      },
+      "post": {
+        "tags": ["table"],
+        "summary": "create new table",
+        "parameters": [{
+          "in": "body",
+          "name" : "body",
+          "schema" : {
+            "$ref": "#/definitions/table"
+        }
+      }],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      }
+    },
+    "/api/table/{tableId}": {
+      "get": {
+        "tags": ["table"],
+        "summary": "get table by id",
+        "parameters": [{
+          "name" : "tableId",
+          "in" : "path",
+          "required" : "true",
+          "type" : "string"
+        }],
+        "responses": {}
+      },
+      "put": {
+        "tags": ["table"],
+        "summary": "update table ",
+        "parameters": [
+          {
+            "name" : "tableId",
+            "in" : "path",
+            "required" : "true",
+            "type" : "string"
+          },
+          {
+            "in": "body",
+            "name" : "body",
+            "schema" : {
+              "$ref": "#/definitions/table"
+          }
+        }
+        ],
+        "responses": {},
+        "security" :
+        [
+          { "Authorization": []}
+        ]
+      },
+      "delete": {
+        "tags": ["table"],
+        "summary": "delete table",
+        "parameters": [{
+          "name" : "tableId",
+          "in" : "path",
+          "required" : "true",
+          "type" : "string"
+        }],
         "responses": {},
         "security" :
         [
@@ -456,6 +566,24 @@
             "example" : "20000"
           }
         }
+    },
+    "table" : {
+      "type" : "object",
+      "properties" :
+      {
+        "number" :  {
+        "type" : "integer",
+        "example" : "1"
+        },
+        "description" : {
+        "type" : "string",
+        "example" : "Bàn rộng có thể ngồi 3 người"
+        },
+        "status" : {
+        "type" : "string",
+        "example" : "AVAILABLE"
+        }
+      }
     }
   }
 }

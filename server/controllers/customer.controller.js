@@ -6,17 +6,9 @@ const create = async(req,res) =>{
     const customer=new Customer(req.body)
     console.info(`save customer`)
     try{
-        let isPhoneUsed = true
-        Customer.find({phone : customer.phone}, function(err, customers){
-            if(err){
-              console.log(err)
-            };
-            if(!customers.length){
-                isPhoneUsed=false
-            }
-        })
+        let isPhoneExists= Customer.exists({phone : customer.phone})
   
-        if(isPhoneUsed){
+        if(isPhoneExists){
             console.error("phone already exists")
             return res.status(400).json({error : "phone already exists"})
         }

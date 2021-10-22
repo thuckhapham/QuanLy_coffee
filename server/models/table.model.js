@@ -7,7 +7,11 @@ const TableSchema=new mongoose.Schema({
         required: 'Number is required'
     },
     description: String,
-    enable: Boolean,
+    status: {
+        type: String,
+        default : "AVAILABLE",
+        enum : ["AVAILABLE", "USED", "BROKEN"]
+    },
     updated: Date,
     created: {
         type: Date,
