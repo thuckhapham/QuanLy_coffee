@@ -13,5 +13,5 @@ router.route('/api/member')
 
 router.route('/api/member/level')
 .post(authCtrl.requireSignin, customerCtrl.createMemberLevel)
-.get(authCtrl.requireSignin, customerCtrl.getListMemberLevel)
+.get(customerCtrl.getListMemberLevel)
 export default router
