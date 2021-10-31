@@ -7,7 +7,6 @@ import Homepage from './Pages/Homepage/Homepage';
 import Member from './Pages/Member/Member'
 import Order from './Pages/Order/Order'
 import HistoryOrder from './Pages/HistoryOrder/HistoryOrder'
-import Login from './Pages/Login/Login'
 
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 
