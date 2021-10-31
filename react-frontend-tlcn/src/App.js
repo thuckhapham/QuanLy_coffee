@@ -20,8 +20,7 @@ function App() {
           <Header />
           <div className="main">
             <div className="main__path">
-              <Route path="/" exact={true} component={Login} />
-              <Route path="/homepage" exact={true} component={Homepage} />
+              <Route path="/" exact={true} component={Homepage} />
               <Route path="/member" exact={true} component={Member} />
               <Route path="/orderhistory" exact={true} component={HistoryOrder} />
               <Route path="/order/:id" exact={true} component={Order} />
