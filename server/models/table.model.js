@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 
 const TableSchema=new mongoose.Schema({
-    number: {
-        type: Number,
-        unique: "Number already exists",
-        required: 'Number is required'
+    tablePoin: {
+        type: String,
+        unique: "TablePoin already exists",
+        required: 'TablePoin is required'
     },
     description: String,
     status: {

@@ -370,25 +370,6 @@
           "format": "int64",
           "required" : "true",
           "example" : 10
-        },
-        {
-          "name" : "status",
-          "in" : "query",
-          "type" : "string"
-        },
-        {
-          "name" : "topNo",
-          "in" : "query",
-          "type" : "interger",
-          "format": "int64",
-          "description" : " number <= topno"
-        },
-        {
-          "name" : "botNo",
-          "in" : "query",
-          "type" : "interger",
-          "format": "int64",
-          "description" : " number >= botno"
         }],
         "responses": {}
       },
@@ -409,12 +390,12 @@
         ]
       }
     },
-    "/api/table/{tableId}": {
+    "/api/table/{tablePoin}": {
       "get": {
         "tags": ["table"],
-        "summary": "get table by id",
+        "summary": "get table by poin",
         "parameters": [{
-          "name" : "tableId",
+          "name" : "tablePoin",
           "in" : "path",
           "required" : "true",
           "type" : "string"
@@ -426,7 +407,7 @@
         "summary": "update table ",
         "parameters": [
           {
-            "name" : "tableId",
+            "name" : "tablePoin",
             "in" : "path",
             "required" : "true",
             "type" : "string"
@@ -449,7 +430,7 @@
         "tags": ["table"],
         "summary": "delete table",
         "parameters": [{
-          "name" : "tableId",
+          "name" : "tablePoin",
           "in" : "path",
           "required" : "true",
           "type" : "string"
@@ -666,18 +647,9 @@
       "type" : "object",
       "properties" :
       {
-        "number" :  {
-        "type" : "integer",
-        "example" : "1"
-        },
-        "description" : {
+        "tablePoin" :  {
         "type" : "string",
-        "example" : "Bàn rộng có thể ngồi 3 người"
-        },
-        "status" : {
-        "type" : "string",
-        "example" : "AVAILABLE"
-        }
+        "example" : "Poin1"
       }
     },
     "discount" : {
@@ -689,6 +661,7 @@
         "example" : 20
         }
       }
+    }
     }
   }
 }

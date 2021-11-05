@@ -5,10 +5,10 @@ const create = async(req, res) =>{
     const table = new Table(req.body)
     try{
 
-        const isNumberExists = await Table.exists({number : table.number})
-        if(isNumberExists){
-            console.error("number table already exists")
-            return res.status(400).json({error : "number table already exists"})
+        const istablePoinExists = await Table.exists({tablePoin : table.tablePoin})
+        if(istablePoinExists){
+            console.error("tablePoin already exists")
+            return res.status(400).json({error : "tablePoin already exists"})
         }
 
         await table.save()
@@ -47,6 +47,29 @@ const tableById = async (req, res, next ,id) =>{
         })
     }
 }
+const tableByPoin = async (req, res, next , poin) =>{
+  try{
+    console.info(`find table by poin: ${poin}`)
+
+    let table = await Table.findOne({tablePoin : poin})
+
+    if(!table){
+        console.error(`table: ${poin} not found`)
+        return res.status('400').json({
+          error: "table not found"
+        })    
+    }
+    req.table = table
+    console.info(`tablePoin: ${poin} found`)
+    next()
+}
+catch(err){
+    console.error(err)
+    return res.status('400').json({
+        error: "Could not retrieve table"
+    })
+}
+}
 
 
 const read = (req, res) => {
@@ -58,16 +81,9 @@ const list = async (req, res) => {
     try {
       const current = parseInt(req.query.page)-1
       const pagesize = parseInt(req.query.pagesize)
-      const status = req.query.status
-      const topNo = parseInt(req.query.topNo)
-      const botNo = parseInt(req.query.botNo)
       console.info('get list table')
-      let tables = await Table.find().select('_id number description status')
-      tables.filter(table =>(
-        (status === undefined || table.status.includes(status))
-        && (topNo===undefined || table.number <= topNo)
-        && (botNo === undefined || table.number >= botNo)
-      ))
+      let tables = await Table.find().select('tablePoin')
+
       const total = tables.length
       console.info(`total: ${total}`)
 
@@ -97,6 +113,12 @@ const list = async (req, res) => {
 const update = async (req, res) => {
     try {
       console.info(`update table: ${req.table.id}`)
+      const tablePoinExists = await Table.findOne({tablePoin : req.table.tablePoin})
+      if(tablePoinExists._id !== req.table.id){
+        console.error("tablePoin already exists")
+        return res.status(400).json({error : "tablePoin already exists"})
+      }
+
       let table = req.table
       table = extend(table, req.body)
       table.updated = Date.now()
@@ -129,6 +151,7 @@ const remove = async (req, res) => {
 export default {
     create,
     tableById,
+    tableByPoin,
     read,
     list,
     remove,
