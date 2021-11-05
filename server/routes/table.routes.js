@@ -7,11 +7,11 @@ router.route('/api/table')
   .get(tableCtrl.list)
   .post(authCtrl.requireSignin,tableCtrl.create)
 
-router.route('/api/table/:tableId')
-  .get(authCtrl.requireSignin, tableCtrl.read)
+router.route('/api/table/:tablePoin')
+  .get(tableCtrl.read)
   .put(authCtrl.requireSignin,  tableCtrl.update)
   .delete(authCtrl.requireSignin, tableCtrl.remove)
 
-router.param('tableId', tableCtrl.tableById)
+router.param('tablePoin', tableCtrl.tableByPoin)
 
 export default router
