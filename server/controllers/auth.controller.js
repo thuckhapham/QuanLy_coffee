@@ -25,7 +25,9 @@ const signin = async (req, res) => {
     }
 
     const token = jwt.sign({
-      _id: user._id
+      _id: user._id,
+      userName: user.userName,
+      role : user.role
     }, config.jwtSecret)
 
     res.cookie("t", token, {
@@ -34,14 +36,7 @@ const signin = async (req, res) => {
     console.info(`sigin: ${req.body.userName} finished`)
     return res.json({
       token,
-      user: {
-        _id: user._id,
-        userName: user.userName,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phone: user.phone,
-        email: user.email
-      }
+      token_type: "Bearer"
     })
 
   } catch (err) {

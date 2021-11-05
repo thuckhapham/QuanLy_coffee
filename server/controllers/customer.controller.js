@@ -109,6 +109,9 @@ const getListCustomer = async(req,res) => {
         if(current*pagesize < customers.length){
             customers=customers.slice(current*pagesize, Math.min((current+1)*pagesize,customers.length))
         }
+        else{
+            customers=[]
+        }
       
         console.info('get list customer finished')
         
@@ -159,6 +162,9 @@ const getListMember = async(req,res) => {
         console.info(total)
         if(current*pagesize < members.length){
             members=members.slice(current*pagesize, Math.min((current+1)*pagesize,members.length))
+        }
+        else{
+            members=[]
         }
 
         console.info('get list members finished')

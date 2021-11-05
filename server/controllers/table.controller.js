@@ -74,6 +74,9 @@ const list = async (req, res) => {
       if(current*pagesize < tables.length){
         tables=tables.slice(current*pagesize, Math.min((current+1)*pagesize,tables.length))
       }
+      else{
+        tables=[]
+      }
   
       console.info('get list table finished')
     

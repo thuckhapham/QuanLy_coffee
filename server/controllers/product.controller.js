@@ -64,6 +64,9 @@ const list = async (req, res) => {
       if(current*pagesize < products.length){
         products=products.slice(current*pagesize, Math.min((current+1)*pagesize,products.length))
       }
+      else{
+        products=[]
+      }
   
       console.info('get list product finished')
     

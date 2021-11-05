@@ -7,11 +7,11 @@ router.route('/api/discount')
   .get(authCtrl.requireSignin, discountCtrl.list)
   .post(authCtrl.requireSignin,discountCtrl.create)
 
-router.route('/api/discount/:discountCodeId')
+router.route('/api/discount/:discountId')
   .get(discountCtrl.read)
   .put(authCtrl.requireSignin,  discountCtrl.update)
   .delete(authCtrl.requireSignin, discountCtrl.remove)
 
-router.param('discountCodeId', discountCtrl.discountCodeById)
+router.param('discountId', discountCtrl.discountById)
 
 export default router

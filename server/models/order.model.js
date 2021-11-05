@@ -21,6 +21,10 @@ const OrderSchema=new mongoose.Schema({
         type: String,
         enum: ['cash','epay','banking']
     },
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref : 'User'
+    },
     paid : Boolean,
     updated: Date,
     created: {

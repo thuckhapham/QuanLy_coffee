@@ -480,29 +480,6 @@
           "format": "int64",
           "required" : "true",
           "example" : 10
-        },
-        {
-          "name" : "category",
-          "in" : "query",
-          "type" : "string"
-        },
-        {
-          "name" : "name",
-          "in" : "query",
-          "type" : "string"
-        },
-        {
-          "name" : "discount",
-          "in" : "query",
-          "type" : "interger",
-          "format": "int64"
-        },
-        {
-          "name" : "expiry",
-          "in" : "query",
-          "type" : "date",
-          "format": "date",
-          "description" : "  >= expiry"
         }],
         "responses": {},
         "security" :
@@ -527,12 +504,12 @@
         ]
       }
     },
-    "/api/discount/{discountCodeId}": {
+    "/api/discount/{discountId}": {
       "get": {
         "tags": ["discount"],
         "summary": "get discount by id",
         "parameters": [{
-          "name" : "discountCodeId",
+          "name" : "discountId",
           "in" : "path",
           "required" : "true",
           "type" : "string"
@@ -541,10 +518,10 @@
       },
       "put": {
         "tags": ["discount"],
-        "summary": "update discount ",
+        "summary": "update discount",
         "parameters": [
           {
-            "name" : "discountCodeId",
+            "name" : "discountId",
             "in" : "path",
             "required" : "true",
             "type" : "string"
@@ -567,7 +544,7 @@
         "tags": ["discount"],
         "summary": "delete discount",
         "parameters": [{
-          "name" : "discountCodeId",
+          "name" : "discountId",
           "in" : "path",
           "required" : "true",
           "type" : "string"
@@ -707,22 +684,10 @@
       "type" : "object",
       "properties" :
       {
-        "name" :  {
-        "type" : "string",
-        "example" : "Mac dinh 20"
-        },
-        "discount" : {
+        "percentage" : {
         "type" : "float",
         "example" : 20
-        },
-        "category" : {
-        "type" : "string",
-        "example" : "DEFAULT"
-        },
-        "expiry" : {
-          "type" : "date",
-          "example" : "2022-1-30"
-          }
+        }
       }
     }
   }
