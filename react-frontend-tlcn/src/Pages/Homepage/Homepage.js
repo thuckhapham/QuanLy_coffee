@@ -29,7 +29,6 @@ function Homepage() {
     ]
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
-    const [selectedButt, setButt] = useState("");
     const callbackModal = (modalState) => {
         setViewModal(modalState);
     };
@@ -38,9 +37,9 @@ function Homepage() {
             <Login />
             <div className="homepage">
                 <div className="homepage__header-list">
-                    <div className="homepage__header-item">
-                        <h1>Homepage</h1>
-                    </div>
+                    {/* <div className="homepage__header-item homepage__header-item--title">
+                        HOMEPAGE
+                    </div> */}
                     <div className="homepage__header-item homepage__header-btn">
                         <button
                             className="homepage__btn-add"

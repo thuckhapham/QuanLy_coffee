@@ -21,7 +21,9 @@ function Header() {
                                 <FaIcons.FaBars onClick={() => setShowSid(!showSid)} className="header__navbar-icon" />
                             </li>
                             <li className="header__navbar-item">
-                                <Link to="/" >
+                                <Link to="/"
+                                    onClick={() => setShowSid(!showSid)}
+                                >
                                     <span className="header__navbar-logo-no-hover">
                                         Homepage
                                     </span>

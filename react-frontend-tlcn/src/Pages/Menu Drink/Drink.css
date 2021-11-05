@@ -1,0 +1,64 @@
+/* Table Layout */
+.drinktable__table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.drinktable__header {
+  background-color: #011627;
+  color: #fff;
+  font-weight: 500;
+}
+.drinktable__detail {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.drinktable__body {
+  text-align: center;
+}
+.drinktable__header th,
+.drinktable__body td {
+  padding: 3px 7px;
+}
+.drinktable__row {
+  border-bottom: 1px solid #dddddd;
+}
+/* Button Layout */
+/* Button Cancel */
+.drinktable__btn-cancel {
+  border: 1px solid black;
+  color: var(--white-color);
+  background-color: red;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.drinktable__btn-cancel:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: ease-in 0.2s;
+}
+.drinktable__btn-cancelicon {
+  transform: translateY(15%);
+}
+/* Button Edit */
+.drinktable__btn-edit {
+  border: 1px solid black;
+  color: var(--white-color);
+  background-color: green;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.drinktable__btn-edit:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: ease-in 0.2s;
+}
+.drinktable__btn-editicon {
+  transform: translateY(15%);
+}

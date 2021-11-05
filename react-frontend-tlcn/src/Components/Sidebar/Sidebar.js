@@ -18,7 +18,7 @@ function Sidebar(props) {
                     </li>
                     <li className="sidebar__item">
                         <Link
-                            to="/orderhistory"
+                            to="/order-history"
                             className="sidebar__item-link"
                             onClick={() => props.setShow(!props.show)}
                         >
@@ -35,11 +35,11 @@ function Sidebar(props) {
                         </Link>
                     </li>
                     <li className="sidebar__item">
-                        <Link to="/"
+                        <Link to="/menu-drink"
                             className="sidebar__item-link"
                             onClick={() => props.setShow(!props.show)}
                         >
-                            Sales Revenue
+                            Menu Drink
                         </Link>
                     </li>
                 </ul>
