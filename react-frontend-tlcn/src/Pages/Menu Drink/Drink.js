@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import './Drink.css'
 import * as AiIcons from 'react-icons/ai'
 import * as GiIcons from 'react-icons/gi'
-import NewDrink from '../../Components/Modal/New Drink/NewDrink';
-import DeleteDrink from '../../Components/Modal/Delete Drink/DeleteDrink';
+import NewDrink from '../../Components/Modal/Menu Drink/New Drink/NewDrink';
+import DeleteDrink from '../../Components/Modal/Menu Drink/Delete Drink/DeleteDrink';
+import EditDrink from '../../Components/Modal/Menu Drink/Edit Drink/EditDrink';
 
 function Drink() {
     const datas = [
@@ -50,6 +51,9 @@ function Drink() {
     const callbackModal = (modalState) => {
         setViewModal(modalState);
     };
+    //Save Drink Data to array
+    const [editedDrink, setEditedDrink] = useState("");
+    console.log(editedDrink)
     return (
         <>
             <div className="homepage__header-item homepage__header-btn">
@@ -94,6 +98,7 @@ function Drink() {
                                             onClick={() => {
                                                 setButt("editdrink");
                                                 setViewModal(!viewModal)
+                                                setEditedDrink([data])
                                             }}
                                         >
                                             <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
@@ -130,7 +135,7 @@ function Drink() {
                         <NewDrink ModalState={callbackModal} datas={datas} />
                     ) : selectedButt === "canceldrink" ? (
                         <DeleteDrink ModalState={callbackModal} />
-                    ) : ""}
+                    ) : <EditDrink ModalState={callbackModal} datas={datas} editedDrink={editedDrink} />}
                 </div>
             </div>
         </>
