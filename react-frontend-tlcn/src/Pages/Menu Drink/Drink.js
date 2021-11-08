@@ -56,9 +56,36 @@ function Drink() {
     console.log(editedDrink)
     return (
         <>
-            <div className="homepage__header-item homepage__header-btn">
+            <h1 className="">
+                Drink Control
+            </h1>
+            <div className="drinktable__header-content">
+                <div className="drinktable__header-list">
+                    <div className="drinktable__header-item">
+                        Drink ID:
+                        <br />
+                        <input type="text" className="drinksearch__form" placeholder="ID" />
+                    </div>
+                    <div className="drinktable__header-item">
+                        Drink's name:
+                        <br />
+                        <input type="text" className="drinksearch__form" placeholder="ID" />
+                    </div>
+                </div>
+                <div className="drinktable__header-search">
+                    <div className="drinktable__header-item drinktable__header-item--left">
+                        Drink's price:
+                        <br />
+                        <input type="text" className="drinksearch__form" placeholder="ID" />
+                    </div>
+                    <div className="drinktable__header-item drinktable__header-item--icon">
+                        <AiIcons.AiOutlineSearch className="drinktable__header-search drinktable__header-searchicon" />
+                    </div>
+                </div>
+            </div>
+            <div className="drinktable__header-btn">
                 <button
-                    className="homepage__btn-add"
+                    className="drinktable__btn-add"
                     onClick={() => {
                         setViewModal(!viewModal)
                         setButt("newdrink")
