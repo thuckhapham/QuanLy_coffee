@@ -8,6 +8,7 @@ function EditDrink(props) {
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
+    console.log(props.editedDrink)
     return (
         <>
             <div className="newdrink__content">
@@ -15,34 +16,26 @@ function EditDrink(props) {
                     EDIT DRINK
                 </div>
                 <div className="newdrink__content-list">
-                    {/* {props.editedDrink.map((drink, index) => ( */}
                     <div className="newdrink__content-item">
                         <div className="newdrink__lable">
                             DRINK ID:
                         </div>
                         <div className="newdrink__input">
-                            <input type="text" className="newdrink__form" placeholder="ID" />
+                            <input type="text" className="newdrink__form" placeholder="ID" value={props.editedDrink[0].drink_id} />
+                            {/* <input type="text" className="newdrink__form" placeholder="ID" /> */}
                         </div>
                     </div>
-                    {/* ))} */}
                     <div className="newdrink__content-item">
                         <div className="newdrink__lable">
                             CATEGORY:
                         </div>
                         <div className="newdrink__input">
                             <select id="category" className="newdrink__select">
-                                {props.datas.map((data, index) => {
-                                    if (duplicateCheck.includes(data.drink_category))
-                                        return null;
-                                    duplicateCheck.push(data.drink_category);
-                                    return (
-                                        <option
-                                            value={data.drink_category}
-                                        >
-                                            {data.drink_category}
-                                        </option>
-                                    );
-                                })}
+                                <option
+                                    value={props.editedDrink[0].drink_category}
+                                >
+                                    {props.editedDrink[0].drink_category}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -51,7 +44,7 @@ function EditDrink(props) {
                             NAME:
                         </div>
                         <div className="newdrink__input">
-                            <input type="text" className="newdrink__form" placeholder="Drink's name" />
+                            <input type="text" className="newdrink__form" placeholder="Drink's name" value={props.editedDrink[0].drink_name} />
                         </div>
                     </div>
                     <div className="newdrink__content-item">
@@ -59,7 +52,7 @@ function EditDrink(props) {
                             PRICE:
                         </div>
                         <div className="newdrink__input">
-                            <input type="text" className="newdrink__form" placeholder="Drink's price" />
+                            <input type="text" className="newdrink__form" placeholder="Drink's price" defaultValue={props.editedDrink[0].drink_price} />
                         </div>
                     </div>
                 </div>

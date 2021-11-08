@@ -29,9 +29,9 @@ function Homepage() {
     ]
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
-    const callbackModal = (modalState) => {
-        setViewModal(modalState);
-    };
+    // const callbackModal = (modalState) => {
+    //     setViewModal(modalState);
+    // };
     return (
         <>
             <Login />

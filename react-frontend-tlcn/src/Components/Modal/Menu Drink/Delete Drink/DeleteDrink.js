@@ -1,28 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './DeleteDrink.css'
 import * as AiIcons from 'react-icons/ai'
 
 function DeleteDrink(props) {
-    const datas = [
-        {
-            discount_id: "d01",
-            percentage: "35"
-        },
-        {
-            discount_id: "d02",
-            percentage: "50"
-        },
-        {
-            discount_id: "d03",
-            percentage: "100"
-        },
-        {
-            discount_id: "d04",
-            percentage: "0"
-        },
-    ]
-    const [useVoucher, setVoucher] = useState()
-    // const [activeVoucher, setActive] = useState(false)
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }

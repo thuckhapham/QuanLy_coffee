@@ -52,7 +52,7 @@ function Drink() {
         setViewModal(modalState);
     };
     //Save Drink Data to array
-    const [editedDrink, setEditedDrink] = useState("");
+    const [editedDrink, setEditedDrink] = useState([{ drink_id: 0, drink_name: "loading" }]);
     console.log(editedDrink)
     return (
         <>

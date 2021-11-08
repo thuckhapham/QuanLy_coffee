@@ -35,10 +35,10 @@ function Discount(props) {
                 <ul className="discount__voucher-list">
                     {datas.map(data => (
                         <li className={data.discount_id === props.active ? "discount__voucher-item discount__voucher-item--active" : "discount__voucher-item"}
-                            onClick={() => (
-                                setVoucher(data.percentage),
+                            onClick={() => {
+                                setVoucher(data.percentage);
                                 props.clickActive(data.discount_id)
-                            )}
+                            }}
                         >
                             {data.percentage}%
                         </li>

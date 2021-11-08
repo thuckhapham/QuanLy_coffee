@@ -1,10 +1,9 @@
 import React from 'react'
-import { useState } from 'react'
 import './Member.css'
 import * as AiIcons from 'react-icons/ai'
 
 function Member(props) {
-    const [useMember, setMember] = useState()
+    // const [useMember, setMember] = useState()
     // const [activeVoucher, setActive] = useState(false)
     const sendData = (modalState) => {
         props.ModalState(modalState)
