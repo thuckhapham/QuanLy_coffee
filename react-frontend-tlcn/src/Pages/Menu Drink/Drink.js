@@ -53,7 +53,10 @@ function Drink() {
     };
     //Save Drink Data to array
     const [editedDrink, setEditedDrink] = useState([{ drink_id: 0, drink_name: "loading" }]);
-    console.log(editedDrink)
+    //Quy đổi số về tiền việt
+    function currencyFormat(num) {
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+    }
     return (
         <>
             <h1 className="">
@@ -118,7 +121,7 @@ function Drink() {
                                     <td>{data.drink_id}</td>
                                     <td>{data.drink_category}</td>
                                     <td>{data.drink_name}</td>
-                                    <td>{data.drink_price}</td>
+                                    <td>{currencyFormat(data.drink_price)}</td>
                                     <td>
                                         <button
                                             className="drinktable__btn-edit"
