@@ -19,7 +19,7 @@
 }
 .drinktable__header-item--left {
   width: 80%;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 .drinktable__header-item--icon {
   display: flex;
@@ -115,6 +115,7 @@
 .drinktable__header-btn {
   display: flex;
   justify-content: flex-end;
+  margin: 10px 0;
 }
 .drinktable__btn-add {
   padding: 10px 15px;

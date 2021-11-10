@@ -6,7 +6,6 @@ function EditDrink(props) {
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
-    console.log(props.editedDrink)
     return (
         <>
             <div className="editdrink__content">

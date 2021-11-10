@@ -1,0 +1,56 @@
+.newcustomer__content-header {
+  font-size: 1.7rem;
+  text-align: center;
+  margin: 10px 0;
+}
+.newcustomer__content {
+  width: 350px;
+  margin: 5px 10px;
+}
+.newcustomer__content-list {
+  font-size: 1.3rem;
+}
+.newcustomer__form {
+  width: 100%;
+  border: 0.5px solid black;
+  padding: 10px 12px;
+}
+.newcustomer__select {
+  width: 100%;
+  border: 0.5px solid black;
+  padding: 10px 12px;
+  font-size: 1.3rem;
+}
+.newcustomer__content-btn {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+.newcustomer__btn {
+  width: 100px;
+  padding: 10px 15px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: var(--white-color);
+  border: 1px solid var(--primary-color);
+}
+.newcustomer__btn--add {
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    to right,
+    var(--white-color) 50%,
+    green 50%
+  );
+  transition: background-position 0.5s;
+}
+.newcustomer__btn--cancle {
+  background-size: 200% 100%;
+  background-image: linear-gradient(to right, var(--white-color) 50%, red 50%);
+  transition: background-position 0.5s;
+}
+.newcustomer__btn:hover {
+  background-position: -100% 0;
+  color: var(--white-color);
+  cursor: pointer;
+}
