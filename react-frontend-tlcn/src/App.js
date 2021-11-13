@@ -8,6 +8,7 @@ import Member from './Pages/Member/Member'
 import Order from './Pages/Order/Order'
 import HistoryOrder from './Pages/HistoryOrder/HistoryOrder'
 import Drink from './Pages/Menu Drink/Drink';
+import Login from './Components/Login/Login';
 
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 
@@ -20,7 +21,8 @@ function App() {
           <Header />
           <div className="main">
             <div className="main__path">
-              <Route path="/" exact={true} component={Homepage} />
+              <Route path="/auth/signin" exact={true} component={Login} />
+              <Route path="api/table" exact={true} component={Homepage} />
               <Route path="/member" exact={true} component={Member} />
               <Route path="/order-history" exact={true} component={HistoryOrder} />
               <Route path="/order/:id" exact={true} component={Order} />
