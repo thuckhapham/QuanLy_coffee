@@ -3,6 +3,7 @@ import './Homepage.css'
 import { Link } from 'react-router-dom'
 import Login from '../../Components/Login/Login'
 import {createTable, getTables} from './api-homepage'
+import auth from './../../Components/Login/auth-helper'
 function Homepage() {
     //Data
     const [datas, setDatas] = useState([])
@@ -22,6 +23,32 @@ function Homepage() {
             abortController.abort()
           }
     },[])
+
+    const [values, setValues] = useState({
+        tablePoin: '',
+        error: ''
+    })
+    const jwt = auth.isAuthenticated()
+    
+    const addTableSubmit = ()=> {
+        const table = {
+            tablePoin: values.tablePoin || undefined
+        }
+        createTable({type : jwt.token_type, token: jwt.token},table).then((data) =>{
+            console.log(data)
+            if(data.error){
+                setValues({ ...values, error: data.error})
+            }
+            else{
+                datas.push(data)
+            }
+        })
+    }
+    const handleChange = name => event => {
+    
+        setValues({...values, [name]: event.target.value})
+
+      }
     // const datas = [
     //     {
     //         tablePoin: "POIN1",
@@ -96,8 +123,17 @@ function Homepage() {
                                     TABLE ORDER:
                                 </div>
                                 <div className="newtable__input">
-                                    <input type="text" className="newtable__form" placeholder="ID" />
+                                    <input 
+                                    id="tablePoint" 
+                                    value={values.tablePoin} 
+                                    onChange={handleChange('tablePoin')} 
+                                    type="string" 
+                                    className="newtable__form"
+                                    placeholder="TablePoint" />
                                 </div>
+                                <br/> {
+                                    values.error 
+                                }
                             </div>
                             <div className="newtable__content-item">
                                 <div className="newtable__lable">
@@ -111,7 +147,7 @@ function Homepage() {
                         <div className="newtable__content-btn">
                             <button
                                 className="newtable__btn newtable__btn--add"
-                                onClick={() => setViewModal(!viewModal)}
+                                onClick={addTableSubmit}
                             >
                                 Add
                             </button>

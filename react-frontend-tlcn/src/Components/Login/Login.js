@@ -63,7 +63,9 @@ function Login() {
                                     />
                                 </div>
                             </div>
-                     
+                            <br/> {
+                                    values.error 
+                            }
                             <div class="auth-form__controls">
                                 {/* <button class="btn btn--normal auth-form__controls-back">TRỞ LẠI</button> */}
                                 <button
