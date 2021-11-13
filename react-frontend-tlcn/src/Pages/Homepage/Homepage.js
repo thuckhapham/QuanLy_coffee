@@ -1,32 +1,49 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Homepage.css'
 import { Link } from 'react-router-dom'
 import Login from '../../Components/Login/Login'
-
+import {createTable, getTables} from './api-homepage'
 function Homepage() {
     //Data
-    const datas = [
-        {
-            tableId: "POIN1",
-            tableSource: "Table"
-        },
-        {
-            tableId: "POIN2",
-            tableSource: "Table"
-        },
-        {
-            tableId: "POIN3",
-            tableSource: "Table"
-        },
-        {
-            tableId: "POIN4",
-            tableSource: "Table"
-        },
-        {
-            tableId: "POIN5",
-            tableSource: "Table"
-        },
-    ]
+    const [datas, setDatas] = useState([])
+    useEffect( () =>{
+        const abortController = new AbortController()
+        const signal = abortController.signal
+        getTables(1,10,signal).then((data) =>{
+            if(data && data.error){
+                console.log(data.error)
+            }
+            else{
+
+                setDatas(data.tables)
+            }
+        })
+        return function cleanup(){
+            abortController.abort()
+          }
+    },[])
+    // const datas = [
+    //     {
+    //         tablePoin: "POIN1",
+    //         tableSource: "Table"
+    //     },
+    //     {
+    //         tablePoin: "POIN2",
+    //         tableSource: "Table"
+    //     },
+    //     {
+    //         tablePoin: "POIN3",
+    //         tableSource: "Table"
+    //     },
+    //     {
+    //         tablePoin: "POIN4",
+    //         tableSource: "Table"
+    //     },
+    //     {
+    //         tablePoin: "POIN5",
+    //         tableSource: "Table"
+    //     },
+    // ]
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     // const callbackModal = (modalState) => {
@@ -51,8 +68,8 @@ function Homepage() {
                 </div>
                 <div className="homepage__contain">
                     {datas.map(data => (
-                        <Link key={data.tableId} className="homepage__order-link" to={"/order/" + data.tableId} >
-                            {data.tableId}
+                        <Link key={data.tablePoin} className="homepage__order-link" to={"/order/" + data.tablePoin} >
+                            {data.tablePoin}
                         </Link>
                     ))}
                 </div>

@@ -1,23 +1,32 @@
 import mongoose from 'mongoose'
 
+
 const OrderSchema=new mongoose.Schema({
     customer:{
         type: mongoose.Schema.ObjectId,
         ref : 'Customer'
     },
-    products: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Product'
+    orderItem: [{
+       ItemId: {
+           type : String,
+           required : true
+       },
+       name: {
+           type : String,
+           required : true
+       },
+       price : {
+           type : Number,
+           required : true
+       }
     }],
     table : {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Table'
+        type: String,
     },
-    discountCodes: [{
-        type: mongoose.Schema.ObjectId,
-        ref : 'DiscountCode'
-    }],
-    pay:{
+    discount: {
+        type: Number
+    },
+    paymentMethod :{
         type: String,
         enum: ['cash','epay','banking']
     },
@@ -25,13 +34,26 @@ const OrderSchema=new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref : 'User'
     },
-    paid : Boolean,
+    paymentResult: {
+        id: String,
+        status: String,
+        update_time: Date
+    },
     updated: Date,
     created: {
         type: Date,
         default: Date.now
     }
 })
-
+OrderSchema.virtual('total').get(
+    function(){
+        let total=0;
+        this.products.forEach(element => {
+           total+= element.price 
+        });
+        total = total*(1-this.discount/100) 
+        return total
+    }
+)
 export default mongoose.model('Order', OrderSchema)
 

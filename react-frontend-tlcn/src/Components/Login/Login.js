@@ -1,12 +1,40 @@
 import React, { useState } from "react";
 import * as AiIcon from "react-icons/ai";
 import "./Login.css";
+import {signin} from './api-auth.js'
+import auth from './auth-helper'
 function Login() {
     //Set Modal Active
-    const [viewModal, setViewModal] = useState(false);
+    const [values, setValues] = useState({
+        userName: '',
+        password: '',
+        error: '',
+        redirectToReferrer: false
+    })
+  
+    const clickSubmit = ()=> {
+        const user = {
+            userName: values.userName || undefined,
+            password: values.password || undefined
+        }
+        signin(user).then((data) =>{
+            console.log(data)
+            if(data.error){
+                setValues({ ...values, error: data.error})
+            }
+            else{
+                auth.authenticate(data, () => {
+                    setValues({ ...values, error: '',redirectToReferrer: true})
+                })
+            }
+        })
+    }
+    const handleChange = name => event => {
+        setValues({ ...values, [name]: event.target.value })
+    }
     return (
         <>
-            <div className={viewModal ? "modal--unactive" : "modal"}>
+            <div className={values.redirectToReferrer ? "modal--unactive" : "modal"}>
                 <div className="modal__overlay"></div>
                 <div className="modal__body">
                     <div class="auth-form">
@@ -18,22 +46,29 @@ function Login() {
                             <div class="auth-form__form">
                                 <div class="auth-form__group">
                                     <input
-                                        type="text"
+                                        id="userName"
+                                        type="string"
+                                        value={values.userName}
                                         class="auth-form__input"
-                                        placeholder="Your email"
+                                        onChange={handleChange('userName')}
+                                        placeholder="Your userName"
                                     />
                                     <input
+                                        id="password"
                                         type="password"
+                                        value={values.password} 
+                                        onChange={handleChange('password')}
                                         class="auth-form__input"
                                         placeholder="Your password"
                                     />
                                 </div>
                             </div>
+                     
                             <div class="auth-form__controls">
                                 {/* <button class="btn btn--normal auth-form__controls-back">TRỞ LẠI</button> */}
                                 <button
                                     class="auth-form__btn auth-form__btn--login"
-                                    onClick={() => setViewModal(!viewModal)}
+                                    onClick={clickSubmit}
                                 >
                                     Login
                                 </button>
