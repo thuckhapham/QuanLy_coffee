@@ -1,23 +1,32 @@
 import mongoose from 'mongoose'
 
+
 const OrderSchema=new mongoose.Schema({
     customer:{
         type: mongoose.Schema.ObjectId,
         ref : 'Customer'
     },
-    products: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Product'
+    orderItem: [{
+       ItemId: {
+           type : String,
+           required : true
+       },
+       name: {
+           type : String,
+           required : true
+       },
+       price : {
+           type : Number,
+           required : true
+       }
     }],
     table : {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Table'
+        type: String,
     },
-    discount: [{
-        type: mongoose.Schema.ObjectId,
-        ref : 'Discount'
-    }],
-    pay:{
+    discount: {
+        type: Number
+    },
+    paymentMethod :{
         type: String,
         enum: ['cash','epay','banking']
     },
@@ -25,9 +34,10 @@ const OrderSchema=new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref : 'User'
     },
-    paid : {
-        type : Boolean,
-        default : false
+    paymentResult: {
+        id: String,
+        status: String,
+        update_time: Date
     },
     updated: Date,
     created: {

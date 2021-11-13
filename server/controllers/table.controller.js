@@ -37,7 +37,7 @@ const tableById = async (req, res, next ,id) =>{
             })    
         }
         req.table = table
-        console.info(`tableId: ${id} found`)
+        console.info(`tablePoin: ${id} found`)
         next()
     }
     catch(err){
@@ -73,7 +73,7 @@ catch(err){
 
 
 const read = (req, res) => {
-    console.info(`Read TableId: ${req.table.id}`)
+    console.info(`Read tablePoin: ${req.table.id}`)
     return res.json(req.table)
 }
 
