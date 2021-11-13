@@ -1,0 +1,43 @@
+.deletemember {
+  width: 300px;
+}
+.deletemember__content {
+  font-size: 1.5rem;
+  text-align: center;
+}
+.deletemember__content--warn {
+  color: red;
+}
+.deletemember__content-icon {
+  font-size: 2.3rem;
+  margin-left: 5px;
+  transform: translateY(10%);
+}
+.deletemember__footer {
+  margin: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+}
+.deletemember__btn {
+  padding: 12px 15px;
+  color: var(--white-color);
+  border: 1px solid black;
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+.deletemember__btn-cancel {
+  background-color: red;
+}
+.deletemember__btn-cancel:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: ease-in-out 0.3s;
+}
+.deletemember__btn-confirm {
+  background-color: green;
+}
+.deletemember__btn-confirm:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: ease-in-out 0.3s;
+}

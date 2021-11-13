@@ -1,10 +1,10 @@
 /* Header */
-.customer__header-content {
+.drinktable__header-content {
   display: flex;
   font-size: 1.5rem;
   width: 100%;
 }
-.customer__header-list {
+.drinktable__header-list {
   width: 40%;
 }
 .drinksearch__form {
@@ -12,21 +12,21 @@
   border: 0.5px solid black;
   padding: 10px 12px;
 }
-.customer__header-search {
+.drinktable__header-search {
   display: flex;
   margin-left: 50px;
   width: 60%;
 }
-.customer__header-item--left {
+.drinktable__header-item--left {
   width: 80%;
   margin-right: 10px;
 }
-.customer__header-item--icon {
+.drinktable__header-item--icon {
   display: flex;
   justify-content: flex-end;
   width: 20%;
 }
-.customer__header-searchicon {
+.drinktable__header-searchicon {
   border: 1px solid black;
   border-radius: 5px;
   margin: auto;
@@ -42,18 +42,82 @@
   );
   transition: background-position 0.5s;
 }
-.customer__header-searchicon:hover {
+.drinktable__header-searchicon:hover {
   cursor: pointer;
   color: var(--white-color);
   background-position: -100% 0;
 }
+/* Table Layout */
+.drinktable__table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.drinktable__header {
+  background-color: #011627;
+  color: #fff;
+  font-weight: 500;
+}
+.drinktable__detail {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 3px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.drinktable__body {
+  text-align: center;
+}
+.drinktable__header th,
+.drinktable__body td {
+  padding: 3px 7px;
+}
+.drinktable__row {
+  border-bottom: 1px solid #dddddd;
+}
+/* Button Layout */
+/* Button Cancel */
+.drinktable__btn-cancel {
+  border: 1px solid black;
+  color: var(--white-color);
+  background-color: red;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.drinktable__btn-cancel:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: ease-in 0.2s;
+}
+.drinktable__btn-cancelicon {
+  transform: translateY(15%);
+}
+/* Button Edit */
+.drinktable__btn-edit {
+  border: 1px solid black;
+  color: var(--white-color);
+  background-color: green;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.drinktable__btn-edit:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: ease-in 0.2s;
+}
+.drinktable__btn-editicon {
+  transform: translateY(15%);
+}
 /* New Drink */
-.customer__header-btn {
+.drinktable__header-btn {
   display: flex;
   justify-content: flex-end;
   margin: 10px 0;
 }
-.customer__btn-add {
+.drinktable__btn-add {
   padding: 10px 15px;
   font-size: 1.3rem;
   font-weight: 500;
@@ -67,89 +131,8 @@
   );
   transition: background-position 0.5s;
 }
-.customer__btn-add:hover {
+.drinktable__btn-add:hover {
   cursor: pointer;
   color: var(--white-color);
   background-position: -100% 0;
-}
-/* Table Layout */
-.customer__table {
-  table-layout: fixed;
-  border-collapse: collapse;
-  font-size: 1.4rem;
-  width: 100%;
-  border-radius: 3px;
-  overflow: hidden;
-}
-.customer__header {
-  background-color: #011627;
-  color: #fff;
-  font-weight: 500;
-}
-.customer__detail {
-  height: 200px;
-  border: 1px solid black;
-  border-radius: 3px;
-  overflow: hidden;
-  overflow-y: scroll;
-}
-.customer__body {
-  text-align: center;
-}
-.customer__header th,
-.customer__body td {
-  padding: 3px 7px;
-}
-.customer__row {
-  border-bottom: 1px solid #dddddd;
-}
-/* Button Layout */
-/* Button Cancel */
-.customer__btn-cancel {
-  border: 1px solid black;
-  color: var(--white-color);
-  background-color: red;
-  font-size: 1.3rem;
-  font-weight: 400;
-}
-.customer__btn-cancel:hover {
-  cursor: pointer;
-  opacity: 0.7;
-  transition: ease-in 0.2s;
-}
-.customer__btn-cancelicon {
-  transform: translateY(15%);
-}
-/* Button Edit */
-.customer__btn-edit {
-  border: 1px solid black;
-  color: var(--white-color);
-  background-color: green;
-  font-size: 1.3rem;
-  font-weight: 400;
-}
-.customer__btn-edit:hover {
-  cursor: pointer;
-  opacity: 0.7;
-  transition: ease-in 0.2s;
-}
-.customer__btn-editicon {
-  transform: translateY(15%);
-}
-/* Button View */
-.customer__btn-view {
-  border: 1px solid black;
-  /* color: var(--white-color); */
-  background-color: var(--white-color);
-  font-size: 1.3rem;
-  font-weight: 400;
-}
-.customer__btn-view:hover {
-  cursor: pointer;
-  background-color: gray;
-  color: var(--white-color);
-  transition: ease-in 0.2s;
-}
-.customer__btn-viewicon {
-  transform: translateY(15%);
 }

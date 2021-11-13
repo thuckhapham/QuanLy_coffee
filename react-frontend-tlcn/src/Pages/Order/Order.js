@@ -2,9 +2,9 @@ import React from "react";
 import "./Order.css";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import Discount from "../../Components/Modal/Discount/Discount";
-import CheckOut from "../../Components/Modal/CheckOut/CheckOut";
-import Member from "../../Components/Modal/Member/Member";
+import Discount from "../../Components/Modal/Order/Discount/Discount";
+import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
+import Member from "../../Components/Modal/Order/Member/Member";
 
 function Order() {
   const { id } = useParams();

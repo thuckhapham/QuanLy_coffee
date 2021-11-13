@@ -5,6 +5,10 @@
 .homepage__header {
   display: flex;
 }
+.homepage__header-item--title {
+  font-size: 2rem;
+  font-weight: 500;
+}
 .homepage__header-btn {
   display: flex;
   justify-content: flex-end;

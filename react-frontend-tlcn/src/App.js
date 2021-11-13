@@ -7,6 +7,7 @@ import Homepage from './Pages/Homepage/Homepage';
 import Member from './Pages/Member/Member'
 import Order from './Pages/Order/Order'
 import HistoryOrder from './Pages/HistoryOrder/HistoryOrder'
+import Drink from './Pages/Menu Drink/Drink';
 
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 
@@ -21,8 +22,9 @@ function App() {
             <div className="main__path">
               <Route path="/" exact={true} component={Homepage} />
               <Route path="/member" exact={true} component={Member} />
-              <Route path="/orderhistory" exact={true} component={HistoryOrder} />
+              <Route path="/order-history" exact={true} component={HistoryOrder} />
               <Route path="/order/:id" exact={true} component={Order} />
+              <Route path="/menu-drink" exact={true} component={Drink} />
             </div>
             <OrderHistory />
           </div>
