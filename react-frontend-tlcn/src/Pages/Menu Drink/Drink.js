@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Drink.css'
+import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import * as GiIcons from 'react-icons/gi'
 import NewDrink from '../../Components/Modal/Menu Drink/New Drink/NewDrink';
@@ -45,6 +46,14 @@ function Drink() {
             drink_price: 55000,
         },
     ];
+    //Lấy Data
+    const [viewList, setList] = useState([{ phone: 0, name: "" }]);
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+            .then((response) => {
+                setList(response.data.products)
+            })
+    }, [])
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     const [selectedButt, setButt] = useState("");
@@ -102,7 +111,7 @@ function Drink() {
                     <thead className="drinktable__head">
                         <tr className="drinktable__header">
                             <th>Number</th>
-                            <th>Drink Id</th>
+                            {/* <th>Drink Id</th> */}
                             <th>Category</th>
                             <th>Name</th>
                             <th>Price</th>
@@ -115,13 +124,13 @@ function Drink() {
                 <div className="drinktable__table-content">
                     <table className="drinktable__table">
                         <tbody className="drinktable__body">
-                            {datas.map((data, index) => (
+                            {viewList.map((data, index) => (
                                 <tr className="drinktable__row">
                                     <td>{index + 1}</td>
-                                    <td>{data.drink_id}</td>
-                                    <td>{data.drink_category}</td>
-                                    <td>{data.drink_name}</td>
-                                    <td>{currencyFormat(data.drink_price)}</td>
+                                    {/* <td>{data.drink_id}</td> */}
+                                    <td>{data.category}</td>
+                                    <td>{data.name}</td>
+                                    <td>{currencyFormat(data.price)}</td>
                                     <td>
                                         <button
                                             className="drinktable__btn-edit"

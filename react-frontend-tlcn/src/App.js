@@ -13,7 +13,7 @@ import Login from './Components/Login/Login';
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 
 function App() {
-  
+
   return (
     <>
       <div className="app">
@@ -22,7 +22,7 @@ function App() {
           <div className="main">
             <div className="main__path">
               <Route path="/auth/signin" exact={true} component={Login} />
-              <Route path="api/table" exact={true} component={Homepage} />
+              <Route path="/" exact={true} component={Homepage} />
               <Route path="/member" exact={true} component={Member} />
               <Route path="/order-history" exact={true} component={HistoryOrder} />
               <Route path="/order/:id" exact={true} component={Order} />

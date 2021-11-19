@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as AiIcon from "react-icons/ai";
 import "./Login.css";
-import {signin} from './api-auth.js'
+import { signin } from './api-auth.js'
 import auth from './auth-helper'
 function Login() {
     //Set Modal Active
@@ -11,22 +11,22 @@ function Login() {
         error: '',
         redirectToReferrer: false
     })
-    if(auth.isAuthenticated()){
-        values.redirectToReferrer=true
+    if (auth.isAuthenticated()) {
+        values.redirectToReferrer = true
     }
-    const clickSubmit = ()=> {
+    const clickSubmit = () => {
         const user = {
             userName: values.userName || undefined,
             password: values.password || undefined
         }
-        signin(user).then((data) =>{
+        signin(user).then((data) => {
             console.log(data)
-            if(data.error){
-                setValues({ ...values, error: data.error})
+            if (data.error) {
+                setValues({ ...values, error: data.error })
             }
-            else{
+            else {
                 auth.authenticate(data, () => {
-                    setValues({ ...values, error: '',redirectToReferrer: true})
+                    setValues({ ...values, error: '', redirectToReferrer: true })
                 })
             }
         })
@@ -58,15 +58,15 @@ function Login() {
                                     <input
                                         id="password"
                                         type="password"
-                                        value={values.password} 
+                                        value={values.password}
                                         onChange={handleChange('password')}
                                         class="auth-form__input"
                                         placeholder="Your password"
                                     />
                                 </div>
                             </div>
-                            <br/> {
-                                    values.error 
+                            <br /> {
+                                values.error
                             }
                             <div class="auth-form__controls">
                                 {/* <button class="btn btn--normal auth-form__controls-back">TRỞ LẠI</button> */}
