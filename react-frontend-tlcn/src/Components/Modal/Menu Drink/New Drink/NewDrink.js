@@ -1,15 +1,37 @@
 import React, { useState } from 'react'
 import './NewDrink.css'
+import axios from 'axios'
 
 function NewDrink(props) {
     //Lọc dữ liệu Category trùng
     const duplicateCheck = [];
     //Gửi dữ liệu về trang chính
     const sendData = (modalState) => {
-        props.ModalState(modalState)
+        props.ModalState(modalState);
     }
-    const [selectedCate, setCate] = useState("")
-    console.log(selectedCate)
+    //Nước mới
+    const [selectedCate, setCate] = useState("COFFEE")
+    const [selectedName, setName] = useState("")
+    const [selectedPrice, setPrice] = useState("")
+    //Thêm nước
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzcwMzA3MDZ9.n7xU9TnyRp4vWxX5QmmAxD_GMTWf7YBVojLONdMAYYs";
+    function addingDrink(selectedName, selectedCate, selectedPrice) {
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/api/products/',
+            data: {
+                name: selectedName,
+                category: selectedCate,
+                price: selectedPrice
+            },
+            headers: {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+            props.setRequestData(new Date());
+        })
+    }
     return (
         <>
             <div className="newdrink__content">
@@ -31,16 +53,17 @@ function NewDrink(props) {
                         </div>
                         <div className="newdrink__input">
                             <select id="category" className="newdrink__select"
-                                onChange={e => setCate(e.drink_category)}>
+                                onChange={(event) => setCate(event.target.value)}
+                            >
                                 {props.datas.map((data, index) => {
-                                    if (duplicateCheck.includes(data.drink_category))
+                                    if (duplicateCheck.includes(data.category))
                                         return null;
-                                    duplicateCheck.push(data.drink_category);
+                                    duplicateCheck.push(data.category);
                                     return (
                                         <option
-                                            value={data.drink_category}
+                                            value={data.category}
                                         >
-                                            {data.drink_category}
+                                            {data.category}
                                         </option>
                                     );
                                 })}
@@ -52,7 +75,7 @@ function NewDrink(props) {
                             NAME:
                         </div>
                         <div className="newdrink__input">
-                            <input type="text" className="newdrink__form" placeholder="Drink's name" />
+                            <input type="text" className="newdrink__form" placeholder="Drink's name" onChange={e => setName(e.target.value)} />
                         </div>
                     </div>
                     <div className="newdrink__content-item">
@@ -60,20 +83,25 @@ function NewDrink(props) {
                             PRICE:
                         </div>
                         <div className="newdrink__input">
-                            <input type="text" className="newdrink__form" placeholder="Drink's price" />
+                            <input type="text" className="newdrink__form" placeholder="Drink's price" onChange={e => setPrice(e.target.value)} />
                         </div>
                     </div>
                 </div>
                 <div className="newdrink__content-btn">
                     <button
                         className="newdrink__btn newdrink__btn--add"
-                        onClick={() => sendData(true)}
+                        onClick={() => {
+                            addingDrink(selectedName, selectedCate, selectedPrice)
+                            sendData(true)
+                        }}
                     >
                         Add
                     </button>
                     <button
                         className="newdrink__btn newdrink__btn--cancle"
-                        onClick={() => sendData(true)}
+                        onClick={() => {
+                            sendData(true)
+                        }}
                     >
                         Cancel
                     </button>
