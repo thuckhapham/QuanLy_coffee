@@ -12,6 +12,8 @@ router.route('/api/table/:tablePoin')
   .put(authCtrl.requireSignin,  tableCtrl.update)
   .delete(authCtrl.requireSignin, tableCtrl.remove)
 
+router.route('/api/table/:tablePoin/status').post(authCtrl.requireSignin, tableCtrl.tableStatus)
+
 router.param('tablePoin', tableCtrl.tableByPoin)
 
 export default router

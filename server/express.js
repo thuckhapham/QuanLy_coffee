@@ -9,8 +9,8 @@ import helmet from 'helmet'
 import template from './template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+import orderRoutes from './routes/order.routes'
 import productRoutes from './routes/product.routes'
-import customerRoutes from './routes/customer.routes'
 import tableRoutes from './routes/table.routes'
 import discountRoutes from './routes/discount.routes'
 const swaggerUI = require("swagger-ui-express");
@@ -54,10 +54,9 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
 app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)
-app.use('/',customerRoutes)
 app.use('/',tableRoutes)
 app.use('/',discountRoutes)
-
+app.use('/',orderRoutes)
 app.get('/',(req,res)=>{
     res.status(200).send(template())
 })

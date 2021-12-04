@@ -82,7 +82,7 @@ const list = async (req, res) => {
       const current = parseInt(req.query.page)-1
       const pagesize = parseInt(req.query.pagesize)
       console.info('get list table')
-      let tables = await Table.find().select('tablePoin')
+      let tables = await Table.find().select('tablePoin status')
 
       const total = tables.length
       console.info(`total: ${total}`)
@@ -147,6 +147,23 @@ const remove = async (req, res) => {
       )
     }
 }
+const tableStatus = async (req,res) =>{
+  try{
+    console.info(`update table status: ${req.table.id}`)
+    let table = req.table 
+    table.status = req.body.tableStatus
+
+    await table.save()
+    console.info(`update table status: ${req.table.id} finished`)
+    res.json(table)
+  }
+  catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
 
 export default {
     create,
@@ -155,6 +172,7 @@ export default {
     read,
     list,
     remove,
-    update
+    update,
+    tableStatus
 }
 
