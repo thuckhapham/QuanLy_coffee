@@ -1,4 +1,4 @@
-import Customer from '../models/customer.model'
+import Customer from '../models/member.model'
 import MemberLevel from '../models/memberLevel.model'
 import extend from 'lodash/extend'
 

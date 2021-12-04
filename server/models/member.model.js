@@ -15,10 +15,6 @@ const CustomerSchema=new mongoose.Schema({
     },
     birthday: Date,
     emai : String,
-    memberLevel: {
-        type : mongoose.Schema.ObjectId,
-        ref : 'MemberLevel'
-    },
     memberCode: {
         type : String,
         unique : true

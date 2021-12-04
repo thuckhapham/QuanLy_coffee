@@ -5,9 +5,9 @@ const TaskSchema=new mongoose.Schema({
         type: String,
         enum: ['ORDER','PROCESSING','PROCESSED','DELIVERR']
     },
-    customer:{
+    table:{
         type: mongoose.Schema.ObjectId,
-        ref: 'Customer'
+        ref: 'Table'
     },
     products:[{
         type: mongoose.Schema.ObjectId,
