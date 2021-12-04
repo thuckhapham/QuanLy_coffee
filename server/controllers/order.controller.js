@@ -57,7 +57,13 @@ const addProduct = async(req,res) =>{
         }
 
         await order.save()
-        return   res.json(order)
+
+        return   res.json(
+            {
+                "order": order, 
+                "total": order.total
+            }
+        )
 
     } catch (err) {
         console.error(err)

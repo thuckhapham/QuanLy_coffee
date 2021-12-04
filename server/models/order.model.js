@@ -46,10 +46,10 @@ const OrderSchema=new mongoose.Schema({
 OrderSchema.virtual('total').get(
     function(){
         let total=0;
-        this.products.forEach(element => {
-           total+= element.price 
+        this.orderItem.forEach(element => {
+           total+= element.price * element.quantity
         });
-        total = total*(1-this.discount/100) 
+     
         return total
     }
 )
