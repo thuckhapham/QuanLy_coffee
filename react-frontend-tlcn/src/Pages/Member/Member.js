@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './Member.css'
 import * as AiIcons from 'react-icons/ai'
 import * as GiIcons from 'react-icons/gi'
@@ -47,6 +48,22 @@ function Member() {
             customer_phone: 55000,
         },
     ];
+    const [viewList, setList] = useState([{ phone: 0, name: "" }]);
+    // console.log(viewList)
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzcwMzA3MDZ9.n7xU9TnyRp4vWxX5QmmAxD_GMTWf7YBVojLONdMAYYs";
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/customer` + "?page=" + 1 + "&pagesize=" + 10, {
+            headers: {
+                Authorization: 'Bearer ' + token //the token is a variable which holds the token
+            }
+        })
+            .then((response) => {
+                console.log(response.data);
+                // console.log(response);
+                setList(response.data.customers)
+            })
+    }, [])
+    // console.log(viewList)
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     const [selectedButt, setButt] = useState("");
@@ -112,12 +129,12 @@ function Member() {
                     <div className="customer__table-content">
                         <table className="customer__table">
                             <tbody className="customer__body">
-                                {datas.map((data, index) => (
-                                    <tr className="customer__row">
+                                {viewList.map((data, index) => (
+                                    <tr className="customer__row" key={data._id}>
                                         <td>{index + 1}</td>
-                                        <td>{data.customer_id}</td>
-                                        <td>{data.customer_name}</td>
-                                        <td>{data.customer_phone}</td>
+                                        <td>{data.phone}</td>
+                                        <td>{data.name}</td>
+                                        <td>{data.phone}</td>
                                         <td>
                                             <button
                                                 className="customer__btn-view"

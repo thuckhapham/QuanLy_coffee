@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Drink.css'
+import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import * as GiIcons from 'react-icons/gi'
 import NewDrink from '../../Components/Modal/Menu Drink/New Drink/NewDrink';
@@ -45,14 +46,42 @@ function Drink() {
             drink_price: 55000,
         },
     ];
+    //Save Drink Data to array
+    const [editedDrink, setEditedDrink] = useState([{ drink_id: 0, drink_name: "loading" }]);
+    //Lấy Data
+    const [requestData, setRequestData] = useState(new Date());
+    const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+            .then((response) => {
+                setList(response.data.products)
+            })
+    }, [requestData])
+    //Lấy Data theo ID
+    const [viewID, setID] = useState("")
+    function searchID(id) {
+        if (id) {
+            axios.get(`http://localhost:5000/api/products/` + id)
+                // axios.get(`http://localhost:5000/api/products/6171315950c326ba1d1278ff`)
+                .then((response) => {
+                    setList([response.data])
+                    // console.log(id)
+                    console.log(response.data)
+                })
+        } else {
+            axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+                .then((response) => {
+                    setList(response.data.products)
+                })
+        }
+    }
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     const [selectedButt, setButt] = useState("");
+    //Nhận dữ liệu truyền từ Modal con 
     const callbackModal = (modalState) => {
         setViewModal(modalState);
     };
-    //Save Drink Data to array
-    const [editedDrink, setEditedDrink] = useState([{ drink_id: 0, drink_name: "loading" }]);
     //Quy đổi số về tiền việt
     function currencyFormat(num) {
         return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
@@ -67,7 +96,7 @@ function Drink() {
                     <div className="drinktable__header-item">
                         Drink ID:
                         <br />
-                        <input type="text" className="drinksearch__form" placeholder="ID" />
+                        <input type="text" className="drinksearch__form" placeholder="ID" value={viewID} onChange={e => setID(e.target.value)} />
                     </div>
                     <div className="drinktable__header-item">
                         Drink's name:
@@ -82,7 +111,9 @@ function Drink() {
                         <input type="text" className="drinksearch__form" placeholder="ID" />
                     </div>
                     <div className="drinktable__header-item drinktable__header-item--icon">
-                        <AiIcons.AiOutlineSearch className="drinktable__header-search drinktable__header-searchicon" />
+                        <AiIcons.AiOutlineSearch className="drinktable__header-search drinktable__header-searchicon"
+                            onClick={() => searchID(viewID)}
+                        />
                     </div>
                 </div>
             </div>
@@ -102,7 +133,7 @@ function Drink() {
                     <thead className="drinktable__head">
                         <tr className="drinktable__header">
                             <th>Number</th>
-                            <th>Drink Id</th>
+                            {/* <th>Drink Id</th> */}
                             <th>Category</th>
                             <th>Name</th>
                             <th>Price</th>
@@ -115,13 +146,13 @@ function Drink() {
                 <div className="drinktable__table-content">
                     <table className="drinktable__table">
                         <tbody className="drinktable__body">
-                            {datas.map((data, index) => (
+                            {viewList.map((data, index) => (
                                 <tr className="drinktable__row">
                                     <td>{index + 1}</td>
-                                    <td>{data.drink_id}</td>
-                                    <td>{data.drink_category}</td>
-                                    <td>{data.drink_name}</td>
-                                    <td>{currencyFormat(data.drink_price)}</td>
+                                    {/* <td>{data.drink_id}</td> */}
+                                    <td>{data.category}</td>
+                                    <td>{data.name}</td>
+                                    <td>{currencyFormat(data.price)}</td>
                                     <td>
                                         <button
                                             className="drinktable__btn-edit"
@@ -138,6 +169,7 @@ function Drink() {
                                             onClick={() => {
                                                 setViewModal(!viewModal);
                                                 setButt("canceldrink")
+                                                setEditedDrink([data])
                                             }}
                                         >
                                             <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
@@ -162,9 +194,9 @@ function Drink() {
                         </button>
                     </div>
                     {selectedButt === "newdrink" ? (
-                        <NewDrink ModalState={callbackModal} datas={datas} />
+                        <NewDrink ModalState={callbackModal} datas={viewList} setRequestData={setRequestData} />
                     ) : selectedButt === "canceldrink" ? (
-                        <DeleteDrink ModalState={callbackModal} />
+                        <DeleteDrink ModalState={callbackModal} editedDrink={editedDrink} setRequestData={setRequestData} />
                     ) : <EditDrink ModalState={callbackModal} datas={datas} editedDrink={editedDrink} />}
                 </div>
             </div>

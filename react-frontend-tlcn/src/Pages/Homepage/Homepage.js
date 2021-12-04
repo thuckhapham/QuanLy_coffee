@@ -78,7 +78,7 @@ function Homepage() {
     // };
     return (
         <>
-            <Login />
+            {/* <Login /> */}
             <div className="homepage">
                 <div className="homepage__header-list">
                     {/* <div className="homepage__header-item homepage__header-item--title">

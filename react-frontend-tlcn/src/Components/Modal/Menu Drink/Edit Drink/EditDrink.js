@@ -18,7 +18,7 @@ function EditDrink(props) {
                             DRINK ID:
                         </div>
                         <div className="editdrink__input">
-                            <input type="text" className="editdrink__form" placeholder="ID" value={props.editedDrink[0].drink_id} readOnly />
+                            <input type="text" className="editdrink__form" placeholder="ID" value={props.editedDrink[0]._id} readOnly />
                         </div>
                     </div>
                     <div className="editdrink__content-item">
@@ -28,9 +28,9 @@ function EditDrink(props) {
                         <div className="editdrink__input">
                             <select id="category" className="editdrink__select">
                                 <option
-                                    value={props.editedDrink[0].drink_category}
+                                    value={props.editedDrink[0].category}
                                 >
-                                    {props.editedDrink[0].drink_category}
+                                    {props.editedDrink[0].category}
                                 </option>
                             </select>
                         </div>
@@ -40,7 +40,7 @@ function EditDrink(props) {
                             NAME:
                         </div>
                         <div className="editdrink__input">
-                            <input type="text" className="editdrink__form" placeholder="Drink's name" value={props.editedDrink[0].drink_name} readOnly />
+                            <input type="text" className="editdrink__form" placeholder="Drink's name" value={props.editedDrink[0].name} readOnly />
                         </div>
                     </div>
                     <div className="editdrink__content-item">
@@ -48,7 +48,7 @@ function EditDrink(props) {
                             PRICE:
                         </div>
                         <div className="editdrink__input">
-                            <input type="text" className="editdrink__form" placeholder="Drink's price" defaultValue={props.editedDrink[0].drink_price} />
+                            <input type="text" className="editdrink__form" placeholder="Drink's price" defaultValue={props.editedDrink[0].price} />
                         </div>
                     </div>
                 </div>
