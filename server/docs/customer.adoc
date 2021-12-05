@@ -1,0 +1,10 @@
+## Khách hàng
+
+include::API/table/getListTable.adoc[]
+
+include::API/order/createNewOrder.adoc[]
+
+include::API/product/getListProduct.adoc[]
+
+include::API/order/addProduct.adoc[]
+

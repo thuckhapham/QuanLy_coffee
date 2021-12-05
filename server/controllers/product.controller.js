@@ -44,8 +44,10 @@ const read = (req, res) => {
 }
 const list = async (req, res) => {
     try {
-      const current = parseInt(req.query.page)-1
-      const pagesize = parseInt(req.query.pagesize)
+      var current = parseInt(req.query.page)-1
+      if(isNaN(current)) current=0
+      var pagesize = parseInt(req.query.pagesize)
+      if(isNaN(pagesize)) pagesize=10
       const name =  req.query.name
       const category = req.query.category
       const topprice = parseInt(req.query.topprice)

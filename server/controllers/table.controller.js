@@ -80,7 +80,9 @@ const read = (req, res) => {
 const list = async (req, res) => {
     try {
       const current = parseInt(req.query.page)-1
+      if(isNaN(current)) current=0
       const pagesize = parseInt(req.query.pagesize)
+      if(isNaN(pagesize)) pagesize=0
       console.info('get list table')
       let tables = await Table.find().select('tablePoin status')
 
