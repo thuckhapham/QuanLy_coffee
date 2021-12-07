@@ -1,5 +1,7 @@
 ## Khách hàng
 
+- Yêu cầu khách hàng order trên các máy đã được đăng nhập bởi nhân viên
+
 include::API/table/getListTable.adoc[]
 
 include::API/order/createNewOrder.adoc[]
@@ -7,4 +9,7 @@ include::API/order/createNewOrder.adoc[]
 include::API/product/getListProduct.adoc[]
 
 include::API/order/addProduct.adoc[]
+
+include::API/order/checkOut.adoc[] 
+
 

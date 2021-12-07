@@ -5,8 +5,7 @@ import Product from '../models/product.model'
 const create = async(req,res) =>{
     const order=new Order()
     try{
-    
-        order.table = req.body.table
+      order.table = req.body.table
       await order.save()
       console.info("product is saved")
       return   res.json(order)
@@ -41,43 +40,94 @@ const orderByID = async (req, res, next, id) => {
 }
 
 const addProduct = async(req,res) =>{
-    try {
-        let order = req.order
-        let product = await Product.findById(req.body.productId)
-        var index= order.orderItem.findIndex(e=> e.ProductID === req.body.productId )
-        if(index!=-1){
-            order.orderItem[index].quantity =  parseInt(order.orderItem[index].quantity) + parseInt( req.body.quantity)
-            if(order.orderItem[index].quantity<0)
-            {
-                order.orderItem.splice(index,1)
-            }
+  try {
+    let order = req.order
+    let product = await Product.findById(req.body.productId)
+    var index= order.orderItem.findIndex(e=> e.ProductID === req.body.productId )
+    if(index!=-1){
+        order.orderItem[index].quantity =  parseInt(order.orderItem[index].quantity) + parseInt( req.body.quantity)
+        if(order.orderItem[index].quantity<0)
+        {
+            order.orderItem.splice(index,1)
         }
-        else if(parseInt(req.body.quantity)>0) {
-            order.orderItem.push({"ProductID" : product._id, "name" : product.name, "price" : product.price, "quantity" : parseInt(req.body.quantity)})
+    }
+    else if(parseInt(req.body.quantity)>0) {
+        order.orderItem.push({"ProductID" : product._id, "name" : product.name, "price" : product.price, "quantity" : parseInt(req.body.quantity)})
+    }
+    order.updated = Date.now()
+    await order.save()
+
+    return   res.json(
+        {
+            "order": order, 
+            "total": order.total
         }
+    )
 
-        await order.save()
-
-        return   res.json(
-            {
-                "order": order, 
-                "total": order.total
-            }
-        )
-
-    } catch (err) {
-        console.error(err)
-        return res.status('400').json({
-          error: "Could not retrieve product"
-        })
-      }
+  } catch (err) {
+    console.error(err)
+    return res.status('400').json({
+      error: "Could not retrieve product"
+    })
+  }
 }
 
+const addDiscount = async (req,res) =>{
+  
+}
+
+
+const read = async (req, res) => {
+  return res.json(req.order)
+}
+
+
+const checkOut = async (req,res) => {
+  try {
+    let order = req.order
+
+    order.payment.paymentMethod = req.body.paymentMethod
+    order.payment.status=true
+    order.updated = Date.now()
+    await order.save()
+    return   res.json(
+      {
+          "order": order, 
+          "total": order.total
+      }
+    )
+  } catch (err) {
+    console.error(err)
+    return res.status('400').json({
+      error: "Could not retrieve product"
+    })
+  }
+}
+
+const list = async(req,res) =>{
+
+  try {
+    console.info('get list order')
+    let orders = await Order.find().select()
+    
+    console.info('get list order finished')
+
+    res.json(orders)
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
 
 export default {
     create,
     orderByID,
-    addProduct
+    addProduct,
+    checkOut,
+    list,
+    read
 }
 
 

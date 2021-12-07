@@ -24,18 +24,16 @@ const OrderSchema=new mongoose.Schema({
     discount: {
         type: Number
     },
-    paymentMethod :{
-        type: String,
-        enum: ['cash','epay','banking']
-    },
     user:{
         type: mongoose.Schema.ObjectId,
         ref : 'User'
     },
-    paymentResult: {
-        id: String,
-        status: String,
-        update_time: Date
+    payment: {
+        paymentMethod :{
+            type: String,
+            enum: ['cash','epay','banking']
+        },
+        status: { type: Boolean, default: false}
     },
     updated: Date,
     created: {
@@ -53,5 +51,6 @@ OrderSchema.virtual('total').get(
         return total
     }
 )
+
 export default mongoose.model('Order', OrderSchema)
 
