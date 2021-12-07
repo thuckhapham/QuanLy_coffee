@@ -1,4 +1,4 @@
-### Thanh toasn
+### Thanh toán
 
 `GET : api/order/{orderId}/checkout`
 
