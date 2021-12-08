@@ -14,10 +14,10 @@ const MemberSchema=new mongoose.Schema({
         match: [/\d/g, "Please fill a valid phone number"]
     },
     birthday: Date,
-    emai : String,
-    memberCode: {
-        type : String,
-        unique : true
+    email : String,
+    point : {
+        type: Number,
+        default : 0
     },
     updated: Date,
     created: {

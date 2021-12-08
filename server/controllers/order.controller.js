@@ -1,7 +1,7 @@
 import Order from '../models/order.model'
 import extend from 'lodash/extend'
 import Product from '../models/product.model'
-
+import Member from '../models/member.model'
 const create = async(req,res) =>{
     const order=new Order()
     try{
@@ -85,8 +85,14 @@ const read = async (req, res) => {
 const checkOut = async (req,res) => {
   try {
     let order = req.order
-
+    let memberId = req.body.memberId 
+    let member = await Member.findById(memberId) 
+    if(member) {
+      member.point += 1
+      await member.save()
+    }
     order.payment.paymentMethod = req.body.paymentMethod
+    
     order.payment.status=true
     order.updated = Date.now()
     await order.save()

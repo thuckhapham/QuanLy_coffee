@@ -9,7 +9,7 @@
 #### Request:
 - Body: 
 ** paymentMethod : phương thức thanh toán, có tiền mặt `cash`, thẻ ngân hàng -> nội dung này cần tìm hiểU API các ứng dụng khác 
-
+** memberId : id của thành viên, thành viên sẽ được cộng điểm khi thanh toán 
 - Example
 
 ```javaScript

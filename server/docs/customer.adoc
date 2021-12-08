@@ -10,6 +10,8 @@ include::API/product/getListProduct.adoc[]
 
 include::API/order/addProduct.adoc[]
 
+include::API/member/getMemberByPhoneOrEmail.adoc[]
+
 include::API/order/checkOut.adoc[] 
 
 
