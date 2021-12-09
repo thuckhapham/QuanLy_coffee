@@ -1,81 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import './Homepage.css'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Login from '../../Components/Login/Login'
-import {createTable, getTables} from './api-homepage'
 import auth from './../../Components/Login/auth-helper'
 function Homepage() {
-    //Data
-    const [datas, setDatas] = useState([])
-    useEffect( () =>{
-        const abortController = new AbortController()
-        const signal = abortController.signal
-        getTables(1,10,signal).then((data) =>{
-            if(data && data.error){
-                console.log(data.error)
-            }
-            else{
-
-                setDatas(data.tables)
-            }
-        })
-        return function cleanup(){
-            abortController.abort()
-          }
-    },[])
-
-    const [values, setValues] = useState({
-        tablePoin: '',
-        error: ''
-    })
-    const jwt = auth.isAuthenticated()
-    
-    const addTableSubmit = ()=> {
-        const table = {
-            tablePoin: values.tablePoin || undefined
-        }
-        createTable({type : jwt.token_type, token: jwt.token},table).then((data) =>{
-            console.log(data)
-            if(data.error){
-                setValues({ ...values, error: data.error})
-            }
-            else{
-                datas.push(data)
-            }
-        })
-    }
-    const handleChange = name => event => {
-    
-        setValues({...values, [name]: event.target.value})
-
-      }
-    // const datas = [
-    //     {
-    //         tablePoin: "POIN1",
-    //         tableSource: "Table"
-    //     },
-    //     {
-    //         tablePoin: "POIN2",
-    //         tableSource: "Table"
-    //     },
-    //     {
-    //         tablePoin: "POIN3",
-    //         tableSource: "Table"
-    //     },
-    //     {
-    //         tablePoin: "POIN4",
-    //         tableSource: "Table"
-    //     },
-    //     {
-    //         tablePoin: "POIN5",
-    //         tableSource: "Table"
-    //     },
-    // ]
+    <Login />
+    //Save Table Data to array
+    const [editedTable, setEditedTable] = useState([{ drink_id: 0, drink_name: "loading" }]);
+    //Lấy Data
+    const [requestData, setRequestData] = useState(new Date());
+    const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/table` + "?page=" + 1 + "&pagesize=" + 20)
+            .then((response) => {
+                setList(response.data.tables)
+            })
+    }, [requestData])
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     // const callbackModal = (modalState) => {
     //     setViewModal(modalState);
     // };
+    //Default new table
+    const [selectedName, setName] = useState("")
+    // const [selectedSource, setSource] = useState("")
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzkwMjU4MzR9.-bRpcxXNarhDQ1_3wp8aReJbzw0V8moA1CBpnlzlDP4";
+    function addingTable(selectedName) {
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/api/table/',
+            data: {
+                tablePoin: selectedName
+            },
+            headers: {
+                'Authorization': `bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+            setRequestData(new Date());
+        })
+    }
     return (
         <>
             {/* <Login /> */}
@@ -94,7 +59,7 @@ function Homepage() {
                     </div>
                 </div>
                 <div className="homepage__contain">
-                    {datas.map(data => (
+                    {viewList.map(data => (
                         <Link key={data.tablePoin} className="homepage__order-link" to={"/order/" + data.tablePoin} >
                             {data.tablePoin}
                         </Link>
@@ -123,17 +88,15 @@ function Homepage() {
                                     TABLE ORDER:
                                 </div>
                                 <div className="newtable__input">
-                                    <input 
-                                    id="tablePoint" 
-                                    value={values.tablePoin} 
-                                    onChange={handleChange('tablePoin')} 
-                                    type="string" 
-                                    className="newtable__form"
-                                    placeholder="TablePoint" />
+                                    <input
+                                        id="tablePoint"
+                                        onChange={e => {
+                                            setName(e.target.value)
+                                        }}
+                                        type="string"
+                                        className="newtable__form"
+                                        placeholder="TablePoint" />
                                 </div>
-                                <br/> {
-                                    values.error 
-                                }
                             </div>
                             <div className="newtable__content-item">
                                 <div className="newtable__lable">
@@ -147,7 +110,10 @@ function Homepage() {
                         <div className="newtable__content-btn">
                             <button
                                 className="newtable__btn newtable__btn--add"
-                                onClick={addTableSubmit}
+                                onClick={() => {
+                                    addingTable(selectedName)
+                                    setViewModal(!viewModal)
+                                }}
                             >
                                 Add
                             </button>
@@ -161,7 +127,6 @@ function Homepage() {
                     </div>
                 </div>
             </div>
-            {/* </div>  */}
         </>
     )
 }
