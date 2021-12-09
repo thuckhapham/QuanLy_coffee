@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from './Components/Header/Header'
 import Footer from './Components/Footer/Footer'
 import OrderHistory from './Components/OrderHistory/OrderHistory';
@@ -21,12 +21,14 @@ function App() {
           <Header />
           <div className="main">
             <div className="main__path">
-              <Route path="/auth/signin" exact={true} component={Login} />
-              <Route path="/" exact={true} component={Homepage} />
-              <Route path="/member" exact={true} component={Member} />
-              <Route path="/order-history" exact={true} component={HistoryOrder} />
-              <Route path="/order/:id" exact={true} component={Order} />
-              <Route path="/menu-drink" exact={true} component={Drink} />
+              <Routes>
+                <Route path="/auth/signin" exact={true} element={<Login />} />
+                <Route path="/" exact={true} element={<Homepage />} />
+                <Route path="/member" exact={true} element={<Member />} />
+                <Route path="/order-history" exact={true} element={<HistoryOrder />} />
+                <Route path="/order/:id" exact={true} element={<Order />} />
+                <Route path="/menu-drink" exact={true} element={<Drink />} />
+              </Routes>
             </div>
             <OrderHistory />
           </div>
