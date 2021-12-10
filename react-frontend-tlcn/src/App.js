@@ -22,8 +22,8 @@ function App() {
           <div className="main">
             <div className="main__path">
               <Routes>
-                <Route path="/auth/signin" exact={true} element={<Login />} />
-                <Route path="/" exact={true} element={<Homepage />} />
+                <Route path="/" exact={true} element={<Login />} />
+                <Route path="/homepage" exact={true} element={<Homepage />} />
                 <Route path="/member" exact={true} element={<Member />} />
                 <Route path="/order-history" exact={true} element={<HistoryOrder />} />
                 <Route path="/order/:id" exact={true} element={<Order />} />

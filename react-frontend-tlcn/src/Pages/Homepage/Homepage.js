@@ -4,8 +4,9 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Login from '../../Components/Login/Login'
 import auth from './../../Components/Login/auth-helper'
-function Homepage() {
-    <Login />
+function Homepage(props) {
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
     //Save Table Data to array
     const [editedTable, setEditedTable] = useState([{ drink_id: 0, drink_name: "loading" }]);
     //Lấy Data
@@ -19,13 +20,12 @@ function Homepage() {
     }, [requestData])
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
-    // const callbackModal = (modalState) => {
-    //     setViewModal(modalState);
-    // };
+    const callbackModal = (modalState) => {
+        setViewModal(modalState);
+    };
     //Default new table
     const [selectedName, setName] = useState("")
     // const [selectedSource, setSource] = useState("")
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzkwMjU4MzR9.-bRpcxXNarhDQ1_3wp8aReJbzw0V8moA1CBpnlzlDP4";
     function addingTable(selectedName) {
         axios({
             method: 'post',
@@ -34,7 +34,7 @@ function Homepage() {
                 tablePoin: selectedName
             },
             headers: {
-                'Authorization': `bearer ${token}`,
+                'Authorization': `bearer ${tokenBearer}`,
                 'Content-Type': 'application/json'
             },
         }).then(() => {
