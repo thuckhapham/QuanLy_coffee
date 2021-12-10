@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import './Homepage.css'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import Login from '../../Components/Login/Login'
-import auth from './../../Components/Login/auth-helper'
 function Homepage(props) {
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");

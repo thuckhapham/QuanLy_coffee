@@ -1,13 +1,23 @@
 import React from 'react'
+import { useState } from 'react'
+import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as FiIcons from "react-icons/fi";
-import './Header.css';
 import Sidebar from '../Sidebar/Sidebar'
-import { useState } from 'react'
-import { Link } from "react-router-dom";
+import './Header.css';
 
 function Header() {
     const [showSid, setShowSid] = useState(false)
+    const navigate = useNavigate();
+    const tokenBearer = localStorage.getItem("tokenBearer");
+    //Sign out xóa Token
+    function Logout() {
+        if (localStorage.getItem("tokenBearer")) {
+            localStorage.removeItem('tokenBearer');
+            navigate('/')
+        }
+    }
     // Chỉnh thanh navbar ra 100% width  
     document.body.style.margin = 0
 
@@ -40,7 +50,9 @@ function Header() {
                             <li className="header__navbar-item header__navbar-item--seperate">
                                 <a href="http://" className="header__navbar-item-link">About</a>
                             </li>
-                            <li className="header__navbar-item header__navbar-item--strong">
+                            <li className="header__navbar-item header__navbar-item--strong"
+                                onClick={() => Logout()}
+                            >
                                 Log out
                                 <FiIcons.FiLogOut className="header__navbar-icon" />
                             </li>
