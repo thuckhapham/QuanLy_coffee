@@ -134,12 +134,40 @@ const cancel = async(req,res) =>{
 const list = async(req,res) =>{
 
   try {
+    var current = parseInt(req.query.page)-1
+    if(isNaN(current)) current=0
+    var pagesize = parseInt(req.query.pagesize)
+    if(isNaN(pagesize)) pagesize=10
+
+    const status =   req.query.status
+    const paymentStatus = req.query.paymentStatus 
+    const paymentMethod = req.query.paymentMethod
+    const table =  req.query.table 
+    console.log((status===undefined),paymentStatus ,(status==="true") , (table === undefined))
     console.info('get list order')
     let orders = await Order.find().select()
-    
+    orders= orders.filter(order =>(
+      (status===undefined || order.status === (status==="true"))
+      && (paymentStatus === undefined || order.payment.status === (paymentStatus==="true"))
+      && (paymentMethod===undefined || order.payment.paymentMethod === paymentMethod)
+      && (table === undefined || order.table === table)
+    ))
+ 
+    const total = orders.length
+    if(current*pagesize < total){
+      orders=orders.slice(current*pagesize, Math.min((current+1)*pagesize,orders.length))
+    }
+    else{
+      orders=[]
+    }
     console.info('get list order finished')
 
-    res.json(orders)
+    res.json({
+      page : (current+1) ,
+      pagesize : pagesize,
+      total: total,
+      orders : orders
+  })
   } catch (err) {
     console.error(err)
     return res.status(400).json(

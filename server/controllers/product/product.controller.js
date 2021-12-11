@@ -54,7 +54,7 @@ const list = async (req, res) => {
       const botprice = parseInt(req.query.botprice)
       console.info('get list product')
       let products = await Product.find().select('_id name category description price image')
-      products.filter(product =>(
+      products=  products.filter(product =>(
         (name===undefined || product.name.includes(name))
         && (category === undefined || product.category.includes(category))
         && (topprice===undefined || product.price <= topprice)
