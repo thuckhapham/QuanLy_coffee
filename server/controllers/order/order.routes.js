@@ -7,7 +7,7 @@ router.route('/api/order')
 .post(authCtrl.requireSignin, orderCtrl.create)
 .get(authCtrl.requireSignin, orderCtrl.list)
 
-router.route('/api/order/:orderId').get(authCtrl.requireSignin,orderCtrl.read)
+router.route('/api/order/:orderId').get(authCtrl.requireSignin,orderCtrl.read).delete(authCtrl.requireSignin, orderCtrl.cancel)
 
 router.route('/api/order/:orderId/addProduct').post(authCtrl.requireSignin,orderCtrl.addProduct)
 
