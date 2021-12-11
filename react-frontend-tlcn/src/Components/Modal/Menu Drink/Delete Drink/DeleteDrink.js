@@ -8,13 +8,12 @@ function DeleteDrink(props) {
         props.ModalState(modalState)
     }
     //Thêm nước
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzcwMzA3MDZ9.n7xU9TnyRp4vWxX5QmmAxD_GMTWf7YBVojLONdMAYYs";
     function deletingDrink(selectedId) {
         axios({
             method: 'delete',
             url: 'http://localhost:5000/api/products/' + selectedId,
             headers: {
-                'Authorization': `bearer ${token}`,
+                'Authorization': `bearer ${props.tokenBearer}`,
                 'Content-Type': 'application/json'
             },
         }).then(() => {

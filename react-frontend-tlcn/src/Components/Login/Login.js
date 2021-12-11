@@ -1,42 +1,39 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import * as AiIcon from "react-icons/ai";
 import "./Login.css";
-import { signin } from './api-auth.js'
-import auth from './auth-helper'
-function Login() {
+import axios from 'axios'
+function Login(props) {
     //Set Modal Active
-    const [values, setValues] = useState({
-        userName: '',
-        password: '',
-        error: '',
-        redirectToReferrer: false
-    })
-    if (auth.isAuthenticated()) {
-        values.redirectToReferrer = true
+    const sendData = (modalState) => {
+        props.ModalState(modalState);
     }
-    const clickSubmit = () => {
-        const user = {
-            userName: values.userName || undefined,
-            password: values.password || undefined
-        }
-        signin(user).then((data) => {
-            console.log(data)
-            if (data.error) {
-                setValues({ ...values, error: data.error })
+    //Login
+    const [selectedUsername, setUsername] = useState("")
+    const [selectedPassword, setPassword] = useState("")
+    const [selectedKey, setKey] = useState("")
+    const navigate = useNavigate();
+    function Login(selectedUsername, selectedPassword) {
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/auth/signin',
+            data: {
+                userName: selectedUsername,
+                password: selectedPassword
             }
-            else {
-                auth.authenticate(data, () => {
-                    setValues({ ...values, error: '', redirectToReferrer: true })
-                })
+        }).then((response) => {
+            if (response.data.token) {
+                navigate('/homepage')
+                localStorage.setItem("tokenBearer", response.data.token);
+            } else {
+                console.log("Error")
             }
         })
     }
-    const handleChange = name => event => {
-        setValues({ ...values, [name]: event.target.value })
-    }
     return (
         <>
-            <div className={values.redirectToReferrer ? "modal--unactive" : "modal"}>
+            {/* <div className={values.redirectToReferrer ? "modal--unactive" : "modal"}> */}
+            <div className="modal">
                 <div className="modal__overlay"></div>
                 <div className="modal__body">
                     <div class="auth-form">
@@ -50,32 +47,45 @@ function Login() {
                                     <input
                                         id="userName"
                                         type="string"
-                                        value={values.userName}
+                                        // value={values.userName}
                                         class="auth-form__input"
-                                        onChange={handleChange('userName')}
+                                        onChange={e => {
+                                            setUsername(e.target.value)
+                                        }}
                                         placeholder="Your userName"
                                     />
                                     <input
                                         id="password"
                                         type="password"
-                                        value={values.password}
-                                        onChange={handleChange('password')}
+                                        // value={values.password}
+                                        onChange={e => {
+                                            setPassword(e.target.value)
+                                        }}
                                         class="auth-form__input"
                                         placeholder="Your password"
                                     />
                                 </div>
                             </div>
                             <br /> {
-                                values.error
+                                // values.error
                             }
                             <div class="auth-form__controls">
                                 {/* <button class="btn btn--normal auth-form__controls-back">TRỞ LẠI</button> */}
+                                {/* <Link to={{
+                                    pathname: '/homepage',
+                                    state: {
+                                        tokenBearer: selectedKey
+                                    }
+                                }}> */}
                                 <button
                                     class="auth-form__btn auth-form__btn--login"
-                                    onClick={clickSubmit}
+                                    onClick={() => {
+                                        Login(selectedUsername, selectedPassword)
+                                    }}
                                 >
                                     Login
                                 </button>
+                                {/* </Link> */}
                             </div>
                         </div>
                         <div class="auth-form__social">

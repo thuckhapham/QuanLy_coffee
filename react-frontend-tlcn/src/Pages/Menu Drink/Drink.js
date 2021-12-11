@@ -46,6 +46,8 @@ function Drink() {
             drink_price: 55000,
         },
     ];
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
     //Save Drink Data to array
     const [editedDrink, setEditedDrink] = useState([{ drink_id: 0, drink_name: "loading" }]);
     //Lấy Data
@@ -194,9 +196,9 @@ function Drink() {
                         </button>
                     </div>
                     {selectedButt === "newdrink" ? (
-                        <NewDrink ModalState={callbackModal} datas={viewList} setRequestData={setRequestData} />
+                        <NewDrink tokenBearer={tokenBearer} ModalState={callbackModal} datas={viewList} setRequestData={setRequestData} />
                     ) : selectedButt === "canceldrink" ? (
-                        <DeleteDrink ModalState={callbackModal} editedDrink={editedDrink} setRequestData={setRequestData} />
+                        <DeleteDrink tokenBearer={tokenBearer} ModalState={callbackModal} editedDrink={editedDrink} setRequestData={setRequestData} />
                     ) : <EditDrink ModalState={callbackModal} datas={datas} editedDrink={editedDrink} />}
                 </div>
             </div>

@@ -50,7 +50,7 @@ function Member() {
     ];
     const [viewList, setList] = useState([{ phone: 0, name: "" }]);
     // console.log(viewList)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzcwMzA3MDZ9.n7xU9TnyRp4vWxX5QmmAxD_GMTWf7YBVojLONdMAYYs";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzkwMjU4MzR9.-bRpcxXNarhDQ1_3wp8aReJbzw0V8moA1CBpnlzlDP4";
     useEffect(() => {
         axios.get(`http://localhost:5000/api/customer` + "?page=" + 1 + "&pagesize=" + 10, {
             headers: {
