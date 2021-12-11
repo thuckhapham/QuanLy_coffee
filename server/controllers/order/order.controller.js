@@ -110,6 +110,27 @@ const checkOut = async (req,res) => {
   }
 }
 
+const cancel = async(req,res) =>{
+  try{
+    let order = req.order
+    order.status = false
+    order.updated = Date.now()
+    await order.save()
+    return   res.json(
+      {
+          "message ": "Order has been cancelled", 
+        
+      }
+    )
+  }
+  catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
+
 const list = async(req,res) =>{
 
   try {
@@ -133,7 +154,8 @@ export default {
     addProduct,
     checkOut,
     list,
-    read
+    read,
+    cancel
 }
 
 
