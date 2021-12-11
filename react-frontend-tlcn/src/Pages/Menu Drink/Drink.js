@@ -199,7 +199,7 @@ function Drink() {
                         <NewDrink tokenBearer={tokenBearer} ModalState={callbackModal} datas={viewList} setRequestData={setRequestData} />
                     ) : selectedButt === "canceldrink" ? (
                         <DeleteDrink tokenBearer={tokenBearer} ModalState={callbackModal} editedDrink={editedDrink} setRequestData={setRequestData} />
-                    ) : <EditDrink ModalState={callbackModal} datas={datas} editedDrink={editedDrink} />}
+                    ) : <EditDrink tokenBearer={tokenBearer} ModalState={callbackModal} datas={datas} editedDrink={editedDrink} setRequestData={setRequestData} />}
                 </div>
             </div>
         </>

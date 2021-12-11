@@ -1,10 +1,34 @@
 import React, { useState } from 'react'
 import './EditDrink.css'
+import axios from 'axios'
 
 function EditDrink(props) {
     //Gửi dữ liệu về trang chính
     const sendData = (modalState) => {
         props.ModalState(modalState)
+    }
+    //Nước sửa
+    const selectedId = props.editedDrink[0]._id
+    const selectedCategory = props.editedDrink[0].category
+    const [selectedName, setName] = useState(props.editedDrink[0].name)
+    const [selectedPrice, setPrice] = useState(props.editedDrink[0].price)
+    //Sửa nước
+    function editDrink(selectedId, selectedCategory, selectedName, selectedPrice) {
+        axios({
+            method: 'put',
+            url: 'http://localhost:5000/api/products/' + selectedId,
+            data: {
+                category: selectedCategory,
+                name: selectedName,
+                price: selectedPrice
+            },
+            headers: {
+                'Authorization': `bearer ${props.tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+            props.setRequestData(new Date());
+        })
     }
     return (
         <>
@@ -40,7 +64,7 @@ function EditDrink(props) {
                             NAME:
                         </div>
                         <div className="editdrink__input">
-                            <input type="text" className="editdrink__form" placeholder="Drink's name" value={props.editedDrink[0].name} readOnly />
+                            <input type="text" className="editdrink__form" placeholder="Drink's name" defaultValue={props.editedDrink[0].name} onChange={e => setName(e.target.value)} />
                         </div>
                     </div>
                     <div className="editdrink__content-item">
@@ -48,14 +72,17 @@ function EditDrink(props) {
                             PRICE:
                         </div>
                         <div className="editdrink__input">
-                            <input type="text" className="editdrink__form" placeholder="Drink's price" defaultValue={props.editedDrink[0].price} />
+                            <input type="text" className="editdrink__form" placeholder="Drink's price" defaultValue={props.editedDrink[0].price} onChange={e => setPrice(e.target.value)} />
                         </div>
                     </div>
                 </div>
                 <div className="editdrink__content-btn">
                     <button
                         className="editdrink__btn editdrink__btn--add"
-                        onClick={() => sendData(true)}
+                        onClick={() => {
+                            editDrink(selectedId, selectedCategory, selectedName, selectedPrice)
+                            sendData(true)
+                        }}
                     >
                         Edit
                     </button>
