@@ -7,14 +7,13 @@ import cors from 'cors'
 import helmet from 'helmet'
 
 import template from './template'
-import userRoutes from './routes/user.routes'
-import authRoutes from './routes/auth.routes'
-import orderRoutes from './routes/order.routes'
-import productRoutes from './routes/product.routes'
-import tableRoutes from './routes/table.routes'
-import discountRoutes from './routes/discount.routes'
-const swaggerUI = require("swagger-ui-express");
-const swaggerFile = require('./swagger_output.json')
+import userRoutes from './controllers/user/user.routes'
+import authRoutes from './controllers/auth/auth.routes'
+import orderRoutes from './controllers/order/order.routes'
+import productRoutes from './controllers/product/product.routes'
+import tableRoutes from './controllers/table/table.routes'
+import discountRoutes from './controllers/discount/discount.routes'
+
 
 const app=express()
 
@@ -50,7 +49,7 @@ app.use((req,res, next)=>{
     next();
 });
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
 app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)

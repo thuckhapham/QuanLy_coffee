@@ -1,6 +1,6 @@
 import express from 'express'
-import orderCtrl from '../controllers/order.controller'
-import authCtrl from '../controllers/auth.controller'
+import orderCtrl from './order.controller'
+import authCtrl from '../auth/auth.controller'
 const router = express.Router()
 
 router.route('/api/order')

@@ -1,6 +1,6 @@
 import express from 'express'
-import discountCtrl from '../controllers/discount.controller'
-import authCtrl from '../controllers/auth.controller'
+import discountCtrl from './discount.controller'
+import authCtrl from '../auth/auth.controller'
 const router = express.Router()
 
 router.route('/api/discount')

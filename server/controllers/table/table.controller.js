@@ -1,4 +1,4 @@
-import Table from '../models/table.model'
+import Table from '../../models/table.model'
 import extend from 'lodash/extend'
 
 const create = async(req, res) =>{

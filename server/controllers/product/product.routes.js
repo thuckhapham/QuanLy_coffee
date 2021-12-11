@@ -1,6 +1,6 @@
 import express from 'express'
-import productCtrl from '../controllers/product.controller'
-import authCtrl from '../controllers/auth.controller'
+import productCtrl from './product.controller'
+import authCtrl from '../auth/auth.controller'
 const router = express.Router()
 
 router.route('/api/products')

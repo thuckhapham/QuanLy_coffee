@@ -1,4 +1,4 @@
-import Discount from '../models/discount.model'
+import Discount from '../../models/discount.model'
 import extend from 'lodash/extend'
 
 const create = async(req, res) =>{

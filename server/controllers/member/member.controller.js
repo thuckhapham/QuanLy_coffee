@@ -1,4 +1,4 @@
-import Member from '../models/member.model'
+import Member from '../../models/member.model'
 import extend from 'lodash/extend'
 
 

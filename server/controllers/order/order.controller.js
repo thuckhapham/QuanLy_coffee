@@ -1,7 +1,7 @@
-import Order from '../models/order.model'
+import Order from '../../models/order.model'
 import extend from 'lodash/extend'
-import Product from '../models/product.model'
-import Member from '../models/member.model'
+import Product from '../../models/product.model'
+import Member from '../../models/member.model'
 const create = async(req,res) =>{
     const order=new Order()
     try{

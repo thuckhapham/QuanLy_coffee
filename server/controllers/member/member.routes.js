@@ -1,6 +1,6 @@
 import express from 'express'
-import memberCtrl from '../controllers/member.controller'
-import authCtrl from '../controllers/auth.controller'
+import memberCtrl from './member.controller'
+import authCtrl from '../auth/auth.controller'
 const router = express.Router()
 
 router.route('/api/member')
