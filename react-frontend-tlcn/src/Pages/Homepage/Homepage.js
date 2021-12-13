@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Homepage.css'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
 function Homepage(props) {
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
@@ -23,7 +23,7 @@ function Homepage(props) {
     };
     //Default new table
     const [selectedName, setName] = useState("")
-    // const [selectedSource, setSource] = useState("")
+    // Thêm bàn mới
     function addingTable(selectedName) {
         axios({
             method: 'post',
@@ -37,6 +37,27 @@ function Homepage(props) {
             },
         }).then(() => {
             setRequestData(new Date());
+        })
+    }
+    // Order 
+    const navigate = useNavigate();
+    function orderTable(table) {
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/api/order',
+            data: {
+                table: table
+            },
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            if (response.data._id) {
+                navigate('/order/' + response.data._id)
+            } else {
+                console.log("Error")
+            }
         })
     }
     return (
@@ -58,9 +79,9 @@ function Homepage(props) {
                 </div>
                 <div className="homepage__contain">
                     {viewList.map(data => (
-                        <Link key={data.tablePoin} className="homepage__order-link" to={"/order/" + data.tablePoin} >
+                        <button className="homepage__order-link" onClick={() => orderTable(data.tablePoin)} >
                             {data.tablePoin}
-                        </Link>
+                        </button>
                     ))}
                 </div>
             </div>

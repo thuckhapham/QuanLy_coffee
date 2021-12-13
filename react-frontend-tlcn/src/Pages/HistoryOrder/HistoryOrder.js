@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import * as GiIcons from 'react-icons/gi'
 import * as AiIcons from 'react-icons/ai'
 import './HistoryOrder.css'
 
 function HistoryOrder() {
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
+    // Lấy dữ liệu nước
+    const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/order/` + '?pagesize=100',
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            // setList(response.data.products)
+            console.log(response.data.orders)
+        })
+    }, [])
     const datas = [
         {
             orderid: "A2",

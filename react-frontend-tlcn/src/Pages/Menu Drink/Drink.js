@@ -56,6 +56,7 @@ function Drink() {
     useEffect(() => {
         axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
             .then((response) => {
+                console.log(response)
                 setList(response.data.products)
             })
     }, [requestData])

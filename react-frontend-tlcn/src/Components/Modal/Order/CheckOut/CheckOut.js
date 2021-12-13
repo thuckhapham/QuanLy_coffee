@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"
+import axios from 'axios'
 import * as AiIcons from "react-icons/ai";
 import * as FaIcons from "react-icons/fa";
 import "./CheckOut.css";
 
 function CheckOut(props) {
     const details = props.orderdetail;
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
     //Đóng Modal
     const sendData = (modalState) => {
         props.ModalState(modalState)
@@ -12,6 +16,33 @@ function CheckOut(props) {
     // Quy tiền
     function currencyFormat(num) {
         return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+    }
+    // Checkout
+    const navigate = useNavigate();
+    function checkoutOrder(id) {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/order/${props.orderid}/checkout`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            navigate('/homepage')
+        })
+    }
+    // Checkout
+    function cancelOrder() {
+        axios({
+            method: 'delete',
+            url: `http://localhost:5000/api/order/${props.orderid}`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            navigate('/homepage')
+        })
     }
     return (
         <>
@@ -38,9 +69,9 @@ function CheckOut(props) {
                                 {details.map((detail, index) => (
                                     <tr className="checkout__row">
                                         <td>{index + 1}</td>
-                                        <td>{detail.drink_name}</td>
-                                        <td>{detail.qty}</td>
-                                        <td>{currencyFormat(detail.drink_price)}</td>
+                                        <td>{detail.name}</td>
+                                        <td>{detail.quantity}</td>
+                                        <td>{currencyFormat(detail.price)}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -78,15 +109,18 @@ function CheckOut(props) {
                 <div className="checkout__footer">
                     <ul className="checkout__footer-list">
                         <li className="checkout__footer-item">
-                            <button className="checkout__btn checkout__btn-print">
+                            <button className="checkout__btn checkout__btn-print" onClick={() => checkoutOrder()}>
                                 Print
                             </button>
                         </li>
                         <li className="checkout__footer-item">
                             <button className="checkout__btn checkout__btn-close"
-                                onClick={() => sendData(true)}
+                                onClick={() => {
+                                    sendData(true)
+                                    cancelOrder()
+                                }}
                             >
-                                Close
+                                Cancel
                             </button>
                         </li>
                     </ul>
