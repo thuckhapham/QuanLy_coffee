@@ -1,7 +1,8 @@
 import React from "react";
 import "./Order.css";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios'
 import Discount from "../../Components/Modal/Order/Discount/Discount";
 import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
@@ -11,6 +12,7 @@ function Order() {
   const [selectedCate, setCate] = useState("COFFEE");
 
   const [billOrder, setBillOrder] = useState([]);
+
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
   const [selectedButt, setButt] = useState("");
@@ -49,7 +51,7 @@ function Order() {
     }
   };
   //Tính tổng tiền
-  let TotalPrice = billOrder.reduce((a, c) => a + c.drink_price * c.qty, 0);
+  let TotalPrice = billOrder.reduce((a, c) => a + c.price * c.quantity, 0);
   let DiscountPrice = 0;
   //Nếu có voucher giảm thì trừ tiền
   {
@@ -63,6 +65,60 @@ function Order() {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
   }
 
+  // Lấy dữ liệu nước
+  const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+      .then((response) => {
+        setList(response.data.products)
+        retrieveOrder(id)
+      })
+  }, [])
+  //Lấy Bearer Token
+  const tokenBearer = localStorage.getItem("tokenBearer");
+  // Thêm nước
+  function addingDrink(selectedId) {
+    axios({
+      method: 'post',
+      url: `http://localhost:5000/api/order/${id}/addProduct`,
+      data: {
+        productId: selectedId,
+        quantity: 1
+      },
+      headers: {
+        'Authorization': `bearer ${tokenBearer}`,
+        'Content-Type': 'application/json'
+      },
+    }).then(() => {
+      retrieveOrder(id)
+    })
+  }
+  // Lấy danh sách nước đang order 
+  function retrieveOrder(id) {
+    axios({
+      method: 'get',
+      url: `http://localhost:5000/api/order/${id}`,
+      headers: {
+        'Authorization': `bearer ${tokenBearer}`,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      setBillOrder(response.data.orderItem)
+    })
+  }
+  // Checkout
+  function checkoutOrder(id) {
+    axios({
+      method: 'get',
+      url: `http://localhost:5000/api/order/${id}/checkout`,
+      headers: {
+        'Authorization': `bearer ${tokenBearer}`,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      setBillOrder(response.data.orderItem)
+    })
+  }
   const datas = [
     {
       drink_id: "COFFEE01",
@@ -110,11 +166,11 @@ function Order() {
           <thead className="order__head">
             <tr className="order__header">
               <th>Id</th>
-              <th>Menu Id</th>
+              {/* <th>Menu Id</th> */}
               <th>Name</th>
               <th>Quantity</th>
               <th>Price</th>
-              <th>Note</th>
+              {/* <th>Note</th> */}
               <th>Total</th>
             </tr>
           </thead>
@@ -125,26 +181,28 @@ function Order() {
               {billOrder.map((item, index) => (
                 <tr className="order__row">
                   <td>{index + 1}</td>
-                  <td>{item.drink_id}</td>
-                  <td>{item.drink_name}</td>
+                  {/* <td>{item._id}</td> */}
+                  <td>{item.name}</td>
                   <td>
                     <button
                       className="order__increase"
-                      onClick={() => onAdd(item)}
+                      onClick={() => {
+                        addingDrink(item.ProductID)
+                      }}
                     >
                       +
                     </button>
-                    {item.qty}
+                    {item.quantity}
                     <button
                       className="order__decrease"
-                      onClick={() => onRemove(item)}
+                    // onClick={() => onRemove(item)}
                     >
                       -
                     </button>
                   </td>
-                  <td>{currencyFormat(item.drink_price)}</td>
-                  <td></td>
-                  <td>{currencyFormat(item.drink_price * item.qty)}</td>
+                  <td>{currencyFormat(item.price)}</td>
+                  {/* <td></td> */}
+                  <td>{currencyFormat(item.price * item.quantity)}</td>
                 </tr>
               ))}
             </tbody>
@@ -160,19 +218,19 @@ function Order() {
             <div className="order__menu">
               <div className="category__title">
                 <ul className="category__list">
-                  {datas
+                  {viewList
                     .map((data, index) => {
-                      if (duplicateCheck.includes(data.drink_category))
+                      if (duplicateCheck.includes(data.category))
                         return null;
-                      duplicateCheck.push(data.drink_category);
+                      duplicateCheck.push(data.category);
                       return (
                         <li
                           className="category__item"
                           onClick={() => {
-                            setCate(data.drink_category);
+                            setCate(data.category);
                           }}
                         >
-                          {data.drink_category}
+                          {data.category}
                         </li>
                       );
                     })
@@ -181,14 +239,18 @@ function Order() {
               </div>
               <div className="category__name">
                 <ul className="category__name-list">
-                  {datas.map(
+                  {viewList.map(
                     (data) =>
-                      data.drink_category === selectedCate && (
+                      data.category === selectedCate && (
                         <li
                           className="category__name-item"
-                          onClick={() => onAdd(data)}
+                          onClick={() => {
+                            // setId(data._id)
+                            addingDrink(data._id)
+                            retrieveOrder(id)
+                          }}
                         >
-                          {data.drink_name}
+                          {data.name}
                         </li>
                       )
                   )}
