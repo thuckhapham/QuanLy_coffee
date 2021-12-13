@@ -56,12 +56,7 @@ const addProduct = async(req,res) =>{
     order.updated = Date.now()
     await order.save()
 
-    return   res.json(
-        {
-            "order": order, 
-            "total": order.total
-        }
-    )
+    return   res.json(order)
 
   } catch (err) {
     console.error(err)
@@ -77,7 +72,8 @@ const addDiscount = async (req,res) =>{
 
 
 const read = async (req, res) => {
-  return res.json(req.order)
+
+  return   res.json(req.order)
 }
 
 
@@ -95,12 +91,7 @@ const checkOut = async (req,res) => {
     order.payment.status=true
     order.updated = Date.now()
     await order.save()
-    return   res.json(
-      {
-          "order": order, 
-          "total": order.total
-      }
-    )
+    return   res.json(order)
   } catch (err) {
     console.error(err)
     return res.status('400').json({
@@ -141,8 +132,10 @@ const list = async(req,res) =>{
     const status =   req.query.status
     const paymentStatus = req.query.paymentStatus 
     const paymentMethod = req.query.paymentMethod
+    const topTotal = req.query.topTotal
+    const botTotal = req.query.botTotal
     const table =  req.query.table 
-    console.log((status===undefined),paymentStatus ,(status==="true") , (table === undefined))
+
     console.info('get list order')
     let orders = await Order.find().select()
     orders= orders.filter(order =>(
@@ -150,8 +143,10 @@ const list = async(req,res) =>{
       && (paymentStatus === undefined || order.payment.status === (paymentStatus==="true"))
       && (paymentMethod===undefined || order.payment.paymentMethod === paymentMethod)
       && (table === undefined || order.table === table)
+      && (topTotal === undefined || order.total <= parseFloat(topTotal))
+      && (botTotal === undefined || order.total >= parseFloat(botTotal))
     ))
- 
+    
     const total = orders.length
     if(current*pagesize < total){
       orders=orders.slice(current*pagesize, Math.min((current+1)*pagesize,orders.length))
@@ -159,6 +154,7 @@ const list = async(req,res) =>{
     else{
       orders=[]
     }
+    
     console.info('get list order finished')
 
     res.json({

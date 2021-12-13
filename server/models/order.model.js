@@ -52,6 +52,7 @@ OrderSchema.virtual('total').get(
         return total
     }
 )
+OrderSchema.set('toJSON', {virtuals : true})
 
 export default mongoose.model('Order', OrderSchema)
 
