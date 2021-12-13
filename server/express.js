@@ -49,7 +49,7 @@ app.use((req,res, next)=>{
     next();
 });
 
-
+app.use('/uploads', express.static('./uploads'))
 app.use('/',userRoutes)
 app.use('/',authRoutes)
 app.use('/',productRoutes)

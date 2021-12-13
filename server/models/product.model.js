@@ -6,10 +6,7 @@ const ProductSchema= new mongoose.Schema({
         trim: true,
         required: "Name is required"
     },
-    image: {
-    data: Buffer,
-    contentType: String
-    },
+    image: String,
     description: {
         type: String,
         trim: true
