@@ -1,5 +1,6 @@
 import Product from '../../models/product.model'
 import extend from 'lodash/extend'
+import { v4 as uuidv4 } from 'uuid'
 const multer = require('multer');
 
 const create= async(req,res) =>{
@@ -131,7 +132,7 @@ const storage = multer.diskStorage({
     },
   filename: function (req, file, cb) {
     
-      cb(null, file.originalname);
+      cb(null, uuidv4()+".png");
   }
 });
 
