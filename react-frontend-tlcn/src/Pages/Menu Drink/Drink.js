@@ -56,7 +56,6 @@ function Drink() {
     useEffect(() => {
         axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
             .then((response) => {
-                console.log(response)
                 setList(response.data.products)
             })
     }, [requestData])
@@ -65,11 +64,8 @@ function Drink() {
     function searchID(id) {
         if (id) {
             axios.get(`http://localhost:5000/api/products/` + id)
-                // axios.get(`http://localhost:5000/api/products/6171315950c326ba1d1278ff`)
                 .then((response) => {
                     setList([response.data])
-                    // console.log(id)
-                    console.log(response.data)
                 })
         } else {
             axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)

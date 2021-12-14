@@ -8,6 +8,9 @@ import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
 
 function Order() {
+  //Lấy Bearer Token
+  const tokenBearer = localStorage.getItem("tokenBearer");
+
   const { id } = useParams();
   const [selectedCate, setCate] = useState("COFFEE");
 
@@ -19,37 +22,20 @@ function Order() {
   const callbackModal = (modalState) => {
     setViewModal(modalState);
   };
+  // Lấy dữ liệu nước
+  const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+      .then((response) => {
+        setList(response.data.products)
+        retrieveOrder(id)
+      })
+  }, [])
   //Voucher
   const [priceVoucher, setVoucher] = useState(null);
   const [activeVoucher, setActive] = useState(false);
   //Lọc dữ liệu Category trùng
   const duplicateCheck = [];
-  //Thêm Nước
-  const onAdd = (data) => {
-    const exist = billOrder.find((x) => x.drink_id === data.drink_id);
-    if (exist) {
-      setBillOrder(
-        billOrder.map((x) =>
-          x.drink_id === data.drink_id ? { ...exist, qty: exist.qty + 1 } : x
-        )
-      );
-    } else {
-      setBillOrder([...billOrder, { ...data, qty: 1 }]);
-    }
-  };
-  //Xóa bớt nước
-  const onRemove = (data) => {
-    const exist = billOrder.find((x) => x.drink_id === data.drink_id);
-    if (exist.qty === 1) {
-      setBillOrder(billOrder.filter((x) => x.drink_id !== data.drink_id));
-    } else {
-      setBillOrder(
-        billOrder.map((x) =>
-          x.drink_id === data.drink_id ? { ...exist, qty: exist.qty - 1 } : x
-        )
-      );
-    }
-  };
   //Tính tổng tiền
   let TotalPrice = billOrder.reduce((a, c) => a + c.price * c.quantity, 0);
   let DiscountPrice = 0;
@@ -64,18 +50,6 @@ function Order() {
   function currencyFormat(num) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
   }
-
-  // Lấy dữ liệu nước
-  const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
-  useEffect(() => {
-    axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
-      .then((response) => {
-        setList(response.data.products)
-        retrieveOrder(id)
-      })
-  }, [])
-  //Lấy Bearer Token
-  const tokenBearer = localStorage.getItem("tokenBearer");
   // Thêm nước
   function addingDrink(selectedId) {
     axios({
@@ -84,6 +58,23 @@ function Order() {
       data: {
         productId: selectedId,
         quantity: 1
+      },
+      headers: {
+        'Authorization': `bearer ${tokenBearer}`,
+        'Content-Type': 'application/json'
+      },
+    }).then(() => {
+      retrieveOrder(id)
+    })
+  }
+  // Trừ nước
+  function minusDrink(selectedId) {
+    axios({
+      method: 'post',
+      url: `http://localhost:5000/api/order/${id}/addProduct`,
+      data: {
+        productId: selectedId,
+        quantity: -1
       },
       headers: {
         'Authorization': `bearer ${tokenBearer}`,
@@ -119,45 +110,6 @@ function Order() {
       setBillOrder(response.data.orderItem)
     })
   }
-  const datas = [
-    {
-      drink_id: "COFFEE01",
-      drink_category: "COFFEE",
-      drink_name: "Black Coffee",
-      drink_price: 39000,
-    },
-    {
-      drink_id: "TEA01",
-      drink_category: "TEA",
-      drink_name: "Milk Coffee",
-      drink_price: 35000,
-    },
-    {
-      drink_id: "COOKIES02",
-      drink_category: "COOKIES",
-      drink_name: "Brown Coffee",
-      drink_price: 35000,
-    },
-    {
-      drink_id: "FRUIT01",
-      drink_category: "FRUIT",
-      drink_name: "Peach Tea",
-      drink_price: 55000,
-    },
-    {
-      drink_id: "FRUIT02",
-      drink_category: "FRUIT",
-      drink_name: "Oolong Tea",
-      drink_price: 55000,
-    },
-    {
-      drink_id: "FRUIT03",
-      drink_category: "FRUIT",
-      drink_name: "Macchiato Tea",
-      drink_price: 55000,
-    },
-  ];
-
   return (
     <>
       <div className="order">
@@ -195,7 +147,7 @@ function Order() {
                     {item.quantity}
                     <button
                       className="order__decrease"
-                    // onClick={() => onRemove(item)}
+                      onClick={() => minusDrink(item.ProductID)}
                     >
                       -
                     </button>

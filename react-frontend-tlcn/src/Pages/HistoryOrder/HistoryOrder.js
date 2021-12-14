@@ -8,7 +8,8 @@ function HistoryOrder() {
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
     // Lấy dữ liệu nước
-    const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+    const [viewList, setList] = useState([{ phone: 0, name: "", total: 0 }]);
+    const [requestData, setRequestData] = useState(new Date());
     useEffect(() => {
         axios({
             method: 'get',
@@ -18,42 +19,55 @@ function HistoryOrder() {
                 'Content-Type': 'application/json'
             },
         }).then((response) => {
-            // setList(response.data.products)
-            console.log(response.data.orders)
+            setList(response.data.orders)
         })
-    }, [])
-    const datas = [
-        {
-            orderid: "A2",
-            total: 39000,
-            time: "29/6/2021",
-            status: "DONE"
-        },
-        {
-            orderid: "A3",
-            total: 55000,
-            time: "29/6/2021",
-            status: "DONE"
-        },
-        {
-            orderid: "A5",
-            total: 75000,
-            time: "29/6/2021",
-            status: "DONE"
+    }, [requestData])
+    //Lấy Data theo ID
+    const [viewID, setID] = useState("")
+    function orderID() {
+        if (viewID) {
+            axios({
+                method: 'get',
+                url: `http://localhost:5000/api/order/${viewID}`,
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => {
+                setList([response.data])
+            })
+        } else {
+            axios({
+                method: 'get',
+                url: `http://localhost:5000/api/order/` + '?pagesize=100',
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then((response) => {
+                    setList(response.data.orders)
+                })
         }
-    ]
-    const [useStatus, setStatus] = useState(datas)
-    // const [useStatus, setStatus] = useState(datas)
-    console.log(useStatus)
-    const onClickHandle = (id) => {
-        console.log(id)
-        let updatedList = datas.map(data => {
-            if (data.orderid === id) {
-                return { ...data, status: "CANCEL" };
-            }
-            return data;
-        })
-        setStatus(updatedList)
+    }
+    // Hủy order
+    function cancelOrder(id) {
+        if (id) {
+            axios({
+                method: 'delete',
+                url: `http://localhost:5000/api/order/${id}`,
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then(() => {
+                setRequestData(new Date())
+            })
+        }
+    }
+    //Quy đổi số về tiền việt
+    function currencyFormat(num) {
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
     }
     return (
         <>
@@ -76,8 +90,9 @@ function HistoryOrder() {
                     </div>
                     <div className="historyorder__orderid">
                         Order Id:
-                        <input type="text" className="historyorder__orderid historyorder__orderid-input" id="orderid" name="orderid" placeholder="   Order ID" />
-                        <AiIcons.AiOutlineSearch className="historyorder__orderid historyorder__orderid-icon" />
+                        <input type="text" className="historyorder__orderid historyorder__orderid-input" id="orderid" name="orderid" placeholder="   
+                        Order ID" value={viewID} onChange={e => setID(e.target.value)} />
+                        <AiIcons.AiOutlineSearch className="historyorder__orderid historyorder__orderid-icon" onClick={() => orderID()} />
                     </div>
                 </div>
                 <div className="historyorder__table-header">
@@ -85,7 +100,7 @@ function HistoryOrder() {
                         <thead className="historyorder__head">
                             <tr className="historyorder__header">
                                 <th>Number</th>
-                                <th>Order Id</th>
+                                <th>Table Id</th>
                                 <th>Total</th>
                                 <th>Time</th>
                                 <th>State</th>
@@ -98,19 +113,20 @@ function HistoryOrder() {
                     <div className="historyorder__table-content">
                         <table className="historyorder__table">
                             <tbody className="historyorder__body">
-                                {useStatus.map((data, index) => (
+                                {viewList.map((data, index) => (
                                     <tr className="historyorder__row">
                                         <td>{index + 1}</td>
-                                        <td>{data.orderid}</td>
-                                        <td>{data.total}</td>
-                                        <td>{data.time}</td>
-                                        <td>
-                                            {data.status}
-                                        </td>
+                                        <td>{data.table}</td>
+                                        <td>{currencyFormat(data.total)}</td>
+                                        <td>{data.updated}</td>
+                                        <td>{data.status ? "True" : "False"}</td>
                                         <td>
                                             <button
                                                 className="historyoder__btn-cancel"
-                                                onClick={() => onClickHandle(data.orderid)}
+                                                onClick={() => {
+                                                    console.log(data._id)
+                                                    cancelOrder(data._id)
+                                                }}
                                             >
                                                 Cancel
                                                 <GiIcons.GiCancel className="historyoder__btn-cancelicon" />
