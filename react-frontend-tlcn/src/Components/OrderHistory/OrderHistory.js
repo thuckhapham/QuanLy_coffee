@@ -1,7 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './OrderHistory.css'
 
 function OrderHistory() {
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
+    // Lấy dữ liệu order
+    const [viewList, setList] = useState([{ phone: 0, name: "", total: 0 }]);
+    const [requestData, setRequestData] = useState(new Date());
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/order/?pagesize=100`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            setList(response.data.orders.slice(-3));
+        })
+    }, [requestData])
     return (
         <>
             <div className="history">
@@ -14,21 +32,13 @@ function OrderHistory() {
                         </tr>
                     </thead>
                     <tbody className="history__body">
-                        <tr className="history__row">
-                            <td>1 </td>
-                            <td>KH12</td>
-                            <td>180000</td>
-                        </tr>
-                        <tr className="history__row">
-                            <td>2 </td>
-                            <td>KH12</td>
-                            <td>920000</td>
-                        </tr>
-                        <tr className="history__row">
-                            <td>3 </td>
-                            <td>KH22</td>
-                            <td>890000</td>
-                        </tr>
+                        {viewList.map((data, index) => (
+                            <tr className="history__row">
+                                <td>{index + 1} </td>
+                                <td>{data.table}</td>
+                                <td>{data.total}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

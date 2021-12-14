@@ -28,6 +28,7 @@
 }
 .history__row {
   border-bottom: 1px solid #dddddd;
+  text-align: center;
 }
 .history__row:last-of-type {
   border-bottom: 2px solid #011627;

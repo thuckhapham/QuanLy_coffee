@@ -7,7 +7,7 @@ import './HistoryOrder.css'
 function HistoryOrder() {
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
-    // Lấy dữ liệu nước
+    // Lấy dữ liệu order
     const [viewList, setList] = useState([{ phone: 0, name: "", total: 0 }]);
     const [requestData, setRequestData] = useState(new Date());
     useEffect(() => {

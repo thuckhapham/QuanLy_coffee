@@ -22,6 +22,7 @@ function Order() {
   const callbackModal = (modalState) => {
     setViewModal(modalState);
   };
+  const [requestData, setRequestData] = useState(new Date());
   // Lấy dữ liệu nước
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
   useEffect(() => {
@@ -270,6 +271,7 @@ function Order() {
               totalprice={currencyFormat(TotalPrice)}
               discountprice={currencyFormat(DiscountPrice)}
               ModalState={callbackModal}
+              setRequestData={setRequestData}
             />
           ) : (
             <Member
