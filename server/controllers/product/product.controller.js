@@ -6,8 +6,8 @@ const multer = require('multer');
 const create= async(req,res) =>{
 
   const product=new Product(req.body)
-
-  product.image = req.file.path
+  if(req.file)
+    product.image = req.file.path
   try{
     await product.save()
     console.info("product is saved")
@@ -97,9 +97,8 @@ const update = async (req, res) => {
     console.info(`update product: ${req.product.id}`)
     let product = req.product
     product = extend(product, req.body)
-    if(req.file.path !==  undefined){
+    if(req.file)
       product.image=req.file.path
-    }
     product.updated = Date.now()
     await product.save()
     console.info(`update product: ${req.product.id} finished`)

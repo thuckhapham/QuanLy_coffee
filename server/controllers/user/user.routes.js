@@ -4,7 +4,7 @@ import authCtrl from '../auth/auth.controller'
 const router = express.Router()
 
 router.route('/api/users')
-  .get(authCtrl.requireSignin,  authCtrl.hasAdmin, userCtrl.list)
+  .get(authCtrl.requireSignin,  userCtrl.list)
   .post( authCtrl.requireSignin, authCtrl.hasAdmin, userCtrl.create)
 
 router.route('/api/users/:userId')
