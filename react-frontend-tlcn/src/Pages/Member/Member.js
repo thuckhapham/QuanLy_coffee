@@ -48,21 +48,23 @@ function Member() {
             customer_phone: 55000,
         },
     ];
+    const [requestData, setRequestData] = useState(new Date());
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
     const [viewList, setList] = useState([{ phone: 0, name: "" }]);
-    // console.log(viewList)
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZTM3MTY1NzdhZmFmZjIxYTg2N2EiLCJ1c2VyTmFtZSI6ImFkbWluIiwicm9sZSI6Ik1BTkFHRVIiLCJpYXQiOjE2MzkwMjU4MzR9.-bRpcxXNarhDQ1_3wp8aReJbzw0V8moA1CBpnlzlDP4";
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/customer` + "?page=" + 1 + "&pagesize=" + 10, {
+        axios({
+            method: 'get',
+            url: 'http://localhost:5000/api/users',
             headers: {
-                Authorization: 'Bearer ' + token //the token is a variable which holds the token
-            }
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            // console.log(response.data);
+            setList(response.data)
         })
-            .then((response) => {
-                console.log(response.data);
-                // console.log(response);
-                setList(response.data.customers)
-            })
-    }, [])
+    }, [requestData])
     // console.log(viewList)
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
@@ -73,6 +75,10 @@ function Member() {
     //Save Customer Data to array
     const [editedCustomer, setEditedCustomer] = useState([{ customer_id: 0, customer_name: "loading" }]);
 
+    function formattedDate(d = new Date) {
+        return [d.getDate(), d.getMonth() + 1, d.getFullYear()]
+            .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+    }
     return (
         <>
             <div className="member">
@@ -117,9 +123,9 @@ function Member() {
                         <thead className="customer__head">
                             <tr className="customer__header">
                                 <th>Number</th>
-                                <th>Customer Id</th>
+                                <th>Username</th>
                                 <th>Name</th>
-                                <th>Phone</th>
+                                <th>Created</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -132,9 +138,9 @@ function Member() {
                                 {viewList.map((data, index) => (
                                     <tr className="customer__row" key={data._id}>
                                         <td>{index + 1}</td>
-                                        <td>{data.phone}</td>
-                                        <td>{data.name}</td>
-                                        <td>{data.phone}</td>
+                                        <td>{data.userName}</td>
+                                        <td>{data.lastName}</td>
+                                        <td>{data.created}</td>
                                         <td>
                                             <button
                                                 className="customer__btn-view"
@@ -189,7 +195,7 @@ function Member() {
                     {selectedButt === "cancelcustomer" ? (
                         <DeleteMember ModalState={callbackModal} editedCustomer={editedCustomer} />
                     ) : selectedButt === "editcustomer" ? (
-                        <EditMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} />
+                        <EditMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} setRequestData={setRequestData} />
                     ) : selectedButt === "newcustomer" ? <NewCustomer ModalState={callbackModal} /> :
                         <ViewMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} />}
                 </div>

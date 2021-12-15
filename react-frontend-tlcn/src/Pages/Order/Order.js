@@ -22,11 +22,10 @@ function Order() {
   const callbackModal = (modalState) => {
     setViewModal(modalState);
   };
-  const [requestData, setRequestData] = useState(new Date());
   // Lấy dữ liệu nước
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+    axios.get(`http://localhost:5000/api/products?page=1&pagesize=100`)
       .then((response) => {
         setList(response.data.products)
         retrieveOrder(id)
@@ -99,18 +98,18 @@ function Order() {
     })
   }
   // Checkout
-  function checkoutOrder(id) {
-    axios({
-      method: 'get',
-      url: `http://localhost:5000/api/order/${id}/checkout`,
-      headers: {
-        'Authorization': `bearer ${tokenBearer}`,
-        'Content-Type': 'application/json'
-      }
-    }).then((response) => {
-      setBillOrder(response.data.orderItem)
-    })
-  }
+  // function checkoutOrder(id) {
+  //   axios({
+  //     method: 'get',
+  //     url: `http://localhost:5000/api/order/${id}/checkout`,
+  //     headers: {
+  //       'Authorization': `bearer ${tokenBearer}`,
+  //       'Content-Type': 'application/json'
+  //     }
+  //   }).then((response) => {
+  //     setBillOrder(response.data.orderItem)
+  //   })
+  // }
   return (
     <>
       <div className="order">
@@ -198,7 +197,6 @@ function Order() {
                         <li
                           className="category__name-item"
                           onClick={() => {
-                            // setId(data._id)
                             addingDrink(data._id)
                             retrieveOrder(id)
                           }}
@@ -271,7 +269,6 @@ function Order() {
               totalprice={currencyFormat(TotalPrice)}
               discountprice={currencyFormat(DiscountPrice)}
               ModalState={callbackModal}
-              setRequestData={setRequestData}
             />
           ) : (
             <Member

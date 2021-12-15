@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useLocation } from "react-router-dom";
 import axios from 'axios'
 import './OrderHistory.css'
 
@@ -7,7 +8,11 @@ function OrderHistory() {
     const tokenBearer = localStorage.getItem("tokenBearer");
     // Lấy dữ liệu order
     const [viewList, setList] = useState([{ phone: 0, name: "", total: 0 }]);
-    const [requestData, setRequestData] = useState(new Date());
+    const location = useLocation();
+    //Quy đổi số về tiền việt
+    function currencyFormat(num) {
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+    }
     useEffect(() => {
         axios({
             method: 'get',
@@ -17,9 +22,9 @@ function OrderHistory() {
                 'Content-Type': 'application/json'
             },
         }).then((response) => {
-            setList(response.data.orders.slice(-3));
+            setList(response.data.orders.slice(-3).reverse());
         })
-    }, [requestData])
+    }, [location])
     return (
         <>
             <div className="history">
@@ -36,7 +41,7 @@ function OrderHistory() {
                             <tr className="history__row">
                                 <td>{index + 1} </td>
                                 <td>{data.table}</td>
-                                <td>{data.total}</td>
+                                <td>{currencyFormat(data.total)}</td>
                             </tr>
                         ))}
                     </tbody>

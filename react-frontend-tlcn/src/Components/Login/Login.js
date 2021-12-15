@@ -12,7 +12,6 @@ function Login(props) {
     //Login
     const [selectedUsername, setUsername] = useState("")
     const [selectedPassword, setPassword] = useState("")
-    const [selectedKey, setKey] = useState("")
     const navigate = useNavigate();
     function Login(selectedUsername, selectedPassword) {
         axios({

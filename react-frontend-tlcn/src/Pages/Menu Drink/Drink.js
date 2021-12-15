@@ -54,7 +54,7 @@ function Drink() {
     const [requestData, setRequestData] = useState(new Date());
     const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+        axios.get(`http://localhost:5000/api/products?page=1&pagesize=100`)
             .then((response) => {
                 setList(response.data.products)
             })
@@ -63,12 +63,12 @@ function Drink() {
     const [viewID, setID] = useState("")
     function searchID(id) {
         if (id) {
-            axios.get(`http://localhost:5000/api/products/` + id)
+            axios.get(`http://localhost:5000/api/products/${id}`)
                 .then((response) => {
                     setList([response.data])
                 })
         } else {
-            axios.get(`http://localhost:5000/api/products` + "?page=" + 1 + "&pagesize=" + 10)
+            axios.get(`http://localhost:5000/api/products?page=1&pagesize=100`)
                 .then((response) => {
                     setList(response.data.products)
                 })

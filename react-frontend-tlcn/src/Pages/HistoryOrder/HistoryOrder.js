@@ -13,7 +13,7 @@ function HistoryOrder() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://localhost:5000/api/order/` + '?pagesize=100',
+            url: `http://localhost:5000/api/order/?pagesize=100`,
             headers: {
                 'Authorization': `bearer ${tokenBearer}`,
                 'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ function HistoryOrder() {
         } else {
             axios({
                 method: 'get',
-                url: `http://localhost:5000/api/order/` + '?pagesize=100',
+                url: `http://localhost:5000/api/order/?pagesize=100`,
                 headers: {
                     'Authorization': `bearer ${tokenBearer}`,
                     'Content-Type': 'application/json'

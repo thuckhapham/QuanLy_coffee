@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './ViewMember.css'
 
 function ViewMember(props) {
@@ -6,43 +7,66 @@ function ViewMember(props) {
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
+    const [viewList, setList] = useState([{ phone: 0, name: "" }]);
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/users/${props.editedCustomer[0]._id}`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            setList(response.data)
+        })
+    }, [])
     return (
         <>
             <div className="viewcustomer__content">
                 <div className="viewcustomer__content-header">
-                    CUSTOMER INFORMATION
+                    MEMBER INFORMATION
                 </div>
                 <div className="viewcustomer__content-list">
                     <div className="viewcustomer__content-item">
                         <div className="viewcustomer__lable">
-                            CUSTOMER ID:
+                            MEMBER ID:
                         </div>
                         <div className="viewcustomer__input">
-                            {props.editedCustomer[0].customer_id}
+                            {viewList._id}
                         </div>
                     </div>
                     <div className="viewcustomer__content-item">
                         <div className="viewcustomer__lable">
-                            NAME:
+                            ROLE:
                         </div>
                         <div className="viewcustomer__input">
-                            {props.editedCustomer[0].customer_name}
+                            {viewList.role}
                         </div>
                     </div>
                     <div className="viewcustomer__content-item">
                         <div className="viewcustomer__lable">
-                            ADDRESS:
+                            LAST NAME:
                         </div>
                         <div className="viewcustomer__input">
-                            {props.editedCustomer[0].customer_address}
+                            {viewList.lastName}
                         </div>
                     </div>
-                    <div className="viewcustomer_idtent-item">
+                    <div className="viewcustomer__content-item">
                         <div className="viewcustomer__lable">
                             PHONE:
                         </div>
                         <div className="viewcustomer__input">
-                            {props.editedCustomer[0].customer_phone}
+                            {viewList.phone}
+                        </div>
+                    </div>
+                    <div className="viewcustomer_idtent-item">
+                        <div className="viewcustomer__lable">
+                            EMAIL:
+                        </div>
+                        <div className="viewcustomer__input">
+                            {viewList.email}
                         </div>
                     </div>
                 </div>

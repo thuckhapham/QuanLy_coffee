@@ -5,22 +5,17 @@ import { useNavigate } from "react-router-dom"
 function Homepage(props) {
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
-    //Save Table Data to array
-    const [editedTable, setEditedTable] = useState([{ drink_id: 0, drink_name: "loading" }]);
     //Lấy Data
     const [requestData, setRequestData] = useState(new Date());
     const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/table` + "?page=" + 1 + "&pagesize=" + 20)
+        axios.get(`http://localhost:5000/api/table?page=1&pagesize=100`)
             .then((response) => {
                 setList(response.data.tables)
             })
     }, [requestData])
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
-    const callbackModal = (modalState) => {
-        setViewModal(modalState);
-    };
     //Default new table
     const [selectedName, setName] = useState("")
     // Thêm bàn mới
