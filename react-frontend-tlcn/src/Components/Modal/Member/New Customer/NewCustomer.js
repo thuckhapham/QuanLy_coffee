@@ -70,10 +70,8 @@ function NewCustomer(props) {
                             <select id="category" className="newdrink__select"
                                 onChange={(event) => setRole(event.target.value)}
                             >
-                                <option value="MANAGER">MANAGER</option>
-                                <option value="CASHIER">CASHIER</option>
-                                <option value="BARISTA">BARISTA</option>
-                                <option value="WAITER">WAITER</option>
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="USER">USER</option>
                             </select>
                         </div>
                     </div>
