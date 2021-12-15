@@ -84,15 +84,33 @@ const update = async (req, res) => {
   }
 }
 
-const remove = async (req, res) => {
+const disnable = async (req, res) => {
   try {
-    console.info(`delete user:  ${req.profile.id}`)
+    console.info(`disnable user:  ${req.profile.id}`)
     let user = req.profile
-    let deletedUser = await user.remove()
-    deletedUser.hashed_password = undefined
-    deletedUser.salt = undefined
-    console.info(`delete user: ${req.profile.id} finished`)
-    res.json(deletedUser)
+    user.enable= false
+    await user.save()
+    user.hashed_password = undefined
+    user.salt = undefined
+    console.info(`disnable user: ${req.profile.id} finished`)
+    res.json(user)
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
+const enable = async (req, res) => {
+  try {
+    console.info(`enable user:  ${req.profile.id}`)
+    let user = req.profile
+    user.enable= true
+    await user.save()
+    user.hashed_password = undefined
+    user.salt = undefined
+    console.info(`disnable user: ${req.profile.id} finished`)
+    res.json(user)
   } catch (err) {
     console.error(err)
     return res.status(400).json(
@@ -101,11 +119,29 @@ const remove = async (req, res) => {
   }
 }
 
+const setRole = async (req,res) =>{
+  try {
+    let user = req.profile
+    user.role = req.body.role 
+    res.json({
+      message :  "Set role finish"
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
+
+
 export default {
   create,
   userByID,
   read,
   list,
-  remove,
-  update
+  disnable,
+  update,
+  setRole,
+  enable
 }

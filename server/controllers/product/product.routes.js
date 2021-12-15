@@ -6,12 +6,12 @@ const router = express.Router()
 
 router.route('/api/products')
   .get(productCtrl.list)
-  .post(authCtrl.requireSignin,productCtrl.uploadImg,productCtrl.create)
+  .post(authCtrl.requireSignin, authCtrl.hasAdmin ,productCtrl.uploadImg,productCtrl.create)
 
 router.route('/api/products/:productId')
   .get(productCtrl.read)
-  .put(authCtrl.requireSignin,productCtrl.uploadImg, productCtrl.update)
-  .delete(authCtrl.requireSignin, productCtrl.remove)
+  .put(authCtrl.requireSignin,  authCtrl.hasAdmin  ,productCtrl.uploadImg, productCtrl.update)
+  .delete(authCtrl.requireSignin, authCtrl.hasAdmin , productCtrl.remove)
 
 router.param('productId', productCtrl.productByID)
 

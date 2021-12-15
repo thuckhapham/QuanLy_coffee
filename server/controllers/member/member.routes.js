@@ -12,7 +12,7 @@ router.route('/api/member/find').get(authCtrl.requireSignin, memberCtrl.getMembe
 router.route('/api/discount/:memberId')
   .get(authCtrl.requireSignin,memberId.read)
   .put(authCtrl.requireSignin,  memberId.update)
-  .delete(authCtrl.requireSignin, memberId.remove)
+  .delete(authCtrl.requireSignin,authCtrl.hasAdmin, memberId.remove)
 
 router.param('memberId', memberId.memberByID)
 

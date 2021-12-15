@@ -35,11 +35,12 @@ const UserSchema= new mongoose.Schema({
     },
     enable: {
         type :Boolean,
-        default: false
+        default: true
     },
     role: {
         type: String,
-        enum: ['WAITER','BARISTA', 'CASHIER','MANAGER']
+        enum: ['USER', 'ADMIN'],
+        default : 'USER'
     }
 })
 

@@ -13,14 +13,20 @@ const signin = async (req, res) => {
       {
         console.info(`sigin: ${req.body.userName} not found`)
         return res.status('401').json({
-        error: "User not found"
+        error: "Username or password not right"
       })
     }
 
     if (!user.authenticate(req.body.password)) {
       console.info(`sigin: ${req.body.userName} password don't match`)
       return res.status('401').send({
-        error: "Username and password don't match."
+        error: "Username or password not right"
+      })
+    }
+    if(!user.enable){
+      console.info(`sigin: ${req.body.userName} is locked`)
+      return res.status('401').send({
+        error: "user is locked"
       })
     }
 
@@ -62,11 +68,21 @@ const requireSignin = expressJwt({
 })
 
 const hasAuthorization = (req, res, next) => {
-  const authorized = req.profile && req.auth && req.profile._id == req.auth._id
+  const authorized = req.profile && req.auth && ( req.profile._id == req.auth._id  || req.auth.role == 'ADMIN' )
   if (!(authorized)) {
     console.error("User is not authorized")
     return res.status('403').json({
       error: "User is not authorized"
+    })
+  }
+  next()
+}
+const hasAdmin = (req, res, next) => {
+  const authorized = req.auth && req.auth.role == 'ADMIN' 
+  if (!(authorized)) {
+    console.error("User have no right")
+    return res.status('403').json({
+      error: "User have no right"
     })
   }
   next()
@@ -76,5 +92,6 @@ export default {
   signin,
   signout,
   requireSignin,
-  hasAuthorization
+  hasAuthorization,
+  hasAdmin
 }

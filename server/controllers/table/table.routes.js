@@ -5,12 +5,12 @@ const router = express.Router()
 
 router.route('/api/table')
   .get(tableCtrl.list)
-  .post(authCtrl.requireSignin,tableCtrl.create)
+  .post(authCtrl.requireSignin, authCtrl.hasAdmin ,tableCtrl.create)
 
 router.route('/api/table/:tablePoin')
   .get(tableCtrl.read)
-  .put(authCtrl.requireSignin,  tableCtrl.update)
-  .delete(authCtrl.requireSignin, tableCtrl.remove)
+  .put(authCtrl.requireSignin,  authCtrl.hasAdmin ,  tableCtrl.update)
+  .delete(authCtrl.requireSignin,  authCtrl.hasAdmin , tableCtrl.remove)
 
 router.route('/api/table/:tablePoin/status').post(authCtrl.requireSignin, tableCtrl.tableStatus)
 
