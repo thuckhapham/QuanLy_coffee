@@ -61,11 +61,9 @@ function Member() {
                 'Content-Type': 'application/json'
             },
         }).then((response) => {
-            // console.log(response.data);
             setList(response.data)
         })
     }, [requestData])
-    // console.log(viewList)
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     const [selectedButt, setButt] = useState("");
@@ -75,7 +73,6 @@ function Member() {
     //Save Customer Data to array
     const [editedCustomer, setEditedCustomer] = useState([{ customer_id: 0, customer_name: "loading" }]);
     function saveCustomer(cusId) {
-        console.log(cusId)
         axios({
             method: 'get',
             url: `http://localhost:5000/api/users/${cusId}`,
@@ -85,10 +82,35 @@ function Member() {
             },
         }).then((response) => {
             setEditedCustomer(response.data)
-            console.log(response)
         })
     }
-
+    //Tìm ID
+    const [findId, setFindId] = useState("")
+    function findMember() {
+        if (findId) {
+            axios({
+                method: 'get',
+                url: `http://localhost:5000/api/users/${findId}`,
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => {
+                setList([response.data])
+            })
+        } else {
+            axios({
+                method: 'get',
+                url: 'http://localhost:5000/api/users',
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => {
+                setList(response.data)
+            })
+        }
+    }
     function formattedDate(d = new Date) {
         return [d.getDate(), d.getMonth() + 1, d.getFullYear()]
             .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
@@ -102,7 +124,7 @@ function Member() {
                         <div className="customer__header-item">
                             Member ID:
                             <br />
-                            <input type="text" className="drinksearch__form" placeholder="ID" />
+                            <input type="text" className="drinksearch__form" placeholder="ID" onChange={e => setFindId(e.target.value)} />
                         </div>
                         <div className="customer__header-item">
                             Name:
@@ -116,7 +138,7 @@ function Member() {
                             <br />
                             <input type="text" className="drinksearch__form" placeholder="Member's phone" />
                         </div>
-                        <div className="customer__header-item customer__header-item--icon">
+                        <div className="customer__header-item customer__header-item--icon" onClick={() => findMember()}>
                             <AiIcons.AiOutlineSearch className="customer__header-search customer__header-searchicon" />
                         </div>
                     </div>
