@@ -86,7 +86,7 @@ const update = async (req, res) => {
 
 const disnable = async (req, res) => {
   try {
-    console.info(`delete user:  ${req.profile.id}`)
+    console.info(`disnable user:  ${req.profile.id}`)
     let user = req.profile
     user.enable= false
     await user.save()
@@ -101,6 +101,24 @@ const disnable = async (req, res) => {
     )
   }
 }
+const enable = async (req, res) => {
+  try {
+    console.info(`enable user:  ${req.profile.id}`)
+    let user = req.profile
+    user.enable= true
+    await user.save()
+    user.hashed_password = undefined
+    user.salt = undefined
+    console.info(`disnable user: ${req.profile.id} finished`)
+    res.json(user)
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
+
 const setRole = async (req,res) =>{
   try {
     let user = req.profile
@@ -124,5 +142,6 @@ export default {
   list,
   disnable,
   update,
-  setRole
+  setRole,
+  enable
 }
