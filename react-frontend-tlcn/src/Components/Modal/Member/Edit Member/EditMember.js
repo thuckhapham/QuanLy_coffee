@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import './EditMember.css'
 
@@ -11,29 +11,18 @@ function EditMember(props) {
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
 
-    const [selectedFirstName, setFirstName] = useState(props.editedCustomer[0].firstName)
-    const [selectedLastName, setLastName] = useState(props.editedCustomer[0].lastName)
-    const [selectedEmail, setEmail] = useState(props.editedCustomer[0].email)
+    const [selectedRole, setRole] = useState(props.editedCustomer.role)
+    const [selectedFirstName, setFirstName] = useState(props.editedCustomer.firstName)
+    const [selectedLastName, setLastName] = useState(props.editedCustomer.lastName)
+    const [selectedEmail, setEmail] = useState(props.editedCustomer.email)
     const [selectedPhone, setPhone] = useState("")
 
     const [viewList, setList] = useState([{ phone: 0, name: "", email: "" }]);
-    useEffect(() => {
-        axios({
-            method: 'get',
-            url: `http://localhost:5000/api/users/${props.editedCustomer[0]._id}`,
-            headers: {
-                'Authorization': `bearer ${tokenBearer}`,
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => {
-            setList(response.data)
-        })
-    }, [])
     //Sửa thông tin
     function editMember() {
         axios({
             method: 'put',
-            url: `http://localhost:5000/api/users/${viewList._id}`,
+            url: `http://localhost:5000/api/users/${props.editedCustomer._id}`,
             data: {
                 firstName: selectedFirstName,
                 lastName: selectedLastName,
@@ -60,7 +49,22 @@ function EditMember(props) {
                             MEMBER ID:
                         </div>
                         <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" placeholder="ID" value={viewList._id} readOnly />
+                            <input type="text" className="editcustomer__form" placeholder="ID" value={props.editedCustomer._id} readOnly />
+                        </div>
+                    </div>
+                    <div className="newcustomer__content-item">
+                        <div className="newcustomer__lable">
+                            ROLE:
+                        </div>
+                        <div className="newcustomer__input">
+                            <select id="category" className="newdrink__select"
+                                onChange={(event) => setRole(event.target.value)}
+                            >
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="CASHIER">CASHIER</option>
+                                <option value="BARISTA">BARISTA</option>
+                                <option value="WAITER">WAITER</option>
+                            </select>
                         </div>
                     </div>
                     <div className="editcustomer__content-item">
@@ -68,7 +72,7 @@ function EditMember(props) {
                             FIRST NAME:
                         </div>
                         <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" placeholder="Customer's name" defaultValue={viewList.firstName} onChange={e => setFirstName(e.target.value)} />
+                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.firstName} onChange={e => setFirstName(e.target.value)} />
                         </div>
                     </div>
                     <div className="editcustomer__content-item">
@@ -76,7 +80,7 @@ function EditMember(props) {
                             LAST NAME:
                         </div>
                         <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" placeholder="Customer's address" defaultValue={viewList.lastName} onChange={e => setLastName(e.target.value)} />
+                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.lastName} onChange={e => setLastName(e.target.value)} />
                         </div>
                     </div>
                     <div className="editcustomer_idtent-item">
@@ -84,7 +88,7 @@ function EditMember(props) {
                             EMAIL:
                         </div>
                         <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" placeholder="Customer's phone" defaultValue={viewList.email} onChange={e => setEmail(e.target.value)} />
+                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.email} onChange={e => setEmail(e.target.value)} />
                         </div>
                     </div>
                     <div className="editcustomer_idtent-item">
@@ -92,7 +96,7 @@ function EditMember(props) {
                             PHONE:
                         </div>
                         <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" placeholder="Customer's phone" defaultValue={viewList.phone} onChange={e => setPhone(e.target.value)} />
+                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.phone} onChange={e => setPhone(e.target.value)} />
                         </div>
                     </div>
                 </div>

@@ -61,11 +61,9 @@ function Member() {
                 'Content-Type': 'application/json'
             },
         }).then((response) => {
-            // console.log(response.data);
             setList(response.data)
         })
     }, [requestData])
-    // console.log(viewList)
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     const [selectedButt, setButt] = useState("");
@@ -74,7 +72,45 @@ function Member() {
     };
     //Save Customer Data to array
     const [editedCustomer, setEditedCustomer] = useState([{ customer_id: 0, customer_name: "loading" }]);
-
+    function saveCustomer(cusId) {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/users/${cusId}`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            setEditedCustomer(response.data)
+        })
+    }
+    //Tìm ID
+    const [findId, setFindId] = useState("")
+    function findMember() {
+        if (findId) {
+            axios({
+                method: 'get',
+                url: `http://localhost:5000/api/users/${findId}`,
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => {
+                setList([response.data])
+            })
+        } else {
+            axios({
+                method: 'get',
+                url: 'http://localhost:5000/api/users',
+                headers: {
+                    'Authorization': `bearer ${tokenBearer}`,
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => {
+                setList(response.data)
+            })
+        }
+    }
     function formattedDate(d = new Date) {
         return [d.getDate(), d.getMonth() + 1, d.getFullYear()]
             .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
@@ -88,7 +124,7 @@ function Member() {
                         <div className="customer__header-item">
                             Member ID:
                             <br />
-                            <input type="text" className="drinksearch__form" placeholder="ID" />
+                            <input type="text" className="drinksearch__form" placeholder="ID" onChange={e => setFindId(e.target.value)} />
                         </div>
                         <div className="customer__header-item">
                             Name:
@@ -102,7 +138,7 @@ function Member() {
                             <br />
                             <input type="text" className="drinksearch__form" placeholder="Member's phone" />
                         </div>
-                        <div className="customer__header-item customer__header-item--icon">
+                        <div className="customer__header-item customer__header-item--icon" onClick={() => findMember()}>
                             <AiIcons.AiOutlineSearch className="customer__header-search customer__header-searchicon" />
                         </div>
                     </div>
@@ -147,7 +183,7 @@ function Member() {
                                                 onClick={() => {
                                                     setButt("viewcustomer");
                                                     setViewModal(!viewModal)
-                                                    setEditedCustomer([data])
+                                                    saveCustomer(data._id)
                                                 }}
                                             >
                                                 <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
@@ -157,7 +193,7 @@ function Member() {
                                                 onClick={() => {
                                                     setButt("editcustomer");
                                                     setViewModal(!viewModal)
-                                                    setEditedCustomer([data])
+                                                    saveCustomer(data._id)
                                                 }}
                                             >
                                                 <AiIcons.AiFillEdit className="customer__btn-editicon" />
@@ -167,7 +203,7 @@ function Member() {
                                                 onClick={() => {
                                                     setViewModal(!viewModal);
                                                     setButt("cancelcustomer")
-                                                    setEditedCustomer([data])
+                                                    saveCustomer(data._id)
                                                 }}
                                             >
                                                 <GiIcons.GiCancel className="customer__btn-cancelicon" />
@@ -193,10 +229,10 @@ function Member() {
                         </button>
                     </div>
                     {selectedButt === "cancelcustomer" ? (
-                        <DeleteMember ModalState={callbackModal} editedCustomer={editedCustomer} />
+                        <DeleteMember ModalState={callbackModal} editedCustomer={editedCustomer} setRequestData={setRequestData} />
                     ) : selectedButt === "editcustomer" ? (
                         <EditMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} setRequestData={setRequestData} />
-                    ) : selectedButt === "newcustomer" ? <NewCustomer ModalState={callbackModal} /> :
+                    ) : selectedButt === "newcustomer" ? <NewCustomer ModalState={callbackModal} setRequestData={setRequestData} /> :
                         <ViewMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} />}
                 </div>
             </div>

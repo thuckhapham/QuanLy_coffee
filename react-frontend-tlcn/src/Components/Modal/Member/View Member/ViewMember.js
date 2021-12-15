@@ -7,21 +7,6 @@ function ViewMember(props) {
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
-    //Lấy Bearer Token
-    const tokenBearer = localStorage.getItem("tokenBearer");
-    const [viewList, setList] = useState([{ phone: 0, name: "" }]);
-    useEffect(() => {
-        axios({
-            method: 'get',
-            url: `http://localhost:5000/api/users/${props.editedCustomer[0]._id}`,
-            headers: {
-                'Authorization': `bearer ${tokenBearer}`,
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => {
-            setList(response.data)
-        })
-    }, [])
     return (
         <>
             <div className="viewcustomer__content">
@@ -34,7 +19,7 @@ function ViewMember(props) {
                             MEMBER ID:
                         </div>
                         <div className="viewcustomer__input">
-                            {viewList._id}
+                            {props.editedCustomer._id}
                         </div>
                     </div>
                     <div className="viewcustomer__content-item">
@@ -42,7 +27,7 @@ function ViewMember(props) {
                             ROLE:
                         </div>
                         <div className="viewcustomer__input">
-                            {viewList.role}
+                            {props.editedCustomer.role}
                         </div>
                     </div>
                     <div className="viewcustomer__content-item">
@@ -50,7 +35,7 @@ function ViewMember(props) {
                             LAST NAME:
                         </div>
                         <div className="viewcustomer__input">
-                            {viewList.lastName}
+                            {props.editedCustomer.lastName}
                         </div>
                     </div>
                     <div className="viewcustomer__content-item">
@@ -58,7 +43,7 @@ function ViewMember(props) {
                             PHONE:
                         </div>
                         <div className="viewcustomer__input">
-                            {viewList.phone}
+                            {props.editedCustomer.phone}
                         </div>
                     </div>
                     <div className="viewcustomer_idtent-item">
@@ -66,7 +51,7 @@ function ViewMember(props) {
                             EMAIL:
                         </div>
                         <div className="viewcustomer__input">
-                            {viewList.email}
+                            {props.editedCustomer.email}
                         </div>
                     </div>
                 </div>
