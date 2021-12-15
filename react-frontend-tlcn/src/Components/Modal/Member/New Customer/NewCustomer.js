@@ -1,39 +1,104 @@
 import React from 'react'
+import { useState } from 'react'
+import axios from 'axios'
 import './NewCustomer.css'
 
 function NewCustomer(props) {
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
+
+    const [selectedUsername, setUsername] = useState("")
+    const [selectedPassword, setPassword] = useState("")
+    const [selectedRole, setRole] = useState("")
+    const [selectedEmail, setEmail] = useState("")
+    const [selectedFirstName, setFirstName] = useState("")
+    const [selectedLastName, setLastName] = useState("")
+    const [selectedPhone, setPhone] = useState("")
+
+    function addMember() {
+        axios({
+            method: 'post',
+            url: `http://localhost:5000/api/users/`,
+            data: {
+                userName: selectedUsername,
+                password: selectedPassword,
+                role: selectedRole,
+                email: selectedEmail,
+                firstName: selectedFirstName,
+                lastName: selectedLastName,
+                phone: selectedPhone,
+            },
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+            props.setRequestData(new Date());
+        })
+    }
     return (
         <>
             <div className="newcustomer__content">
                 <div className="newcustomer__content-header">
-                    NEW CUSTOMER
+                    NEW MEMBER
                 </div>
                 <div className="newcustomer__content-list">
                     <div className="newcustomer__content-item">
                         <div className="newcustomer__lable">
-                            CUSTOMER ID:
+                            USERNAME:
                         </div>
                         <div className="newcustomer__input">
-                            <input type="text" className="newcustomer__form" placeholder="ID" />
+                            <input type="text" className="newcustomer__form" placeholder="Username" onChange={e => setUsername(e.target.value)} />
                         </div>
                     </div>
                     <div className="newcustomer__content-item">
                         <div className="newcustomer__lable">
-                            NAME:
+                            PASSWORD:
                         </div>
                         <div className="newcustomer__input">
-                            <input type="text" className="newcustomer__form" placeholder="Customer's name" />
+                            <input type="password" className="newcustomer__form" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                         </div>
                     </div>
                     <div className="newcustomer__content-item">
                         <div className="newcustomer__lable">
-                            ADDRESS:
+                            ROLE:
                         </div>
                         <div className="newcustomer__input">
-                            <input type="text" className="newcustomer__form" placeholder="Customer's address" />
+                            <select id="category" className="newdrink__select"
+                                onChange={(event) => setRole(event.target.value)}
+                            >
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="CASHIER">CASHIER</option>
+                                <option value="BARISTA">BARISTA</option>
+                                <option value="WAITER">WAITER</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="newcustomer_idtent-item">
+                        <div className="newcustomer__lable">
+                            EMAIL:
+                        </div>
+                        <div className="newcustomer__input">
+                            <input type="text" className="newcustomer__form" placeholder="Member's email" onChange={e => setEmail(e.target.value)} />
+                        </div>
+                    </div>
+                    <div className="newcustomer__content-item">
+                        <div className="newcustomer__lable">
+                            FIRST NAME:
+                        </div>
+                        <div className="newcustomer__input">
+                            <input type="text" className="newcustomer__form" placeholder="Member's first name" onChange={e => setFirstName(e.target.value)} />
+                        </div>
+                    </div>
+                    <div className="newcustomer__content-item">
+                        <div className="newcustomer__lable">
+                            LAST NAME:
+                        </div>
+                        <div className="newcustomer__input">
+                            <input type="text" className="newcustomer__form" placeholder="Member's last name" onChange={e => setLastName(e.target.value)} />
                         </div>
                     </div>
                     <div className="newcustomer_idtent-item">
@@ -41,14 +106,17 @@ function NewCustomer(props) {
                             PHONE:
                         </div>
                         <div className="newcustomer__input">
-                            <input type="text" className="newcustomer__form" placeholder="Customer's phone" />
+                            <input type="text" className="newcustomer__form" placeholder="Member's phone" onChange={e => setPhone(e.target.value)} />
                         </div>
                     </div>
                 </div>
                 <div className="newcustomer__content-btn">
                     <button
                         className="newcustomer__btn newcustomer__btn--add"
-                        onClick={() => sendData(true)}
+                        onClick={() => {
+                            sendData(true)
+                            addMember()
+                        }}
                     >
                         Add
                     </button>

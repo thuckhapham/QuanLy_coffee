@@ -13,6 +13,7 @@ function NewDrink(props) {
     const [selectedCate, setCate] = useState("COFFEE")
     const [selectedName, setName] = useState("")
     const [selectedPrice, setPrice] = useState("")
+    const [selectedImage, setImage] = useState("")
     //Thêm nước
     function addingDrink(selectedName, selectedCate, selectedPrice) {
         axios({
@@ -38,20 +39,20 @@ function NewDrink(props) {
                     ADDING NEW DRINK
                 </div>
                 <div className="newdrink__content-list">
-                    <div className="newdrink__content-item">
+                    {/* <div className="newdrink__content-item">
                         <div className="newdrink__lable">
                             DRINK ID:
                         </div>
                         <div className="newdrink__input">
                             <input type="text" className="newdrink__form" placeholder="ID" />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="newdrink__content-item">
                         <div className="newdrink__lable">
                             CATEGORY:
                         </div>
                         <div className="newdrink__input">
-                            <select id="category" className="newdrink__select"
+                            {/* <select id="category" className="newdrink__select"
                                 onChange={(event) => setCate(event.target.value)}
                             >
                                 {props.datas.map((data, index) => {
@@ -66,6 +67,14 @@ function NewDrink(props) {
                                         </option>
                                     );
                                 })}
+                            </select> */}
+                            <select id="category" className="newdrink__select"
+                                onChange={(event) => setCate(event.target.value)}
+                            >
+                                <option value="TEA">TEA</option>
+                                <option value="COFFEE">COFFEE</option>
+                                <option value="COOKIES">COOKIES</option>
+                                <option value="FRUIT">FRUIT</option>
                             </select>
                         </div>
                     </div>
