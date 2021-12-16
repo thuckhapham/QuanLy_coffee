@@ -158,9 +158,9 @@ const updateMe = async(req, res) =>{
   try {
    
     let user = await User.findById(req.auth._id)
-    username = user.userName
-    hashed_password = user.hashed_password
-    salt = user.salt
+    let username = user.userName
+    let hashed_password = user.hashed_password
+    let salt = user.salt
 
     user = extend(user, req.body)
 
