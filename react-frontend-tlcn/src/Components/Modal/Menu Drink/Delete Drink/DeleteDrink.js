@@ -9,7 +9,7 @@ function DeleteDrink(props) {
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
-    //Thêm nước
+    //Xóa nước
     function deletingDrink(selectedId) {
         axios({
             method: 'delete',

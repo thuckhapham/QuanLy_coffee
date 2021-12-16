@@ -28,6 +28,8 @@ function Login(props) {
         }).then((response) => {
             navigate('/homepage')
             localStorage.setItem("tokenBearer", response.data.token);
+            console.log(response.data)
+            // localStorage.setItem("usernameId",response.data.)
         }).catch(function (error) {
             if (error.response) {
                 setError("Error")
