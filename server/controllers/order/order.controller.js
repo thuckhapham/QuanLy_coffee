@@ -5,8 +5,10 @@ const create = async (req, res) => {
   const order = new Order()
   try {
     order.table = req.body.table
+    order.user = req.auth._id 
     await order.save()
     console.info("product is saved")
+    order.user = undefined
     return res.json(order)
   } catch (err) {
     console.error(err)
@@ -54,7 +56,7 @@ const addProduct = async (req, res) => {
     }
     order.updated = Date.now()
     await order.save()
-
+    order.user = undefined
     return res.json(order)
 
   } catch (err) {
@@ -90,6 +92,7 @@ const checkOut = async (req, res) => {
     order.payment.status = true
     order.updated = Date.now()
     await order.save()
+    order.user = undefined
     return res.json(order)
   } catch (err) {
     console.error(err)
