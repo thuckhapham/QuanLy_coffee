@@ -109,7 +109,7 @@ const enable = async (req, res) => {
     await user.save()
     user.hashed_password = undefined
     user.salt = undefined
-    console.info(`disnable user: ${req.profile.id} finished`)
+    console.info(`enable user: ${req.profile.id} finished`)
     res.json(user)
   } catch (err) {
     console.error(err)
