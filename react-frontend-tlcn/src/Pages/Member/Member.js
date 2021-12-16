@@ -111,9 +111,13 @@ function Member() {
             })
         }
     }
-    function formattedDate(d = new Date) {
-        return [d.getDate(), d.getMonth() + 1, d.getFullYear()]
-            .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+    function formattedDate(date) {
+        var dateObj = new Date(date);
+        var month = dateObj.getUTCMonth() + 1;
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+        var newdate = day + "/" + month + "/" + year;
+        return newdate;
     }
     return (
         <>
@@ -176,7 +180,8 @@ function Member() {
                                         <td>{index + 1}</td>
                                         <td>{data.userName}</td>
                                         <td>{data.lastName}</td>
-                                        <td>{data.created}</td>
+                                        <td>{formattedDate(data.created)}</td>
+                                        {/* {formattedDate(data.created)} */}
                                         <td>
                                             <button
                                                 className="customer__btn-view"

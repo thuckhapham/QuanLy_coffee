@@ -69,6 +69,14 @@ function HistoryOrder() {
     function currencyFormat(num) {
         return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
     }
+    function formattedDate(date) {
+        var dateObj = new Date(date);
+        var month = dateObj.getUTCMonth() + 1;
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+        var newdate = day + "/" + month + "/" + year;
+        return newdate;
+    }
     return (
         <>
             <div className="historyorder">
@@ -118,7 +126,7 @@ function HistoryOrder() {
                                         <td>{index + 1}</td>
                                         <td>{data.table}</td>
                                         <td>{currencyFormat(data.total)}</td>
-                                        <td>{data.updated}</td>
+                                        <td>{formattedDate(data.updated)}</td>
                                         <td>{data.status ? "True" : "False"}</td>
                                         <td>
                                             <button
