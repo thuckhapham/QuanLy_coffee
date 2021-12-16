@@ -1,9 +1,11 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
+import * as AiIcons from 'react-icons/ai'
 import './EditMember.css'
 
 function EditMember(props) {
+    const [checkError, setError] = useState("")
     //Gửi dữ liệu về trang chính
     const sendData = (modalState) => {
         props.ModalState(modalState)
@@ -18,6 +20,7 @@ function EditMember(props) {
     const [selectedPhone, setPhone] = useState("")
 
     const [viewList, setList] = useState([{ phone: 0, name: "", email: "" }]);
+
     //Sửa thông tin
     function editMember() {
         axios({
@@ -35,86 +38,113 @@ function EditMember(props) {
             },
         }).then(() => {
             props.setRequestData(new Date());
+            sendData(true)
+        }).catch(function (error) {
+            if (error.response) {
+                setError("Error")
+            }
         })
     }
     return (
         <>
             <div className="editcustomer__content">
-                <div className="editcustomer__content-header">
-                    EDIT MEMBER
-                </div>
-                <div className="editcustomer__content-list">
-                    <div className="editcustomer__content-item">
-                        <div className="editcustomer__lable">
-                            MEMBER ID:
+                {checkError === "Error" ?
+                    <>
+                        <div className="error__content">
+                            <h2 className="error__content--warn">
+                                WARNING
+                                <AiIcons.AiFillWarning className="deletemember__content deletemember__content-icon" />
+                            </h2>
+                            You don't have the authority!
                         </div>
-                        <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" placeholder="ID" value={props.editedCustomer._id} readOnly />
-                        </div>
-                    </div>
-                    <div className="newcustomer__content-item">
-                        <div className="newcustomer__lable">
-                            ROLE:
-                        </div>
-                        <div className="newcustomer__input">
-                            <select id="category" className="newdrink__select"
-                                onChange={(event) => setRole(event.target.value)}
+                        <div className="error__footer">
+                            <button className="error__btn error__btn-cancel"
+                                onClick={() => setError("")}
                             >
-                                <option value="ADMIN">ADMIN</option>
-                                <option value="USER">USER</option>
-                            </select>
+                                Close
+                            </button>
                         </div>
-                    </div>
-                    <div className="editcustomer__content-item">
-                        <div className="editcustomer__lable">
-                            FIRST NAME:
+                    </>
+                    :
+                    <>
+                        <div className="editcustomer__content-header">
+                            EDIT MEMBER
                         </div>
-                        <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.firstName} onChange={e => setFirstName(e.target.value)} />
+                        <div className="editcustomer__content-list">
+                            <div className="editcustomer__content-item">
+                                <div className="editcustomer__lable">
+                                    MEMBER ID:
+                                </div>
+                                <div className="editcustomer__input">
+                                    <input type="text" className="editcustomer__form" placeholder="ID" value={props.editedCustomer._id} readOnly />
+                                </div>
+                            </div>
+                            <div className="newcustomer__content-item">
+                                <div className="newcustomer__lable">
+                                    ROLE:
+                                </div>
+                                <div className="newcustomer__input">
+                                    <select id="category" className="newdrink__select"
+                                        onChange={(event) => setRole(event.target.value)}
+                                    >
+                                        <option value="ADMIN">ADMIN</option>
+                                        <option value="USER">USER</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="editcustomer__content-item">
+                                <div className="editcustomer__lable">
+                                    FIRST NAME:
+                                </div>
+                                <div className="editcustomer__input">
+                                    <input type="text" className="editcustomer__form" Value={props.editedCustomer.firstName} onChange={e => setFirstName(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="editcustomer__content-item">
+                                <div className="editcustomer__lable">
+                                    LAST NAME:
+                                </div>
+                                <div className="editcustomer__input">
+                                    <input type="text" className="editcustomer__form" Value={props.editedCustomer.lastName} onChange={e => setLastName(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="editcustomer_idtent-item">
+                                <div className="editcustomer__lable">
+                                    EMAIL:
+                                </div>
+                                <div className="editcustomer__input">
+                                    <input type="text" className="editcustomer__form" Value={props.editedCustomer.email} onChange={e => setEmail(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="editcustomer_idtent-item">
+                                <div className="editcustomer__lable">
+                                    PHONE:
+                                </div>
+                                <div className="editcustomer__input">
+                                    <input type="text" className="editcustomer__form" Value={props.editedCustomer.phone} onChange={e => setPhone(e.target.value)} />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="editcustomer__content-item">
-                        <div className="editcustomer__lable">
-                            LAST NAME:
+                        <div className="editcustomer__content-btn">
+                            <button
+                                className="editcustomer__btn editcustomer__btn--add"
+                                onClick={() => {
+                                    editMember()
+                                }}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                className="editcustomer__btn editcustomer__btn--cancle"
+                                onClick={() => {
+                                    sendData(true)
+                                }}
+                            >
+                                Cancel
+                            </button>
                         </div>
-                        <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.lastName} onChange={e => setLastName(e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="editcustomer_idtent-item">
-                        <div className="editcustomer__lable">
-                            EMAIL:
-                        </div>
-                        <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.email} onChange={e => setEmail(e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="editcustomer_idtent-item">
-                        <div className="editcustomer__lable">
-                            PHONE:
-                        </div>
-                        <div className="editcustomer__input">
-                            <input type="text" className="editcustomer__form" defaultValue={props.editedCustomer.phone} onChange={e => setPhone(e.target.value)} />
-                        </div>
-                    </div>
-                </div>
-                <div className="editcustomer__content-btn">
-                    <button
-                        className="editcustomer__btn editcustomer__btn--add"
-                        onClick={() => {
-                            sendData(true)
-                            editMember()
-                        }}
-                    >
-                        Edit
-                    </button>
-                    <button
-                        className="editcustomer__btn editcustomer__btn--cancle"
-                        onClick={() => sendData(true)}
-                    >
-                        Cancel
-                    </button>
-                </div>
+                    </>
+                }
             </div>
         </>
     )

@@ -10,44 +10,6 @@ import ViewMember from '../../Components/Modal/Member/View Member/ViewMember'
 import NewCustomer from '../../Components/Modal/Member/New Customer/NewCustomer'
 
 function Member() {
-    const datas = [
-        {
-            customer_id: "CUS01",
-            customer_name: "Doan Hieu",
-            customer_address: "Phan Xich Long",
-            customer_phone: 39000,
-        },
-        {
-            customer_id: "CUS02",
-            customer_name: "Thuc Kha",
-            customer_address: "Phan Xich Long",
-            customer_phone: 35000,
-        },
-        {
-            customer_id: "CUS03",
-            customer_name: "Tuan Kiet",
-            customer_address: "Phan Xich Long",
-            customer_phone: 35000,
-        },
-        {
-            customer_id: "FRUIT01",
-            customer_name: "Peach Tea",
-            customer_address: "FRUIT",
-            customer_phone: 55000,
-        },
-        {
-            customer_id: "FRUIT02",
-            customer_name: "Oolong Tea",
-            customer_address: "FRUIT",
-            customer_phone: 55000,
-        },
-        {
-            customer_id: "FRUIT03",
-            customer_name: "Macchiato Tea",
-            customer_address: "FRUIT",
-            customer_phone: 55000,
-        },
-    ];
     const [requestData, setRequestData] = useState(new Date());
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
@@ -181,7 +143,6 @@ function Member() {
                                         <td>{data.userName}</td>
                                         <td>{data.lastName}</td>
                                         <td>{formattedDate(data.created)}</td>
-                                        {/* {formattedDate(data.created)} */}
                                         <td>
                                             <button
                                                 className="customer__btn-view"
@@ -236,9 +197,9 @@ function Member() {
                     {selectedButt === "cancelcustomer" ? (
                         <DeleteMember ModalState={callbackModal} editedCustomer={editedCustomer} setRequestData={setRequestData} />
                     ) : selectedButt === "editcustomer" ? (
-                        <EditMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} setRequestData={setRequestData} />
+                        <EditMember ModalState={callbackModal} editedCustomer={editedCustomer} requestData={requestData} setRequestData={setRequestData} />
                     ) : selectedButt === "newcustomer" ? <NewCustomer ModalState={callbackModal} setRequestData={setRequestData} /> :
-                        <ViewMember ModalState={callbackModal} datas={datas} editedCustomer={editedCustomer} />}
+                        <ViewMember ModalState={callbackModal} editedCustomer={editedCustomer} />}
                 </div>
             </div>
         </>
