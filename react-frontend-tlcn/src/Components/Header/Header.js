@@ -5,16 +5,13 @@ import { Link } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as FiIcons from "react-icons/fi";
 import Sidebar from '../Sidebar/Sidebar'
+import axios from 'axios'
 import './Header.css';
+import Profile from '../../Pages/Profile/Profile';
 
 function Header() {
     const [showSid, setShowSid] = useState(false)
     const navigate = useNavigate();
-    const tokenBearer = localStorage.getItem("tokenBearer");
-    //Profile id
-    function ProfileId() {
-
-    }
     //Sign out xóa Token
     function Logout() {
         if (localStorage.getItem("tokenBearer")) {

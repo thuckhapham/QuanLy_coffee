@@ -1,15 +1,16 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import EditMember from '../../Components/Modal/Member/Edit Member/EditMember'
 import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import './Profile.css'
+import EditProfile from '../../Components/Modal/Profile/EditProfile/EditProfile'
 
 function Profile(props) {
     const [requestData, setRequestData] = useState(new Date());
     //Set Modal Active
     const [viewModal, setViewModal] = useState(true);
     const [selectedButt, setButt] = useState("");
+    console.log(selectedButt)
     const callbackModal = (modalState) => {
         setViewModal(modalState);
     };
@@ -21,18 +22,26 @@ function Profile(props) {
     const tokenBearer = localStorage.getItem("tokenBearer");
     const [checkError, setError] = useState("")
 
-    const [selectedRole, setRole] = useState(
-        // props.editedCustomer.role
-        "")
-    const [selectedFirstName, setFirstName] = useState(
-        // props.editedCustomer.firstName
-        "")
-    const [selectedLastName, setLastName] = useState(
-        // props.editedCustomer.lastName
-        "")
-    const [selectedEmail, setEmail] = useState(
-        // props.editedCustomer.email
-        "")
+    //Data
+    const [editedCustomer, setEditedCustomer] = useState([{ customer_id: 0, customer_name: "loading" }]);
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/users/info`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then((response) => {
+                setEditedCustomer(response.data)
+            })
+    }, [])
+
+    const [selectedRole, setRole] = useState(editedCustomer.role)
+    const [selectedFirstName, setFirstName] = useState(editedCustomer.firstName)
+    const [selectedLastName, setLastName] = useState(editedCustomer.lastName)
+    const [selectedEmail, setEmail] = useState(editedCustomer.email)
     const [selectedPhone, setPhone] = useState("")
 
     const [viewList, setList] = useState([{ phone: 0, name: "", email: "" }]);
@@ -62,6 +71,7 @@ function Profile(props) {
                     <button
                         className="editprofile__btn editprofile__btn--add"
                         onClick={() => {
+                            setViewModal(!viewModal)
                             setButt("editmember")
                             // saveCustomer(data._id)
                         }}
@@ -84,21 +94,24 @@ function Profile(props) {
                         </div>
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form" placeholder="ID"
-                                // value={props.editedCustomer._id}
-                                readOnly />
+                                value={editedCustomer._id} readOnly />
                         </div>
                     </div>
                     <div className="newcustomer__content-item">
                         <div className="newcustomer__lable">
                             ROLE:
                         </div>
-                        <div className="newcustomer__input">
+                        {/* <div className="newcustomer__input">
                             <select id="category" className="newdrink__select"
                                 onChange={(event) => setRole(event.target.value)}
                             >
                                 <option value="ADMIN">ADMIN</option>
                                 <option value="USER">USER</option>
                             </select>
+                        </div> */}
+                        <div className="editprofile__input">
+                            <input type="text" className="editprofile__form" placeholder="ID"
+                                value={editedCustomer.role} readOnly />
                         </div>
                     </div>
                     <div className="editprofile__content-item">
@@ -107,8 +120,9 @@ function Profile(props) {
                         </div>
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
-                                // Value={props.editedCustomer.firstName}
-                                onChange={e => setFirstName(e.target.value)} />
+                                Value={editedCustomer.firstName}
+                                onChange={e => setFirstName(e.target.value)}
+                                readOnly />
                         </div>
                     </div>
                     <div className="editprofile__content-item">
@@ -117,8 +131,9 @@ function Profile(props) {
                         </div>
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
-                                // Value={props.editedCustomer.lastName}
-                                onChange={e => setLastName(e.target.value)} />
+                                Value={editedCustomer.lastName}
+                                onChange={e => setLastName(e.target.value)}
+                                readOnly />
                         </div>
                     </div>
                     <div className="editprofile_idtent-item">
@@ -127,8 +142,9 @@ function Profile(props) {
                         </div>
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
-                                // Value={props.editedCustomer.email}
-                                onChange={e => setEmail(e.target.value)} />
+                                Value={editedCustomer.email}
+                                onChange={e => setEmail(e.target.value)}
+                                readOnly />
                         </div>
                     </div>
                     <div className="editprofile_idtent-item">
@@ -137,8 +153,9 @@ function Profile(props) {
                         </div>
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
-                                // Value={props.editedCustomer.phone}
-                                onChange={e => setPhone(e.target.value)} />
+                                Value={editedCustomer.phone}
+                                onChange={e => setPhone(e.target.value)}
+                                readOnly />
                         </div>
                     </div>
                 </div>
@@ -155,8 +172,8 @@ function Profile(props) {
                             </button>
                         </div>
                         {selectedButt === "editmember" ? (
-                            <EditMember ModalState={callbackModal}
-                                // editedCustomer={editedCustomer} 
+                            <EditProfile ModalState={callbackModal}
+                                editedCustomer={editedCustomer}
                                 requestData={requestData} setRequestData={setRequestData} />
                         ) : ""}
                     </div>
