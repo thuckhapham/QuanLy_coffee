@@ -12,10 +12,9 @@ import authRoutes from './controllers/auth/auth.routes'
 import orderRoutes from './controllers/order/order.routes'
 import productRoutes from './controllers/product/product.routes'
 import tableRoutes from './controllers/table/table.routes'
-import discountRoutes from './controllers/discount/discount.routes'
 
 
-const app=express()
+const app = express()
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json())
@@ -25,7 +24,7 @@ app.use(compress())
 // secure apps by setting various HTTP headers
 app.use(helmet())
 // enable CORS - Cross Origin Resource Sharing
-app.use(cors({ credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 const options = {
 	definition: {
 		openapi: "3.0.0",
@@ -42,22 +41,21 @@ const options = {
 	},
 	apis: ['./routes/*.js'],
 };
-app.use((req,res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin',"http://localhost:3000");
-    res.setHeader('Access-Control-Allow-Headers',"*");
-    res.header('Access-Control-Allow-Credentials', true);
-    next();
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', "http://localhost:3000");
+	res.setHeader('Access-Control-Allow-Headers', "*");
+	res.header('Access-Control-Allow-Credentials', true);
+	next();
 });
 
 app.use('/uploads', express.static('./uploads'))
-app.use('/',userRoutes)
-app.use('/',authRoutes)
-app.use('/',productRoutes)
-app.use('/',tableRoutes)
-app.use('/',discountRoutes)
-app.use('/',orderRoutes)
-app.get('/',(req,res)=>{
-    res.status(200).send(template())
+app.use('/', userRoutes)
+app.use('/', authRoutes)
+app.use('/', productRoutes)
+app.use('/', tableRoutes)
+app.use('/', orderRoutes)
+app.get('/', (req, res) => {
+	res.status(200).send(template())
 })
 
 
