@@ -134,6 +134,19 @@ const setRole = async (req,res) =>{
   }
 }
 
+const changePassword = async (req,res) => {
+  let user = await User.findOne({userName: req.auth.userName })
+  if (!user.authenticate(req.body.oldPassword)) {
+    console.info(`old password don't match`)
+    return res.status('401').send({
+      error: "old password don't match"
+    })
+  }
+  user.password = req.password
+  user.save()
+  return res.json({ message: "Change password success"})
+}
+
 
 export default {
   create,
@@ -143,5 +156,6 @@ export default {
   disnable,
   update,
   setRole,
-  enable
+  enable,
+  changePassword
 }

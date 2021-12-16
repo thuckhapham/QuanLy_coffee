@@ -20,4 +20,6 @@ router.route('/api/users/:userId/enable').get(authCtrl.requireSignin, authCtrl.h
 
 router.param('userId', userCtrl.userByID)
 
+router.route('/api/users/changepwd').post(authCtrl.requireSignin, userCtrl.changePassword)
+
 export default router
