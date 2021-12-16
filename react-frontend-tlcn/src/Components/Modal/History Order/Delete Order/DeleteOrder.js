@@ -1,25 +1,28 @@
 import React, { useState } from 'react'
-import './DeleteDrink.css'
+import './DeleteOrder.css'
 import Error from '../../../Error/Error'
 import * as AiIcons from 'react-icons/ai'
 import axios from 'axios'
 
 function DeleteDrink(props) {
     const [checkError, setError] = useState("")
+    //Lấy Bearer Token
+    const tokenBearer = localStorage.getItem("tokenBearer");
+
     const sendData = (modalState) => {
         props.ModalState(modalState)
     }
-    //Xóa nước
-    function deletingDrink(selectedId) {
+    //Thêm nước
+    function cancelOrder() {
         axios({
             method: 'delete',
-            url: 'http://localhost:5000/api/products/' + selectedId,
+            url: `http://localhost:5000/api/order/${props.selectOrder}`,
             headers: {
-                'Authorization': `bearer ${props.tokenBearer}`,
+                'Authorization': `bearer ${tokenBearer}`,
                 'Content-Type': 'application/json'
             },
         }).then(() => {
-            props.setRequestData(new Date());
+            props.setRequestData(new Date())
             sendData(true)
         }).catch(function (error) {
             if (error.response) {
@@ -39,11 +42,11 @@ function DeleteDrink(props) {
                                 WARNING
                                 <AiIcons.AiFillWarning className="deletedrink__content deletedrink__content-icon" />
                             </h2>
-                            Do you really want to delete {props.editedDrink[0].name}?
+                            Do you really want to cancel ?
                         </div>
                         <div className="deletedrink__footer">
                             <button className="deletedrink__btn deletedrink__btn-confirm" onClick={() => {
-                                deletingDrink(props.editedDrink[0]._id)
+                                cancelOrder()
                             }}>
                                 Confirm
                             </button>

@@ -1,33 +1,32 @@
-.editcustomer__content-header {
+.editprofile__content-header {
   font-size: 1.7rem;
-  text-align: center;
+  text-align: left;
   margin: 10px 0;
 }
-.editcustomer__content {
+.editprofile__content {
   width: 350px;
   margin: 5px 10px;
 }
-.editcustomer__content-list {
+.editprofile__content-list {
   font-size: 1.3rem;
 }
-.editcustomer__form {
+.editprofile__form {
   width: 100%;
   border: 0.5px solid black;
   padding: 10px 12px;
 }
-.editcustomer__select {
+.editprofile__select {
   width: 100%;
   border: 0.5px solid black;
   padding: 10px 12px;
   font-size: 1.3rem;
 }
-.editcustomer__content-btn {
-  margin: 20px 0;
+.editprofile__content-btn {
+  margin: 10px 0;
   display: flex;
-  justify-content: space-between;
-  padding: 0 30px;
+  justify-content: flex-end;
 }
-.editcustomer__btn {
+.editprofile__btn {
   width: 100px;
   padding: 10px 15px;
   font-size: 1.4rem;
@@ -35,7 +34,7 @@
   background-color: var(--white-color);
   border: 1px solid var(--primary-color);
 }
-.editcustomer__btn--add {
+.editprofile__btn--add {
   background-size: 200% 100%;
   background-image: linear-gradient(
     to right,
@@ -44,12 +43,12 @@
   );
   transition: background-position 0.5s;
 }
-.editcustomer__btn--cancle {
+.editprofile__btn--cancle {
   background-size: 200% 100%;
   background-image: linear-gradient(to right, var(--white-color) 50%, red 50%);
   transition: background-position 0.5s;
 }
-.editcustomer__btn:hover {
+.editprofile__btn:hover {
   background-position: -100% 0;
   color: var(--white-color);
   cursor: pointer;

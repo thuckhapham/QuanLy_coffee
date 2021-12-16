@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import DeleteOrder from '../../Components/Modal/History Order/Delete Order/DeleteOrder'
 import * as GiIcons from 'react-icons/gi'
 import * as AiIcons from 'react-icons/ai'
 import './HistoryOrder.css'
 
 function HistoryOrder() {
+    //Set Modal Active
+    const [viewModal, setViewModal] = useState(true);
+    const [selectedButt, setButt] = useState("");
+    const callbackModal = (modalState) => {
+        setViewModal(modalState);
+    };
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
+
     // Lấy dữ liệu order
     const [viewList, setList] = useState([{ phone: 0, name: "", total: 0 }]);
     const [requestData, setRequestData] = useState(new Date());
@@ -22,6 +30,8 @@ function HistoryOrder() {
             setList(response.data.orders.reverse())
         })
     }, [requestData])
+    //Xóa order
+    const [selectOrder, setOrder] = useState("")
     //Lấy Data theo ID
     const [viewID, setID] = useState("")
     function orderID() {
@@ -132,8 +142,9 @@ function HistoryOrder() {
                                             <button
                                                 className="historyoder__btn-cancel"
                                                 onClick={() => {
-                                                    console.log(data._id)
-                                                    cancelOrder(data._id)
+                                                    setViewModal(!viewModal);
+                                                    setButt("cancelorder")
+                                                    setOrder(data._id)
                                                 }}
                                             >
                                                 Cancel
@@ -145,6 +156,23 @@ function HistoryOrder() {
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+            {/* Modal Layout */}
+            <div className={viewModal ? "modal--unactive" : "modal"}>
+                <div className="modal__overlay"></div>
+                <div className="modal__body">
+                    <div style={{ display: "flex", "justify-content": "flex-end" }}>
+                        <button
+                            className="modal__btn-close"
+                            onClick={() => setViewModal(!viewModal)}
+                        >
+                            X
+                        </button>
+                    </div>
+                    {selectedButt === "cancelorder" ? (
+                        <DeleteOrder ModalState={callbackModal} orderId={selectOrder} setRequestData={setRequestData} />
+                    ) : ""}
                 </div>
             </div>
         </>

@@ -11,6 +11,10 @@ function Header() {
     const [showSid, setShowSid] = useState(false)
     const navigate = useNavigate();
     const tokenBearer = localStorage.getItem("tokenBearer");
+    //Profile id
+    function ProfileId() {
+
+    }
     //Sign out xóa Token
     function Logout() {
         if (localStorage.getItem("tokenBearer")) {
@@ -41,14 +45,16 @@ function Header() {
                             </li>
                         </ul>
                         <ul className="header__navbar-list">
-                            <li className="header__navbar-item">
+                            {/* <li className="header__navbar-item">
                                 <a href="http://" className="header__navbar-item-link">
                                     <FaIcons.FaBell className="header__navbar-icon" />
                                     Notification
                                 </a>
-                            </li>
+                            </li> */}
                             <li className="header__navbar-item header__navbar-item--seperate">
-                                <a href="http://" className="header__navbar-item-link">About</a>
+                                <div className="header__navbar-item-link"
+                                    onClick={() => { navigate('/profile') }}
+                                >About</div>
                             </li>
                             <li className="header__navbar-item header__navbar-item--strong"
                                 onClick={() => Logout()}
