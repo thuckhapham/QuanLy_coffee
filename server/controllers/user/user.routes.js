@@ -9,7 +9,7 @@ router.route('/api/users')
 
 router.route('/api/users/:userId')
   .get(authCtrl.requireSignin, userCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
+  .put(authCtrl.requireSignin,authCtrl.hasAdmin, userCtrl.update)
  
 
 router.route('/api/users/:userId/role').post(authCtrl.requireSignin, authCtrl.hasAdmin, userCtrl.setRole)
@@ -20,6 +20,9 @@ router.route('/api/users/:userId/enable').get(authCtrl.requireSignin, authCtrl.h
 
 router.param('userId', userCtrl.userByID)
 
-router.route('/api/users/changepwd').post(authCtrl.requireSignin, userCtrl.changePassword)
+router.route('/api/users/info/changepwd').post(authCtrl.requireSignin, userCtrl.changePassword) 
+
+router.route('/api/users/info').get(authCtrl.requireSignin, userCtrl.readMe).put(authCtrl.requireSignin,userCtrl.updateMe)
+
 
 export default router

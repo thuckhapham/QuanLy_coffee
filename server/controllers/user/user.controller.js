@@ -146,6 +146,39 @@ const changePassword = async (req,res) => {
   user.save()
   return res.json({ message: "Change password success"})
 }
+const readMe = (req, res) => {
+  let user = await User.findOne({userName: req.auth.userName })
+  user.hashed_password = undefined
+  user.salt = undefined
+  console.info(`Read userId: ${user.id}`)
+  return res.json(user)
+}
+const updateMe = (req, res) =>{
+  try {
+   
+    let user = await User.findOne({userName: req.auth.userName })
+    username = user.userName
+    hashed_password = user.hashed_password
+    salt = user.salt
+
+    user = extend(user, req.body)
+
+    user.userName = username
+    user.hashed_password = hashed_password
+    user.salt = salt
+    user.updated = Date.now()
+    await user.save()
+    user.hashed_password = undefined
+    user.salt = undefined
+
+    res.json(user)
+  } catch (err) {
+    console.error(err)
+    return res.status(400).json(
+      {error : "bad request"}
+    )
+  }
+}
 
 
 export default {
@@ -157,5 +190,7 @@ export default {
   update,
   setRole,
   enable,
-  changePassword
+  changePassword,
+  readMe,
+  updateMe
 }
