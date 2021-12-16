@@ -135,7 +135,7 @@ const setRole = async (req,res) =>{
 }
 
 const changePassword = async (req,res) => {
-  let user = await User.findOne({userName: req.auth.userName })
+  let user = await User.findById(req.auth._id)
   if (!user.authenticate(req.body.oldPassword)) {
     console.info(`old password don't match`)
     return res.status('401').send({
@@ -146,17 +146,18 @@ const changePassword = async (req,res) => {
   user.save()
   return res.json({ message: "Change password success"})
 }
-const readMe = (req, res) => {
-  let user = await User.findOne({userName: req.auth.userName })
+const readMe = async(req, res) => {
+  console.log(req.auth._id)
+  let user = await User.findById(req.auth._id)
   user.hashed_password = undefined
   user.salt = undefined
   console.info(`Read userId: ${user.id}`)
   return res.json(user)
 }
-const updateMe = (req, res) =>{
+const updateMe = async(req, res) =>{
   try {
    
-    let user = await User.findOne({userName: req.auth.userName })
+    let user = await User.findById(req.auth._id)
     username = user.userName
     hashed_password = user.hashed_password
     salt = user.salt
