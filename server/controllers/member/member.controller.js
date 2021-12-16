@@ -51,11 +51,34 @@ const read = (req, res) => {
 const list = async (req, res) => {
   try {
     console.info('get list member')
+    var current = parseInt(req.query.page)-1
+    if(isNaN(current)) current=0
+    var pagesize = parseInt(req.query.pagesize)
+    if(isNaN(pagesize)) pagesize=10
+    const phone =  req.query.phone
+    const name =  req.query.name
+
     let members = await Member.find().select()
-    
+    members=  members.filter(member =>(
+      (name===undefined || member.name.includes(name))
+      (name===undefined || member.name.includes(phone))
+    ))
+    const total = members.length
+
+    if(current*pagesize < members.length){
+      members=members.slice(current*pagesize, Math.min((current+1)*pagesize,members.length))
+    }
+    else{
+      members=[]
+    }
     console.info('get list member finished')
 
-    res.json(members)
+    res.json({
+      page : (current+1) ,
+      pagesize : pagesize,
+      total: total,
+      members : members
+  })
   } catch (err) {
     console.error(err)
     return res.status(400).json(
