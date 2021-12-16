@@ -219,7 +219,7 @@ function Order() {
                 >
                   Member
                 </li>
-                <li
+                {/* <li
                   className="category__button-discount"
                   onClick={() => {
                     setViewModal(!viewModal);
@@ -227,7 +227,7 @@ function Order() {
                   }}
                 >
                   Discount
-                </li>
+                </li> */}
                 <li
                   className="category__button-check"
                   onClick={() => {

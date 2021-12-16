@@ -1,10 +1,13 @@
 .checkout {
-  width: 300px;
+  width: 350px;
   margin: 0 5px;
 }
 .checkout__title {
   text-align: center;
   font-weight: 400;
+}
+.modal__body {
+  transform: translateY(-15%);
 }
 .checkout__detail {
   height: 200px;
@@ -51,7 +54,7 @@
 }
 .checkout__payment-list {
   margin: 0;
-  padding: 0 20px 0 20px;
+  padding: 0 40px 0 30px;
   justify-content: space-between;
 }
 .checkout__payment-list li {
@@ -110,7 +113,7 @@
   list-style: none;
   display: flex;
   margin: 0 0 20px 0;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 }
 .checkout__footer-item {
   max-width: 46px;
@@ -121,6 +124,7 @@
   padding: 12px 30px;
   border: 1px solid black;
   background-color: var(--white-color);
+  width: 119px;
 }
 .checkout__btn-print:hover {
   cursor: pointer;

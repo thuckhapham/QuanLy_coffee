@@ -47,7 +47,6 @@ function Login(props) {
                                     <input
                                         id="userName"
                                         type="string"
-                                        // value={values.userName}
                                         class="auth-form__input"
                                         onChange={e => {
                                             setUsername(e.target.value)
@@ -57,7 +56,6 @@ function Login(props) {
                                     <input
                                         id="password"
                                         type="password"
-                                        // value={values.password}
                                         onChange={e => {
                                             setPassword(e.target.value)
                                         }}
@@ -88,7 +86,8 @@ function Login(props) {
                                 {/* </Link> */}
                             </div>
                         </div>
-                        <div class="auth-form__social">
+                        <br />
+                        {/* <div class="auth-form__social">
                             <a
                                 href=""
                                 class="auth-form__social--facbebook btn btn--size-s btn--with-icon"
@@ -105,7 +104,7 @@ function Login(props) {
                                 <AiIcon.AiFillGoogleCircle class="auth-form__social-icon fab fa-google" />
                                 <span class="auth-form__socials-title">Login with Google</span>
                             </a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

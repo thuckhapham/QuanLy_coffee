@@ -19,7 +19,7 @@ function HistoryOrder() {
                 'Content-Type': 'application/json'
             },
         }).then((response) => {
-            setList(response.data.orders)
+            setList(response.data.orders.reverse())
         })
     }, [requestData])
     //Lấy Data theo ID
@@ -46,7 +46,7 @@ function HistoryOrder() {
                 },
             })
                 .then((response) => {
-                    setList(response.data.orders)
+                    setList(response.data.orders.reverse())
                 })
         }
     }
@@ -84,7 +84,7 @@ function HistoryOrder() {
                     <div className="historyorder__title">
                         History Order
                     </div>
-                    <div className="historyorder__time-list">
+                    {/* <div className="historyorder__time-list">
                         <div className="historyorder__time-item">
                             From
                             <br />
@@ -95,7 +95,7 @@ function HistoryOrder() {
                             <br />
                             <input type="date" className="" id="dateto" name="dateto" />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="historyorder__orderid">
                         Order Id:
                         <input type="text" className="historyorder__orderid historyorder__orderid-input" id="orderid" name="orderid" placeholder="   

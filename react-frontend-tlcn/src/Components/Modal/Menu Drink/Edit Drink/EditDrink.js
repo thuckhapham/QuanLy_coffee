@@ -9,9 +9,10 @@ function EditDrink(props) {
     }
     //Nước sửa
     const selectedId = props.editedDrink[0]._id
-    const selectedCategory = props.editedDrink[0].category
+    // const selectedCategory = props.editedDrink[0].category
     const [selectedName, setName] = useState(props.editedDrink[0].name)
     const [selectedPrice, setPrice] = useState(props.editedDrink[0].price)
+    const [selectedCategory, setCategory] = useState(props.editedDrink[0].category)
     //Sửa nước
     function editDrink(selectedId, selectedCategory, selectedName, selectedPrice) {
         axios({
@@ -50,12 +51,13 @@ function EditDrink(props) {
                             CATEGORY:
                         </div>
                         <div className="editdrink__input">
-                            <select id="category" className="editdrink__select">
-                                <option
-                                    value={props.editedDrink[0].category}
-                                >
-                                    {props.editedDrink[0].category}
-                                </option>
+                            <select id="category" className="newdrink__select"
+                                onChange={(event) => setCategory(event.target.value)}
+                            >
+                                <option value="TEA">TEA</option>
+                                <option value="COFFEE">COFFEE</option>
+                                <option value="COOKIES">COOKIES</option>
+                                <option value="FRUIT">FRUIT</option>
                             </select>
                         </div>
                     </div>
