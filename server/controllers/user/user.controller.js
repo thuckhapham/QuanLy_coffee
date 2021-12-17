@@ -143,7 +143,7 @@ const changePassword = async (req,res) => {
     })
   }
   user.password = req.password
-  user.save()
+  await user.save()
   return res.json({ message: "Change password success"})
 }
 const readMe = async(req, res) => {
