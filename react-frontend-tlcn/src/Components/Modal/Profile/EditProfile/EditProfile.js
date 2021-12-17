@@ -68,18 +68,18 @@ function EditProfile(props) {
                     :
                     <>
                         <div className="editcustomer__content-header">
-                            EDIT MEMBER
+                            EDIT PROFILE
                         </div>
                         <div className="editcustomer__content-list">
                             <div className="editcustomer__content-item">
                                 <div className="editcustomer__lable">
-                                    MEMBER ID:
+                                    PROFILE ID:
                                 </div>
                                 <div className="editcustomer__input">
                                     <input type="text" className="editcustomer__form" placeholder="ID" value={props.editedCustomer._id} readOnly />
                                 </div>
                             </div>
-                            <div className="newcustomer__content-item">
+                            {/* <div className="newcustomer__content-item">
                                 <div className="newcustomer__lable">
                                     ROLE:
                                 </div>
@@ -91,7 +91,7 @@ function EditProfile(props) {
                                         <option value="USER">USER</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="editcustomer__content-item">
                                 <div className="editcustomer__lable">
                                     FIRST NAME:

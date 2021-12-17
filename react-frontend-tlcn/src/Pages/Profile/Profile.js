@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import * as AiIcons from 'react-icons/ai'
 import './Profile.css'
 import EditProfile from '../../Components/Modal/Profile/EditProfile/EditProfile'
 
@@ -36,31 +35,7 @@ function Profile(props) {
             .then((response) => {
                 setEditedCustomer(response.data)
             })
-    }, [])
-
-    const [selectedRole, setRole] = useState(editedCustomer.role)
-    const [selectedFirstName, setFirstName] = useState(editedCustomer.firstName)
-    const [selectedLastName, setLastName] = useState(editedCustomer.lastName)
-    const [selectedEmail, setEmail] = useState(editedCustomer.email)
-    const [selectedPhone, setPhone] = useState("")
-
-    const [viewList, setList] = useState([{ phone: 0, name: "", email: "" }]);
-
-    //Save Member Data to array
-    // const [editedCustomer, setEditedCustomer] = useState([{ customer_id: 0, customer_name: "loading" }]);
-    // function saveCustomer(cusId) {
-    //     axios({
-    //         method: 'get',
-    //         url: `http://localhost:5000/api/users/${cusId}`,
-    //         headers: {
-    //             'Authorization': `bearer ${tokenBearer}`,
-    //             'Content-Type': 'application/json'
-    //         },
-    //     }).then((response) => {
-    //         setEditedCustomer(response.data)
-    //     })
-    // }
-
+    }, [requestData])
     return (
         <>
             <>
@@ -73,19 +48,19 @@ function Profile(props) {
                         onClick={() => {
                             setViewModal(!viewModal)
                             setButt("editmember")
-                            // saveCustomer(data._id)
                         }}
                     >
                         Edit
                     </button>
-                    {/* <button
+                    <button
                         className="editprofile__btn editprofile__btn--cancle"
                         onClick={() => {
-                            sendData(true)
+                            setViewModal(!viewModal)
+                            setButt("changepassword")
                         }}
                     >
-                        Cancel
-                    </button> */}
+                        Change Password
+                    </button>
                 </div>
                 <div className="editprofile__content-list">
                     <div className="editprofile__content-item">
@@ -121,7 +96,6 @@ function Profile(props) {
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
                                 Value={editedCustomer.firstName}
-                                onChange={e => setFirstName(e.target.value)}
                                 readOnly />
                         </div>
                     </div>
@@ -132,7 +106,6 @@ function Profile(props) {
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
                                 Value={editedCustomer.lastName}
-                                onChange={e => setLastName(e.target.value)}
                                 readOnly />
                         </div>
                     </div>
@@ -143,7 +116,6 @@ function Profile(props) {
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
                                 Value={editedCustomer.email}
-                                onChange={e => setEmail(e.target.value)}
                                 readOnly />
                         </div>
                     </div>
@@ -154,7 +126,6 @@ function Profile(props) {
                         <div className="editprofile__input">
                             <input type="text" className="editprofile__form"
                                 Value={editedCustomer.phone}
-                                onChange={e => setPhone(e.target.value)}
                                 readOnly />
                         </div>
                     </div>
