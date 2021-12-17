@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import EditMember from '../../Components/Modal/Member/Edit Member/EditMember'
 import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import './Profile.css'
+import EditProfile from '../../Components/Modal/Profile/EditProfile/EditProfile'
 
 function Profile(props) {
     const [requestData, setRequestData] = useState(new Date());
@@ -172,7 +172,7 @@ function Profile(props) {
                             </button>
                         </div>
                         {selectedButt === "editmember" ? (
-                            <EditMember ModalState={callbackModal}
+                            <EditProfile ModalState={callbackModal}
                                 editedCustomer={editedCustomer}
                                 requestData={requestData} setRequestData={setRequestData} />
                         ) : ""}
