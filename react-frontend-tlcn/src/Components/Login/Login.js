@@ -101,11 +101,11 @@ function Login(props) {
                                             Login
                                         </h3>
                                     </button>
-                                    <button class={selectedButt === "Register" ? "auth-form__switch-register" : "auth-form__switch-btn"}
+                                    {/* <button class={selectedButt === "Register" ? "auth-form__switch-register" : "auth-form__switch-btn"}
                                         onClick={() => {
                                             setButt("Register")
                                         }}
-                                    >Đăng kí</button>
+                                    >Đăng kí</button> */}
                                 </div>
                                 {selectedButt === "Register" ?
                                     <div class="auth-form__form">

@@ -14,18 +14,20 @@ function DeleteMember(props) {
     const navigate = useNavigate();
     function deleteMember() {
         axios({
-            method: 'delete',
-            url: `http://localhost:5000/api/users/${props.editedCustomer._id}`,
+            method: 'get',
+            url: `http://localhost:5000/api/users/${props.editedCustomer._id}/disnable`,
             headers: {
                 'Authorization': `bearer ${tokenBearer}`,
                 'Content-Type': 'application/json'
             },
         }).then(() => {
-            if (localStorage.getItem("tokenBearer")) {
-                localStorage.removeItem('tokenBearer');
-                sendData(true)
-                navigate('/')
-            }
+            // if (localStorage.getItem("tokenBearer")) {
+            //     localStorage.removeItem('tokenBearer');
+            //     sendData(true)
+            //     navigate('/')
+            // }
+            props.setRequestData(new Date());
+            sendData(true)
         }).catch(function (error) {
             if (error.response) {
                 setError("Error")
@@ -60,7 +62,7 @@ function DeleteMember(props) {
                                 <AiIcons.AiFillWarning className="deletemember__content deletemember__content-icon" />
                             </h2>
 
-                            Do you really want to delete {props.editedCustomer.userName}?
+                            Do you really want to disable {props.editedCustomer.userName}?
                         </div>
                         <div className="deletemember__footer">
                             <button className="deletemember__btn deletemember__btn-confirm" onClick={() => {

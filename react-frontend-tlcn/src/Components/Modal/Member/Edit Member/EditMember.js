@@ -17,7 +17,7 @@ function EditMember(props) {
     const [selectedFirstName, setFirstName] = useState(props.editedCustomer.firstName)
     const [selectedLastName, setLastName] = useState(props.editedCustomer.lastName)
     const [selectedEmail, setEmail] = useState(props.editedCustomer.email)
-    const [selectedPhone, setPhone] = useState("")
+    const [selectedPhone, setPhone] = useState(props.editedCustomer.phone)
 
     const [viewList, setList] = useState([{ phone: 0, name: "", email: "" }]);
 

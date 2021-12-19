@@ -27,7 +27,7 @@ function NewCustomer(props) {
             data: {
                 userName: selectedUsername,
                 password: selectedPassword,
-                role: selectedRole,
+                role: "USER",
                 email: selectedEmail,
                 firstName: selectedFirstName,
                 lastName: selectedLastName,
@@ -88,7 +88,7 @@ function NewCustomer(props) {
                                     <input type="password" className="newcustomer__form" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                                 </div>
                             </div>
-                            <div className="newcustomer__content-item">
+                            {/* <div className="newcustomer__content-item">
                                 <div className="newcustomer__lable">
                                     ROLE:
                                 </div>
@@ -100,7 +100,7 @@ function NewCustomer(props) {
                                         <option value="USER">USER</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="newcustomer_idtent-item">
                                 <div className="newcustomer__lable">
                                     EMAIL:

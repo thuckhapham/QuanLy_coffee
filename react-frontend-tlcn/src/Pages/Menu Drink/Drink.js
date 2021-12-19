@@ -145,7 +145,9 @@ function Drink() {
                 <div className="drinktable__table-content">
                     <table className="drinktable__table">
                         <tbody className="drinktable__body">
-                            {viewList.map((data, index) => (
+                            {viewList.map((data, index) =>
+                            // data.category == "TEA" && 
+                            (
                                 <tr className="drinktable__row">
                                     <td>{index + 1}</td>
                                     {/* <td>{data.drink_id}</td> */}

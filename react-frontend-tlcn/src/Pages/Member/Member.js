@@ -127,6 +127,7 @@ function Member() {
                                 <th>Number</th>
                                 <th>Username</th>
                                 <th>Name</th>
+                                <th>State</th>
                                 <th>Created</th>
                                 <th>Action</th>
                             </tr>
@@ -142,6 +143,7 @@ function Member() {
                                         <td>{index + 1}</td>
                                         <td>{data.userName}</td>
                                         <td>{data.lastName}</td>
+                                        <td>{data.enable == true ? "Active" : "Deactive"}</td>
                                         <td>{formattedDate(data.created)}</td>
                                         <td>
                                             <button

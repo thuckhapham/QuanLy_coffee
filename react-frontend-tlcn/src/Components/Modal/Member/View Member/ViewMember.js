@@ -24,6 +24,14 @@ function ViewMember(props) {
                     </div>
                     <div className="viewcustomer__content-item">
                         <div className="viewcustomer__lable">
+                            STATE:
+                        </div>
+                        <div className={props.editedCustomer.enable == true ? "viewcustomer__input viewcustomer__input--active" : "viewcustomer__input viewcustomer__input--deactive"}>
+                            {props.editedCustomer.enable == true ? "ACTIVE" : "DEACTIVE"}
+                        </div>
+                    </div>
+                    <div className="viewcustomer__content-item">
+                        <div className="viewcustomer__lable">
                             ROLE:
                         </div>
                         <div className="viewcustomer__input">

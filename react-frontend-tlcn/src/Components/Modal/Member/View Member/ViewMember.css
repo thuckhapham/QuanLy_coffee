@@ -18,6 +18,12 @@
   border: 1px solid black;
   font-size: 1.5rem;
 }
+.viewcustomer__input--active {
+  color: green;
+}
+.viewcustomer__input--deactive {
+  color: red;
+}
 .viewcustomer__input:hover {
   cursor: default;
 }
