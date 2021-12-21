@@ -8,44 +8,6 @@ import DeleteDrink from '../../Components/Modal/Menu Drink/Delete Drink/DeleteDr
 import EditDrink from '../../Components/Modal/Menu Drink/Edit Drink/EditDrink';
 
 function Drink() {
-    const datas = [
-        {
-            drink_id: "COFFEE01",
-            drink_category: "COFFEE",
-            drink_name: "Black Coffee",
-            drink_price: 39000,
-        },
-        {
-            drink_id: "TEA01",
-            drink_category: "TEA",
-            drink_name: "Milk Coffee",
-            drink_price: 35000,
-        },
-        {
-            drink_id: "COOKIES02",
-            drink_category: "COOKIES",
-            drink_name: "Brown Coffee",
-            drink_price: 35000,
-        },
-        {
-            drink_id: "FRUIT01",
-            drink_category: "FRUIT",
-            drink_name: "Peach Tea",
-            drink_price: 55000,
-        },
-        {
-            drink_id: "FRUIT02",
-            drink_category: "FRUIT",
-            drink_name: "Oolong Tea",
-            drink_price: 55000,
-        },
-        {
-            drink_id: "FRUIT03",
-            drink_category: "FRUIT",
-            drink_name: "Macchiato Tea",
-            drink_price: 55000,
-        },
-    ];
     //Lấy Bearer Token
     const tokenBearer = localStorage.getItem("tokenBearer");
     //Save Drink Data to array
@@ -59,6 +21,8 @@ function Drink() {
                 setList(response.data.products)
             })
     }, [requestData])
+    //Lấy Data theo Cate
+    const [viewCategory, setCategory] = useState("ALL")
     //Lấy Data theo ID
     const [viewID, setID] = useState("")
     function searchID(id) {
@@ -104,10 +68,23 @@ function Drink() {
                     </div>
                 </div>
                 <div className="drinktable__header-search">
-                    <div className="drinktable__header-item drinktable__header-item--left">
+                    {/* <div className="drinktable__header-item drinktable__header-item--left">
                         Drink's price:
                         <br />
                         <input type="text" className="drinksearch__form" placeholder="ID" />
+                    </div> */}
+                    <div className="drinktable__header-item drinktable__header-item--left">
+                        Drink's category:
+                        <br />
+                        <select id="category" className="drinksearch__form drinksearch__form--category"
+                            onChange={(event) => setCategory(event.target.value)}
+                        >
+                            <option value="ALL">ALL</option>
+                            <option value="TEA">TEA</option>
+                            <option value="COFFEE">COFFEE</option>
+                            <option value="COOKIES">COOKIES</option>
+                            <option value="FRUIT">FRUIT</option>
+                        </select>
                     </div>
                     <div className="drinktable__header-item drinktable__header-item--icon">
                         <AiIcons.AiOutlineSearch className="drinktable__header-search drinktable__header-searchicon"
@@ -145,39 +122,72 @@ function Drink() {
                 <div className="drinktable__table-content">
                     <table className="drinktable__table">
                         <tbody className="drinktable__body">
-                            {viewList.map((data, index) =>
-                            // data.category == "TEA" && 
-                            (
-                                <tr className="drinktable__row">
-                                    <td>{index + 1}</td>
-                                    {/* <td>{data.drink_id}</td> */}
-                                    <td>{data.category}</td>
-                                    <td>{data.name}</td>
-                                    <td>{currencyFormat(data.price)}</td>
-                                    <td>
-                                        <button
-                                            className="drinktable__btn-edit"
-                                            onClick={() => {
-                                                setButt("editdrink");
-                                                setViewModal(!viewModal)
-                                                setEditedDrink([data])
-                                            }}
-                                        >
-                                            <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
-                                        </button>
-                                        <button
-                                            className="drinktable__btn-cancel"
-                                            onClick={() => {
-                                                setViewModal(!viewModal);
-                                                setButt("canceldrink")
-                                                setEditedDrink([data])
-                                            }}
-                                        >
-                                            <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {viewCategory == "ALL" ?
+                                viewList.map((data, index) =>
+                                (
+                                    <tr className="drinktable__row">
+                                        <td>{index + 1}</td>
+                                        <td>{data.category}</td>
+                                        <td>{data.name}</td>
+                                        <td>{currencyFormat(data.price)}</td>
+                                        <td>
+                                            <button
+                                                className="drinktable__btn-edit"
+                                                onClick={() => {
+                                                    setButt("editdrink");
+                                                    setViewModal(!viewModal)
+                                                    setEditedDrink([data])
+                                                }}
+                                            >
+                                                <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
+                                            </button>
+                                            <button
+                                                className="drinktable__btn-cancel"
+                                                onClick={() => {
+                                                    setViewModal(!viewModal);
+                                                    setButt("canceldrink")
+                                                    setEditedDrink([data])
+                                                }}
+                                            >
+                                                <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                viewList.map((data, index) =>
+                                    data.category == viewCategory &&
+                                    (
+                                        <tr className="drinktable__row">
+                                            <td>{index + 1}</td>
+                                            <td>{data.category}</td>
+                                            <td>{data.name}</td>
+                                            <td>{currencyFormat(data.price)}</td>
+                                            <td>
+                                                <button
+                                                    className="drinktable__btn-edit"
+                                                    onClick={() => {
+                                                        setButt("editdrink");
+                                                        setViewModal(!viewModal)
+                                                        setEditedDrink([data])
+                                                    }}
+                                                >
+                                                    <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
+                                                </button>
+                                                <button
+                                                    className="drinktable__btn-cancel"
+                                                    onClick={() => {
+                                                        setViewModal(!viewModal);
+                                                        setButt("canceldrink")
+                                                        setEditedDrink([data])
+                                                    }}
+                                                >
+                                                    <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -198,7 +208,7 @@ function Drink() {
                         <NewDrink tokenBearer={tokenBearer} ModalState={callbackModal} datas={viewList} setRequestData={setRequestData} />
                     ) : selectedButt === "canceldrink" ? (
                         <DeleteDrink tokenBearer={tokenBearer} ModalState={callbackModal} editedDrink={editedDrink} setRequestData={setRequestData} />
-                    ) : <EditDrink tokenBearer={tokenBearer} ModalState={callbackModal} datas={datas} editedDrink={editedDrink} setRequestData={setRequestData} />}
+                    ) : <EditDrink tokenBearer={tokenBearer} ModalState={callbackModal} editedDrink={editedDrink} setRequestData={setRequestData} />}
                 </div>
             </div>
         </>

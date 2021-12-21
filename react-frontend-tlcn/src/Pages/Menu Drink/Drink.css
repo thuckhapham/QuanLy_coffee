@@ -12,6 +12,11 @@
   border: 0.5px solid black;
   padding: 10px 12px;
 }
+.drinksearch__form--category {
+  height: 37px;
+  font-size: 1.3rem;
+  transform: translateY(3%);
+}
 .drinktable__header-search {
   display: flex;
   margin-left: 50px;
