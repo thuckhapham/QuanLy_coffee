@@ -8,11 +8,13 @@ const getNumberOfOrder = async(req,res) =>{
     let month = parseInt(req.query.month)
     let day = parseInt(req.query.day)
     let hour =parseInt(req.query.hour)
+    let status = req.query.status
     let from, to, number
-
     switch (true) {
         case isNaN(year):
-            return res.json({number : await Order.countDocuments()})
+            if(status=== undefined)
+                return res.json({number : await Order.countDocuments()})
+            return res.json({number : await Order.countDocuments({status : status})})
             break;
         case isNaN(month):
             from =  new Date(year,1,1,0,0,0).toISOString()
@@ -31,12 +33,23 @@ const getNumberOfOrder = async(req,res) =>{
             to = new Date(year, month,day,hour+1,0,0,0).toISOString()
 
     }
-    number = await Order.countDocuments({
-        created: {
-            $gte : from ,
-            $lt : to
-        }
-    })
+    if(status=== undefined)
+        number = await Order.countDocuments({
+            created: {
+                $gte : from ,
+                $lt : to
+            }
+        })
+    else
+    {
+        number = await Order.countDocuments({
+            created: {
+                $gte : from ,
+                $lt : to
+            },
+            status : status
+        })
+    }
     return res.json({
         from : from,
         to : to,
