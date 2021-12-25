@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import DeleteOrder from '../../Components/Modal/History Order/Delete Order/DeleteOrder'
+import ViewOrder from '../../Components/Modal/History Order/View Order/ViewOrder'
 import * as GiIcons from 'react-icons/gi'
 import * as AiIcons from 'react-icons/ai'
+import * as GrIcons from 'react-icons/gr'
 import './HistoryOrder.css'
 
 function HistoryOrder() {
@@ -30,6 +32,20 @@ function HistoryOrder() {
             setList(response.data.orders.reverse())
         })
     }, [requestData])
+    //Save Order Data to array
+    const [editedOrder, setEditedOrder] = useState([{ Order_id: 0, Order_name: "loading" }]);
+    function saveOrder(ordId) {
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/api/order/${ordId}`,
+            headers: {
+                'Authorization': `bearer ${tokenBearer}`,
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            setEditedOrder(response.data)
+        })
+    }
     //Xóa order
     const [selectOrder, setOrder] = useState("")
     //Lấy Data theo ID
@@ -140,14 +156,25 @@ function HistoryOrder() {
                                         <td>{data.status ? "True" : "False"}</td>
                                         <td>
                                             <button
-                                                className="historyoder__btn-cancel"
+                                                className="customer__btn-view"
                                                 onClick={() => {
-                                                    setViewModal(!viewModal);
-                                                    setButt("cancelorder")
-                                                    setOrder(data._id)
+                                                    setButt("viewcustomer");
+                                                    setViewModal(!viewModal)
+                                                    saveOrder(data._id)
                                                 }}
                                             >
-                                                Cancel
+                                                <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
+                                            </button>
+                                            <button
+                                                className="historyoder__btn-cancel"
+                                                onClick={() => {
+                                                    setButt("cancelorder")
+                                                    setViewModal(!viewModal);
+                                                    setOrder(data._id)
+                                                    console.log(data)
+                                                }}
+                                            >
+                                                {/* Cancel */}
                                                 <GiIcons.GiCancel className="historyoder__btn-cancelicon" />
                                             </button>
                                         </td>
@@ -172,7 +199,7 @@ function HistoryOrder() {
                     </div>
                     {selectedButt === "cancelorder" ? (
                         <DeleteOrder ModalState={callbackModal} orderId={selectOrder} setRequestData={setRequestData} />
-                    ) : ""}
+                    ) : <ViewOrder ModalState={callbackModal} editedOrder={editedOrder} />}
                 </div>
             </div>
         </>

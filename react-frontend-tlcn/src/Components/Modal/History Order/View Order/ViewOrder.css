@@ -1,0 +1,15 @@
+.checkout__total {
+  font-size: 1.5rem;
+}
+.checkout__footer {
+  display: flex;
+}
+.checkout__footer-list {
+  margin: auto;
+}
+.checkout__footer-list {
+  margin-bottom: 15px;
+}
+.historyoder__btn-cancel .historyoder__btn-cancelicon {
+  margin-left: 0;
+}

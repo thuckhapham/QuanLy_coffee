@@ -3,6 +3,7 @@ import './Drink.css'
 import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import * as GiIcons from 'react-icons/gi'
+import * as GrIcons from 'react-icons/gr'
 import NewDrink from '../../Components/Modal/Menu Drink/New Drink/NewDrink';
 import DeleteDrink from '../../Components/Modal/Menu Drink/Delete Drink/DeleteDrink';
 import EditDrink from '../../Components/Modal/Menu Drink/Edit Drink/EditDrink';
@@ -131,6 +132,16 @@ function Drink() {
                                         <td>{data.name}</td>
                                         <td>{currencyFormat(data.price)}</td>
                                         <td>
+                                            <button
+                                                className="customer__btn-view"
+                                                onClick={() => {
+                                                    setButt("editdrink");
+                                                    setViewModal(!viewModal)
+                                                    setEditedDrink([data])
+                                                }}
+                                            >
+                                                <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
+                                            </button>
                                             <button
                                                 className="drinktable__btn-edit"
                                                 onClick={() => {
