@@ -1,9 +1,6 @@
 import Order from '../../models/order.model'
 
-// Số lượng đơn hàng theo ngày / giờ
 const getNumberOfOrder = async(req,res) =>{
-    let start = new Date(1,1,1,0,0,0)
-
     let year = parseInt(req.query.year)
     let month = parseInt(req.query.month)
     let day = parseInt(req.query.day)
@@ -59,9 +56,6 @@ const getNumberOfOrder = async(req,res) =>{
 
 // Số tiền theo ngày / giờ
 
-// Số đơn bị huỷ theo ngày, giờ 
-
-// Số đơn thành công
 
 // Số lượng member
 
