@@ -12,7 +12,7 @@ import authRoutes from './controllers/auth/auth.routes'
 import orderRoutes from './controllers/order/order.routes'
 import productRoutes from './controllers/product/product.routes'
 import tableRoutes from './controllers/table/table.routes'
-
+import reportRoutes from './controllers/report/report.routes'
 
 const app = express()
 
@@ -54,6 +54,7 @@ app.use('/', authRoutes)
 app.use('/', productRoutes)
 app.use('/', tableRoutes)
 app.use('/', orderRoutes)
+app.use('/', reportRoutes)
 app.get('/', (req, res) => {
 	res.status(200).send(template())
 })
