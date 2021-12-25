@@ -123,6 +123,7 @@ const setRole = async (req,res) =>{
   try {
     let user = req.profile
     user.role = req.body.role 
+    await user.save()
     res.json({
       message :  "Set role finish"
     })
@@ -142,7 +143,7 @@ const changePassword = async (req,res) => {
       error: "old password don't match"
     })
   }
-  user.password = req.password
+  user.password = req.body.password
   await user.save()
   return res.json({ message: "Change password success"})
 }

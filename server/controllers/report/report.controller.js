@@ -44,9 +44,11 @@ const getNumberOfOrder = async(req,res) =>{
     })
 }
 
-// Số tiền t heo ngày / giờ
+// Số tiền theo ngày / giờ
 
 // Số đơn bị huỷ theo ngày, giờ 
+
+// Số đơn thành công
 
 // Số lượng member
 
