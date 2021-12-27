@@ -8,6 +8,7 @@ import EditMember from '../../Components/Modal/Member/Edit Member/EditMember'
 import DeleteMember from '../../Components/Modal/Member/Delete Member/DeleteMember'
 import ViewMember from '../../Components/Modal/Member/View Member/ViewMember'
 import NewCustomer from '../../Components/Modal/Member/New Customer/NewCustomer'
+import SetRole from '../../Components/Modal/Member/Set Role/SetRole'
 
 function Member() {
     const [requestData, setRequestData] = useState(new Date());
@@ -141,7 +142,14 @@ function Member() {
                                 {viewList.map((data, index) => (
                                     <tr className="customer__row" key={data._id}>
                                         <td>{index + 1}</td>
-                                        <td>{data.userName}</td>
+                                        <td
+                                            onClick={() => {
+                                                setButt("viewcustomer");
+                                                setViewModal(!viewModal)
+                                                saveCustomer(data._id)
+                                            }}
+                                            className="customer__row customer__row--username"
+                                        >{data.userName}</td>
                                         <td>{data.lastName}</td>
                                         <td>{data.enable == true ? "Active" : "Deactive"}</td>
                                         <td>{formattedDate(data.created)}</td>
@@ -149,7 +157,7 @@ function Member() {
                                             <button
                                                 className="customer__btn-view"
                                                 onClick={() => {
-                                                    setButt("viewcustomer");
+                                                    setButt("setrole");
                                                     setViewModal(!viewModal)
                                                     saveCustomer(data._id)
                                                 }}
@@ -201,7 +209,8 @@ function Member() {
                     ) : selectedButt === "editcustomer" ? (
                         <EditMember ModalState={callbackModal} editedCustomer={editedCustomer} requestData={requestData} setRequestData={setRequestData} />
                     ) : selectedButt === "newcustomer" ? <NewCustomer ModalState={callbackModal} setRequestData={setRequestData} /> :
-                        <ViewMember ModalState={callbackModal} editedCustomer={editedCustomer} />}
+                        selectedButt === "setrole" ? <SetRole ModalState={callbackModal} editedCustomer={editedCustomer} setRequestData={setRequestData} /> :
+                            <ViewMember ModalState={callbackModal} editedCustomer={editedCustomer} />}
                 </div>
             </div>
         </>

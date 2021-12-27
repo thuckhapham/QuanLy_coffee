@@ -103,6 +103,12 @@
 .customer__row {
   border-bottom: 1px solid #dddddd;
 }
+.customer__row .customer__row--username:hover {
+  cursor: pointer;
+  color: blue;
+  font-weight: 500;
+  transition: ease-in 0.3s;
+}
 /* Button Layout */
 /* Button Cancel */
 .customer__btn-cancel {

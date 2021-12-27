@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import './EditMember.css'
@@ -77,19 +77,6 @@ function EditMember(props) {
                                 </div>
                                 <div className="editcustomer__input">
                                     <input type="text" className="editcustomer__form" placeholder="ID" value={props.editedCustomer._id} readOnly />
-                                </div>
-                            </div>
-                            <div className="newcustomer__content-item">
-                                <div className="newcustomer__lable">
-                                    ROLE:
-                                </div>
-                                <div className="newcustomer__input">
-                                    <select id="category" className="newdrink__select"
-                                        onChange={(event) => setRole(event.target.value)}
-                                    >
-                                        <option value="ADMIN">ADMIN</option>
-                                        <option value="USER">USER</option>
-                                    </select>
                                 </div>
                             </div>
                             <div className="editcustomer__content-item">
