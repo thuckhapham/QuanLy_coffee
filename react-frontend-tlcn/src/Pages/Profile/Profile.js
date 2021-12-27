@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Profile.css'
 import EditProfile from '../../Components/Modal/Profile/EditProfile/EditProfile'
+import ChangePassword from '../../Components/Modal/Profile/ChangePassword/ChangePassword'
 
 function Profile(props) {
     const [requestData, setRequestData] = useState(new Date());
@@ -146,7 +147,7 @@ function Profile(props) {
                             <EditProfile ModalState={callbackModal}
                                 editedCustomer={editedCustomer}
                                 requestData={requestData} setRequestData={setRequestData} />
-                        ) : ""}
+                        ) : <ChangePassword ModalState={callbackModal} requestData={requestData} setRequestData={setRequestData} />}
                     </div>
                 </div>
             </>
