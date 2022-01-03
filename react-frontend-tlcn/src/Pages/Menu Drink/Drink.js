@@ -62,11 +62,11 @@ function Drink() {
                         <br />
                         <input type="text" className="drinksearch__form" placeholder="ID" value={viewID} onChange={e => setID(e.target.value)} />
                     </div>
-                    <div className="drinktable__header-item">
+                    {/* <div className="drinktable__header-item">
                         Drink's name:
                         <br />
                         <input type="text" className="drinksearch__form" placeholder="ID" />
-                    </div>
+                    </div> */}
                 </div>
                 <div className="drinktable__header-search">
                     {/* <div className="drinktable__header-item drinktable__header-item--left">
@@ -132,7 +132,7 @@ function Drink() {
                                         <td>{data.name}</td>
                                         <td>{currencyFormat(data.price)}</td>
                                         <td>
-                                            <button
+                                            {/* <button
                                                 className="customer__btn-view"
                                                 onClick={() => {
                                                     setButt("editdrink");
@@ -141,7 +141,7 @@ function Drink() {
                                                 }}
                                             >
                                                 <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
-                                            </button>
+                                            </button> */}
                                             <button
                                                 className="drinktable__btn-edit"
                                                 onClick={() => {
