@@ -1,7 +1,5 @@
 {
   "scripts": {
-    "heroku-prebuild":"cd server && yarn install && yarn development",
-    "build": "cd server && yarn install && yarn development",
-    "start": "cd server && yarn install && yarn development"
+    "heroku-prebuild": "cd server && npm install && npm deploy2"
   }
 }
