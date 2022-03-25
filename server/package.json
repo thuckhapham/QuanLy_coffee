@@ -43,7 +43,7 @@
     "yarn": "^1.22.15"
   },
   "scripts": {
-    "development": "nodemon"   
+    "development": "nodemon",
     "deploy": "nodemon server",
     "deploy2": "node server"
   }
