@@ -44,7 +44,7 @@
   },
   "scripts": {
     "development": "nodemon",
-    "code": "nodemon server",
+    "code": "nodemon",
     "deploy2": "nodemon server"
   }
 }
