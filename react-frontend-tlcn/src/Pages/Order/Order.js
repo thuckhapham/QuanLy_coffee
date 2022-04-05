@@ -28,9 +28,10 @@ function Order() {
     axios
       .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
       .then((response) => {
+        console.log(response.data);
         setList(response.data.products);
-        retrieveOrder(id);
       });
+    retrieveOrder(id);
   }, []);
   //Voucher
   const [priceVoucher, setVoucher] = useState(null);
@@ -95,6 +96,7 @@ function Order() {
         "Content-Type": "application/json",
       },
     }).then((response) => {
+      console.log(response.data);
       setBillOrder(response.data.orderItem);
     });
   }
@@ -230,10 +232,9 @@ function Order() {
                 </li> */}
                 <li
                   className="category__button-check"
-                  onClick={() => {
-                    setViewModal(!viewModal);
-                    setButt("checkout");
-                  }}
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  onClick={() => {}}
                 >
                   Check out
                 </li>
@@ -244,6 +245,39 @@ function Order() {
       </div>
 
       {/* Modal Layout */}
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content ">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body text-center">
+              <CheckOut
+                orderdetail={billOrder}
+                orderid={id}
+                totalprice={currencyFormat(TotalPrice)}
+                discountprice={currencyFormat(DiscountPrice)}
+                ModalState={callbackModal}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+{/* 
       <div className={viewModal ? "modal--unactive" : "modal"}>
         <div className="modal__overlay"></div>
         <div className="modal__body">
@@ -274,7 +308,7 @@ function Order() {
             <Member ModalState={callbackModal} />
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

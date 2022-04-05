@@ -37,11 +37,14 @@
   flex-wrap: wrap;
 }
 .homepage__order-link {
+  /* display: inline-block;
+    text-decoration: none; */
+  /* background-color: transparent; */
   margin: 10px 0 10px 50px;
   border: none;
   outline: none;
   color: #fff;
-  background-color: rgb(9, 43, 117);
+  background-color: rgb(117, 9, 9);
   padding: 23px;
   border-radius: 10px;
   cursor: pointer;
@@ -114,11 +117,14 @@
 }
 
 .table-used {
-  color: rgb(153, 18, 18);
+  background-color: rgb(153, 18, 18);
 }
 
-.table-active-border {
-  color: red !important;
-  transform: scale(1.1);
-  transition: all 1s!important;
+.ms-1 {
+  margin-left: 1rem !important;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
 }

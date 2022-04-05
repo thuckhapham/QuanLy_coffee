@@ -10,7 +10,8 @@
   box-sizing: inherit;
 }
 html {
-  font-size: 62.5%;
+  /* font-size: 62.5%; */
+  font-size: 100%;
   line-height: 1.6rem;
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
@@ -68,4 +69,22 @@ html {
 .main__path {
   margin: 0 330px 0 250px;
   width: 100%;
+}
+
+/* GLOBAL CSS */
+.d-inline-block {
+  display: inline-block;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+.text-center {
+  text-align: center !important;
 }
