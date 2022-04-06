@@ -1,7 +1,7 @@
 {
   "name": "CoffeeManage",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "repository": "https://github.com/thuckhapham/QuanLy_coffee.git",
   "author": "",
   "license": "MIT",
@@ -43,6 +43,8 @@
     "yarn": "^1.22.15"
   },
   "scripts": {
-    "development": "nodemon"
+    "development": "nodemon",
+    "code": "nodemon",
+    "deploy2": "node server"
   }
 }

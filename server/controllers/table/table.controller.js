@@ -3,6 +3,7 @@ import extend from "lodash/extend";
 
 const create = async (req, res) => {
   const table = new Table(req.body);
+  console.log(table);
   try {
     const istablePoinExists = await Table.exists({
       tablePoin: table.tablePoin,

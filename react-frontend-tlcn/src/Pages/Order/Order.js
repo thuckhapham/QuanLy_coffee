@@ -2,7 +2,7 @@ import React from "react";
 import "./Order.css";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
 import Discount from "../../Components/Modal/Order/Discount/Discount";
 import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
@@ -25,12 +25,14 @@ function Order() {
   // Lấy dữ liệu nước
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/products?page=1&pagesize=100`)
+    axios
+      .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
       .then((response) => {
-        setList(response.data.products)
-        retrieveOrder(id)
-      })
-  }, [])
+        console.log(response.data);
+        setList(response.data.products);
+      });
+    retrieveOrder(id);
+  }, []);
   //Voucher
   const [priceVoucher, setVoucher] = useState(null);
   const [activeVoucher, setActive] = useState(false);
@@ -53,49 +55,50 @@ function Order() {
   // Thêm nước
   function addingDrink(selectedId) {
     axios({
-      method: 'post',
+      method: "post",
       url: `http://localhost:5000/api/order/${id}/addProduct`,
       data: {
         productId: selectedId,
-        quantity: 1
+        quantity: 1,
       },
       headers: {
-        'Authorization': `bearer ${tokenBearer}`,
-        'Content-Type': 'application/json'
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
       },
     }).then(() => {
-      retrieveOrder(id)
-    })
+      retrieveOrder(id);
+    });
   }
   // Trừ nước
   function minusDrink(selectedId) {
     axios({
-      method: 'post',
+      method: "post",
       url: `http://localhost:5000/api/order/${id}/addProduct`,
       data: {
         productId: selectedId,
-        quantity: -1
+        quantity: -1,
       },
       headers: {
-        'Authorization': `bearer ${tokenBearer}`,
-        'Content-Type': 'application/json'
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
       },
     }).then(() => {
-      retrieveOrder(id)
-    })
+      retrieveOrder(id);
+    });
   }
-  // Lấy danh sách nước đang order 
+  // Lấy danh sách nước đang order
   function retrieveOrder(id) {
     axios({
-      method: 'get',
+      method: "get",
       url: `http://localhost:5000/api/order/${id}`,
       headers: {
-        'Authorization': `bearer ${tokenBearer}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
     }).then((response) => {
-      setBillOrder(response.data.orderItem)
-    })
+      console.log(response.data);
+      setBillOrder(response.data.orderItem);
+    });
   }
   // Checkout
   // function checkoutOrder(id) {
@@ -139,7 +142,7 @@ function Order() {
                     <button
                       className="order__increase"
                       onClick={() => {
-                        addingDrink(item.ProductID)
+                        addingDrink(item.ProductID);
                       }}
                     >
                       +
@@ -172,8 +175,7 @@ function Order() {
                 <ul className="category__list">
                   {viewList
                     .map((data, index) => {
-                      if (duplicateCheck.includes(data.category))
-                        return null;
+                      if (duplicateCheck.includes(data.category)) return null;
                       duplicateCheck.push(data.category);
                       return (
                         <li
@@ -197,8 +199,8 @@ function Order() {
                         <li
                           className="category__name-item"
                           onClick={() => {
-                            addingDrink(data._id)
-                            retrieveOrder(id)
+                            addingDrink(data._id);
+                            retrieveOrder(id);
                           }}
                         >
                           {data.name}
@@ -230,10 +232,9 @@ function Order() {
                 </li> */}
                 <li
                   className="category__button-check"
-                  onClick={() => {
-                    setViewModal(!viewModal);
-                    setButt("checkout");
-                  }}
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  onClick={() => {}}
                 >
                   Check out
                 </li>
@@ -244,6 +245,39 @@ function Order() {
       </div>
 
       {/* Modal Layout */}
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content ">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body text-center">
+              <CheckOut
+                orderdetail={billOrder}
+                orderid={id}
+                totalprice={currencyFormat(TotalPrice)}
+                discountprice={currencyFormat(DiscountPrice)}
+                ModalState={callbackModal}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+{/* 
       <div className={viewModal ? "modal--unactive" : "modal"}>
         <div className="modal__overlay"></div>
         <div className="modal__body">
@@ -271,12 +305,10 @@ function Order() {
               ModalState={callbackModal}
             />
           ) : (
-            <Member
-              ModalState={callbackModal}
-            />
+            <Member ModalState={callbackModal} />
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
