@@ -9,10 +9,9 @@ const signin = async (req, res) => {
     let user = await User.findOne({
       "userName": req.body.userName
     })
-    if (!user)
-      {
-        console.info(`sigin: ${req.body.userName} not found`)
-        return res.status('401').json({
+    if (!user) {
+      console.info(`sigin: ${req.body.userName} not found`)
+      return res.status('401').json({
         error: "Username or password not right"
       })
     }
@@ -23,7 +22,7 @@ const signin = async (req, res) => {
         error: "Username or password not right"
       })
     }
-    if(!user.enable){
+    if (!user.enable) {
       console.info(`sigin: ${req.body.userName} is locked`)
       return res.status('401').send({
         error: "user is locked"
@@ -33,12 +32,11 @@ const signin = async (req, res) => {
     const token = jwt.sign({
       _id: user._id,
       userName: user.userName,
-      role : user.role
-    }, config.jwtSecret)
-
-    res.cookie("t", token, {
-      expire: new Date() + 9999
-    })
+      role: user.role,
+    }, config.jwtSecret, { expiresIn: '30d' })
+    // res.cookie("t", token, {
+    //   expire: new Date() + 9999
+    // })
     console.info(`sigin: ${req.body.userName} finished`)
     return res.json({
       token,
@@ -68,7 +66,7 @@ const requireSignin = expressJwt({
 })
 
 const hasAuthorization = (req, res, next) => {
-  const authorized = req.profile && req.auth && ( req.profile._id == req.auth._id  || req.auth.role == 'ADMIN' )
+  const authorized = req.profile && req.auth && (req.profile._id == req.auth._id || req.auth.role == 'ADMIN')
   if (!(authorized)) {
     console.error("User is not authorized")
     return res.status('403').json({
@@ -78,7 +76,7 @@ const hasAuthorization = (req, res, next) => {
   next()
 }
 const hasAdmin = (req, res, next) => {
-  const authorized = req.auth && req.auth.role == 'ADMIN' 
+  const authorized = req.auth && req.auth.role == 'ADMIN'
   if (!(authorized)) {
     console.error("User have no right")
     return res.status('403').json({
