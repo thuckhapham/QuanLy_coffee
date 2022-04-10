@@ -117,26 +117,21 @@ function Order() {
     <>
       <div className="order">
         <h1>Order - Number {id}</h1>
-        <table className="order__table">
-          <thead className="order__head">
-            <tr className="order__header">
-              <th>Id</th>
-              {/* <th>Menu Id</th> */}
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              {/* <th>Note</th> */}
-              <th>Total</th>
-            </tr>
-          </thead>
-        </table>
-        <div className="order__table-height">
+        <div className="order__table-height text-center">
           <table className="order__table">
+            <thead className="order__head">
+              <tr className="order__header">
+                <th style={{ width: 100 }}>Id</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
             <tbody className="order__body">
               {billOrder.map((item, index) => (
                 <tr className="order__row">
                   <td>{index + 1}</td>
-                  {/* <td>{item._id}</td> */}
                   <td>{item.name}</td>
                   <td>
                     <button
@@ -277,7 +272,7 @@ function Order() {
           </div>
         </div>
       </div>
-{/* 
+      {/* 
       <div className={viewModal ? "modal--unactive" : "modal"}>
         <div className="modal__overlay"></div>
         <div className="modal__body">

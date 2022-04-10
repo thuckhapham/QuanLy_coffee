@@ -11,20 +11,22 @@ function Homepage(props) {
 
   //new eidt
   const [selectedTable, setSelectedTable] = useState(undefined);
-  const [activeTable, setActiveTable] = useState(0);
+  const [activeTable, setActiveTable] = useState(-1);
+  const [orderDetail, setOrderDetail] = useState({});
 
   useEffect(() => {
-    if (selectedTable !== undefined && selectedTable.status === "USED")
+    if (selectedTable !== undefined && selectedTable.status === "WAIT")
       axios({
         method: "get",
-        url: "http://localhost:5000/api/order/624c3616de5ecaf61ce75584",
+        url: "http://localhost:5000/api/table/" + selectedTable.tablePoin,
         headers: {
           Authorization: `bearer ${tokenBearer}`,
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        // alert(JSON.stringify(res.data));
+        setOrderDetail({ orderId: res.data.ordersId });
       });
+    else setOrderDetail({});
   }, [selectedTable]);
 
   useEffect(() => {
@@ -53,7 +55,6 @@ function Homepage(props) {
       },
     })
       .then((res) => {
-        alert(JSON.stringify(res.data));
         setRequestData(new Date());
         setName("");
       })
@@ -99,6 +100,8 @@ function Homepage(props) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
+      setSelectedTable(undefined);
+      setActiveTable(-1);
       setRequestData(new Date());
     });
   };
@@ -113,6 +116,19 @@ function Homepage(props) {
       },
     }).then((res) => {
       setRequestData(new Date());
+    });
+  };
+
+  const getDetailOrder = () => {
+    axios({
+      method: "get",
+      url: "http://localhost:5000/api/order/" + orderDetail.orderId,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      setOrderDetail({ ...orderDetail, data: res.data });
     });
   };
 
@@ -151,9 +167,9 @@ function Homepage(props) {
                     "homepage__order-link d-block " +
                     (i === activeTable && "table-active-border") +
                     " " +
-                    (data.status === "AVAILABLE"
+                    (data.status === "INIT"
                       ? "table-available"
-                      : data.status === "USED"
+                      : data.status === "WAIT"
                       ? "table-used"
                       : "table-broken")
                   }
@@ -192,9 +208,9 @@ function Homepage(props) {
                     }
                     disabled
                   >
-                    <option value={"AVAILABLE"}>Chưa có Order</option>
-                    <option value={"USED"}>Chờ pha chế</option>
-                    <option value={"BROKEN"}>Đã hoàn thành</option>
+                    <option value={"INIT"}>Chưa có Order</option>
+                    <option value={"WAIT"}>Chờ pha chế</option>
+                    <option value={"COMPLETE"}>Đã hoàn thành</option>
                   </select>
                   {/* <div
                 className="homepage__btn-add d-inline-block ms-1"
@@ -205,7 +221,7 @@ function Homepage(props) {
                 </li>
                 <li>______________________</li>
                 <li>
-                  {selectedTable.status === "AVAILABLE" ? (
+                  {selectedTable.status === "INIT" ? (
                     <>
                       <div
                         className="homepage__btn-add d-inline-block ms-1"
@@ -220,11 +236,13 @@ function Homepage(props) {
                         Xóa
                       </div>
                     </>
-                  ) : selectedTable.status === "USED" ? (
+                  ) : selectedTable.status === "WAIT" ? (
                     <>
                       <div
                         className="homepage__btn-add d-inline-block ms-1"
-                        onClick={() => UpdateStatus("BROKEN")}
+                        onClick={() => {
+                          UpdateStatus("COMPLETE");
+                        }}
                       >
                         Hoàn thành
                       </div>
@@ -238,6 +256,41 @@ function Homepage(props) {
                     </div>
                   )}
                 </li>
+                <li>
+                  {orderDetail.orderId !== undefined ? (
+                    <div className="pt-1">
+                      {/* {" "}
+                      Orderid: {orderDetail.orderId[0]}{" "} */}
+                      <div
+                        className="btn btn-warning"
+                        onClick={() => getDetailOrder()}
+                      >
+                        Chi tiết đơn
+                      </div>
+                      {orderDetail.data !== undefined && (
+                        <table className="order__table mt-1">
+                          <thead className="order__head">
+                            <tr className="order__header">
+                              <th>Name</th>
+                              <th>Quantity</th>
+                            </tr>
+                          </thead>
+                          <tbody className="order__body">
+                            {orderDetail.data.orderItem.map((e) => (
+                              <tr className="order__row">
+                                <td>{e.name}</td>
+                                <td>{e.quantity}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </li>
+                <li></li>
               </ul>
             </>
           )}

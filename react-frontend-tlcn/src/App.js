@@ -26,7 +26,7 @@ function App() {
           <div className="main">
             <div className="container p-3">
               <Routes>
-                <Route path="/" exact={true} element={<Login />} />
+                <Route path="/login" exact={true} element={<Login />} />
                 <Route path="/homepage" exact={true} element={<Homepage />} />
                 <Route path="/home" exact={true} element={<Homepage />} />
                 <Route path="/member" exact={true} element={<Member />} />

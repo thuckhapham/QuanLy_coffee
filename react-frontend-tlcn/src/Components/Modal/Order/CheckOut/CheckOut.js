@@ -32,7 +32,18 @@ function CheckOut(props) {
         method: "post",
         url: "http://localhost:5000/api/table/" + res.data.table + "/status",
         data: {
-          tableStatus: "USED",
+          tableStatus: "WAIT",
+        },
+        headers: {
+          Authorization: `bearer ${tokenBearer}`,
+          "Content-Type": "application/json",
+        },
+      });
+      axios({
+        method: "put",
+        url: "http://localhost:5000/api/table/insertOrder/" + res.data.table,
+        data: {
+          orderId: props.orderid,
         },
         headers: {
           Authorization: `bearer ${tokenBearer}`,
@@ -40,6 +51,8 @@ function CheckOut(props) {
         },
       }).then((res) => {
         navigate("/homepage");
+
+        // navigate("/homepage");
       });
     });
   }
