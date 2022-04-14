@@ -6,6 +6,8 @@ import * as GiIcons from "react-icons/gi";
 import * as AiIcons from "react-icons/ai";
 import * as GrIcons from "react-icons/gr";
 import "./HistoryOrder.css";
+import Footer from "../../Components/Footer/Footer";
+import Header2 from "../../NewComponents/Header2/Header";
 
 function HistoryOrder() {
   //Set Modal Active
@@ -106,6 +108,8 @@ function HistoryOrder() {
   }
   return (
     <>
+       <Header2 />
+        <div className="container p-3">
       <div className="historyorder">
         <div className="historyorder__top">
           <div className="historyorder__title">History Order</div>
@@ -260,29 +264,8 @@ function HistoryOrder() {
           </div>
         </div>
       </div>
-      {/* Modal Layout */}
-      {/* <div className={viewModal ? "modal--unactive" : "modal"}>
-        <div className="modal__overlay"></div>
-        <div className="modal__body">
-          <div style={{ display: "flex", "justify-content": "flex-end" }}>
-            <button
-              className="modal__btn-close"
-              onClick={() => setViewModal(!viewModal)}
-            >
-              X
-            </button>
-          </div>
-          {selectedButt === "cancelorder" ? (
-            <DeleteOrder
-              ModalState={callbackModal}
-              orderId={selectOrder}
-              setRequestData={setRequestData}
-            />
-          ) : (
-            <ViewOrder ModalState={callbackModal} editedOrder={editedOrder} />
-          )}
-        </div>
-      </div> */}
+     </div>
+     <Footer/>
     </>
   );
 }

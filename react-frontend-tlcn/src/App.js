@@ -13,6 +13,7 @@ import Profile from "./Pages/Profile/Profile";
 import Table from "./Pages/Table/Table.jsx";
 import Report from "./Pages/Report/Report.jsx";
 import Header2 from "./NewComponents/Header2/Header";
+import ClientTrack from "./Pages/ClientTrack/ClientTrack";
 
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 
@@ -21,30 +22,26 @@ function App() {
     <>
       <div className="app">
         <Router>
+          {/* <Header2 /> */}
           {/* <Header /> */}
-          <Header2 />
-          <div className="main">
-            <div className="container p-3">
-              <Routes>
-                <Route path="/login" exact={true} element={<Login />} />
-                <Route path="/homepage" exact={true} element={<Homepage />} />
-                <Route path="/home" exact={true} element={<Homepage />} />
-                <Route path="/member" exact={true} element={<Member />} />
-                <Route
-                  path="/order-history"
-                  exact={true}
-                  element={<HistoryOrder />}
-                />
-                <Route path="/order/:id" exact={true} element={<Order />} />
-                <Route path="/menu-drink" exact={true} element={<Drink />} />
-                <Route path="/profile" exact={true} element={<Profile />} />
-                <Route path="/table" exact={true} element={<Table />} />
-                <Route path="/report" exact={true} element={<Report />} />
-              </Routes>
-            </div>
-            {/* <OrderHistory /> */}
-          </div>
-          <Footer />
+          <Routes>
+            <Route path="/login" exact={true} element={<Login />} />
+            <Route path="/homepage" exact={true} element={<Homepage />} />
+            <Route path="/home" exact={true} element={<Homepage />} />
+            <Route path="/member" exact={true} element={<Member />} />
+            <Route
+              path="/order-history"
+              exact={true}
+              element={<HistoryOrder />}
+            />
+            <Route path="/order/:id" exact={true} element={<Order />} />
+            <Route path="/menu-drink" exact={true} element={<Drink />} />
+            <Route path="/profile" exact={true} element={<Profile />} />
+            <Route path="/table" exact={true} element={<Table />} />
+            <Route path="/report" exact={true} element={<Report />} />
+            <Route path="/track" exact={true} element={<ClientTrack />} />
+          </Routes>
+          {/* <OrderHistory /> */}
         </Router>
       </div>
     </>

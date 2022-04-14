@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./Table.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Header2 from "../../NewComponents/Header2/Header";
+import Footer from "../../Components/Footer/Footer";
 function Table(props) {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
@@ -83,7 +85,8 @@ function Table(props) {
   };
   return (
     <>
-      {/* <Login /> */}
+   <Header2 />
+        <div className="container p-3">
       <div className="homepage">
         <div className="homepage__header-list">
           <div className="homepage__header-item homepage__header-item--title">
@@ -220,6 +223,8 @@ function Table(props) {
           </div>
         </div>
       </div>
+      </div>
+      <Footer/>
     </>
   );
 }

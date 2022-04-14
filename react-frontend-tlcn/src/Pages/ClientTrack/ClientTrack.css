@@ -1,0 +1,41 @@
+.dot-big {
+  width: 30px;
+  height: 30px;
+}
+
+.table-not-clientcomplete {
+  border: solid 5px darkgray;
+}
+.table-clientcomplete {
+  background-color: blue;
+  animation: mymove 2s infinite;
+  color: white;
+}
+
+@keyframes mymove {
+  0% {
+    /* background-color: red; */
+    border: solid 5px red;
+    color: white;
+  }
+  20% {
+    border: solid 5px blue;
+    color: white;
+  }
+  40% {
+    /* background-color: rgb(255, 255, 0); */
+    border: solid 5px rgb(255, 255, 0);
+  }
+  60% {
+    /* background-color: rgb(0, 255, 34); */
+    border: solid 5px rgb(0, 255, 34);
+  }
+  80% {
+    /* background-color: rgb(255, 0, 195); */
+    border: solid 5px rgb(255, 0, 195);
+  }
+  100% {
+    /* background-color: rgb(0, 255, 234); */
+    border: solid 5px rgb(0, 255, 234);
+  }
+}

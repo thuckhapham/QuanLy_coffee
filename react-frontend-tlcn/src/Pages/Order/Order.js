@@ -1,11 +1,13 @@
 import React from "react";
 import "./Order.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Discount from "../../Components/Modal/Order/Discount/Discount";
 import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
+import Header2 from "../../NewComponents/Header2/Header";
+import Footer from "../../Components/Footer/Footer";
 
 function Order() {
   //Lấy Bearer Token
@@ -14,7 +16,7 @@ function Order() {
   const { id } = useParams();
   const [selectedCate, setCate] = useState("COFFEE");
 
-  const [billOrder, setBillOrder] = useState([]);
+  const [billOrder, setBillOrder] = useState({ orderItem: [] });
 
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
@@ -39,7 +41,10 @@ function Order() {
   //Lọc dữ liệu Category trùng
   const duplicateCheck = [];
   //Tính tổng tiền
-  let TotalPrice = billOrder.reduce((a, c) => a + c.price * c.quantity, 0);
+  let TotalPrice = billOrder.orderItem.reduce(
+    (a, c) => a + c.price * c.quantity,
+    0
+  );
   let DiscountPrice = 0;
   //Nếu có voucher giảm thì trừ tiền
   {
@@ -97,7 +102,7 @@ function Order() {
       },
     }).then((response) => {
       console.log(response.data);
-      setBillOrder(response.data.orderItem);
+      setBillOrder(response.data);
     });
   }
   // Checkout
@@ -113,110 +118,131 @@ function Order() {
   //     setBillOrder(response.data.orderItem)
   //   })
   // }
+
+  const navigate = useNavigate();
+
+  function cancelOrder() {
+    axios({
+      method: "delete",
+      url: `http://localhost:5000/api/order/${id}`,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    }).then(() => {
+      navigate("/homepage");
+    });
+  }
+
   return (
     <>
-      <div className="order">
-        <h1>Order - Number {id}</h1>
-        <div className="order__table-height text-center">
-          <table className="order__table">
-            <thead className="order__head">
-              <tr className="order__header">
-                <th style={{ width: 100 }}>Id</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody className="order__body">
-              {billOrder.map((item, index) => (
-                <tr className="order__row">
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                  <td>
-                    <button
-                      className="order__increase"
-                      onClick={() => {
-                        addingDrink(item.ProductID);
-                      }}
-                    >
-                      +
-                    </button>
-                    {item.quantity}
-                    <button
-                      className="order__decrease"
-                      onClick={() => minusDrink(item.ProductID)}
-                    >
-                      -
-                    </button>
-                  </td>
-                  <td>{currencyFormat(item.price)}</td>
-                  {/* <td></td> */}
-                  <td>{currencyFormat(item.price * item.quantity)}</td>
+      <Header2 />
+      <div className="container p-3">
+        <div className="order">
+          <h1>
+            Order {id} | Table {billOrder.table}
+          </h1>
+          <div className="order__table-height text-center">
+            <table className="order__table">
+              <thead className="order__head">
+                <tr className="order__header">
+                  <th style={{ width: 100 }}>Id</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="order__totalprice">
-          <div className="order__summary">{currencyFormat(TotalPrice)}</div>
-        </div>
-        <div className="category__container">
-          <div className="category__heading">Category</div>
-          <div className="category__header">{selectedCate}</div>
-          <div className="category__footer">
-            <div className="order__menu">
-              <div className="category__title">
-                <ul className="category__list">
-                  {viewList
-                    .map((data, index) => {
-                      if (duplicateCheck.includes(data.category)) return null;
-                      duplicateCheck.push(data.category);
-                      return (
-                        <li
-                          className="category__item"
-                          onClick={() => {
-                            setCate(data.category);
-                          }}
-                        >
-                          {data.category}
-                        </li>
-                      );
-                    })
-                    .filter((e) => e)}
-                </ul>
+              </thead>
+              <tbody className="order__body">
+                {billOrder.orderItem.map((item, index) => (
+                  <tr className="order__row">
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      <button
+                        className="order__increase"
+                        onClick={() => {
+                          addingDrink(item.ProductID);
+                        }}
+                      >
+                        +
+                      </button>
+                      {item.quantity}
+                      <button
+                        className="order__decrease"
+                        onClick={() => minusDrink(item.ProductID)}
+                      >
+                        -
+                      </button>
+                    </td>
+                    <td>{currencyFormat(item.price)}</td>
+                    {/* <td></td> */}
+                    <td>{currencyFormat(item.price * item.quantity)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="order__totalprice">
+            <div className="order__summary">{currencyFormat(TotalPrice)}</div>
+          </div>
+          <div className="category__container">
+            <div className="category__heading">Category</div>
+            <div className="category__header">{selectedCate}</div>
+            <div className="category__footer">
+              <div className="order__menu">
+                <div className="category__title">
+                  <ul className="category__list">
+                    {viewList
+                      .map((data, index) => {
+                        if (duplicateCheck.includes(data.category)) return null;
+                        duplicateCheck.push(data.category);
+                        return (
+                          <li
+                            className="category__item"
+                            onClick={() => {
+                              setCate(data.category);
+                            }}
+                          >
+                            {data.category}
+                          </li>
+                        );
+                      })
+                      .filter((e) => e)}
+                  </ul>
+                </div>
+                <div className="category__name">
+                  <ul className="category__name-list">
+                    {viewList.map(
+                      (data) =>
+                        data.category === selectedCate && (
+                          <li
+                            className="category__name-item"
+                            onClick={() => {
+                              addingDrink(data._id);
+                              retrieveOrder(id);
+                            }}
+                          >
+                            {data.name}
+                          </li>
+                        )
+                    )}
+                  </ul>
+                </div>
               </div>
-              <div className="category__name">
-                <ul className="category__name-list">
-                  {viewList.map(
-                    (data) =>
-                      data.category === selectedCate && (
-                        <li
-                          className="category__name-item"
-                          onClick={() => {
-                            addingDrink(data._id);
-                            retrieveOrder(id);
-                          }}
-                        >
-                          {data.name}
-                        </li>
-                      )
-                  )}
-                </ul>
-              </div>
-            </div>
-            <div className="category__button">
-              <ul>
-                <li
-                  className="category__button-member"
-                  onClick={() => {
-                    setViewModal(!viewModal);
-                    setButt("member");
-                  }}
-                >
-                  Member
-                </li>
-                {/* <li
+              <div className="category__button">
+                <ul>
+                  <li
+                    className="category__button-member"
+                    onClick={() => {
+                      // setViewModal(!viewModal);
+                      // setButt("member");
+                      cancelOrder();
+                    }}
+                  >
+                    Cancel
+                  </li>
+                  {/* <li
                   className="category__button-discount"
                   onClick={() => {
                     setViewModal(!viewModal);
@@ -225,85 +251,56 @@ function Order() {
                 >
                   Discount
                 </li> */}
-                <li
-                  className="category__button-check"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                  onClick={() => {}}
-                >
-                  Check out
-                </li>
-              </ul>
+                  <li
+                    className="category__button-check"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    onClick={() => {}}
+                  >
+                    Check out
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Modal Layout */}
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content ">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body text-center">
-              <CheckOut
-                orderdetail={billOrder}
-                orderid={id}
-                totalprice={currencyFormat(TotalPrice)}
-                discountprice={currencyFormat(DiscountPrice)}
-                ModalState={callbackModal}
-              />
+        {/* Modal Layout */}
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Modal title
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body text-center">
+                <CheckOut
+                  orderdetail={billOrder.orderItem}
+                  orderid={id}
+                  totalprice={currencyFormat(TotalPrice)}
+                  discountprice={currencyFormat(DiscountPrice)}
+                  ModalState={callbackModal}
+                  table = {billOrder.table}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-      {/* 
-      <div className={viewModal ? "modal--unactive" : "modal"}>
-        <div className="modal__overlay"></div>
-        <div className="modal__body">
-          <div style={{ display: "flex", "justify-content": "flex-end" }}>
-            <button
-              className="modal__btn-close"
-              onClick={() => setViewModal(!viewModal)}
-            >
-              X
-            </button>
-          </div>
-          {selectedButt === "discount" ? (
-            <Discount
-              ModalState={callbackModal}
-              VoucherState={setVoucher}
-              active={activeVoucher}
-              clickActive={setActive}
-            />
-          ) : selectedButt === "checkout" ? (
-            <CheckOut
-              orderdetail={billOrder}
-              orderid={id}
-              totalprice={currencyFormat(TotalPrice)}
-              discountprice={currencyFormat(DiscountPrice)}
-              ModalState={callbackModal}
-            />
-          ) : (
-            <Member ModalState={callbackModal} />
-          )}
-        </div>
-      </div> */}
+      <Footer />
     </>
   );
 }
