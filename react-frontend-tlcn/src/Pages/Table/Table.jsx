@@ -135,7 +135,7 @@ function Table(props) {
         <p>Chọn một bàn để xem</p>
       ) : (
         <>
-          <ul className="table-control">
+          <ul className="">
             <li>Table name: {selectedTable.tablePoin}</li>
             <li>_id: {selectedTable._id}</li>
             <li>

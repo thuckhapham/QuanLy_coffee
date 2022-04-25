@@ -108,12 +108,12 @@ function HistoryOrder() {
   }
   return (
     <>
-       <Header2 />
-        <div className="container p-3">
-      <div className="historyorder">
-        <div className="historyorder__top">
-          <div className="historyorder__title">History Order</div>
-          {/* <div className="historyorder__time-list">
+      <Header2 />
+      <div className="container p-3">
+        <div className="historyorder">
+          <div className="historyorder__top">
+            <div className="historyorder__title">History Order</div>
+            {/* <div className="historyorder__time-list">
                         <div className="historyorder__time-item">
                             From
                             <br />
@@ -125,147 +125,156 @@ function HistoryOrder() {
                             <input type="date" className="" id="dateto" name="dateto" />
                         </div>
                     </div> */}
-          <div className="historyorder__orderid">
-            Order Id:
-            <input
-              type="text"
-              className="historyorder__orderid historyorder__orderid-input"
-              id="orderid"
-              name="orderid"
-              placeholder="   
+            <div className="historyorder__orderid">
+              Order Id:
+              <input
+                type="text"
+                className="historyorder__orderid historyorder__orderid-input"
+                id="orderid"
+                name="orderid"
+                placeholder="   
                         Order ID"
-              value={viewID}
-              onChange={(e) => setID(e.target.value)}
-            />
-            <AiIcons.AiOutlineSearch
-              className="historyorder__orderid historyorder__orderid-icon"
-              onClick={() => orderID()}
-            />
+                value={viewID}
+                onChange={(e) => setID(e.target.value)}
+              />
+              <AiIcons.AiOutlineSearch
+                className="historyorder__orderid historyorder__orderid-icon"
+                onClick={() => orderID()}
+              />
+            </div>
           </div>
-        </div>
-        <div className="historyorder__table-header">
-          <table className="historyorder__table"></table>
-        </div>
-        <div className="historyorder__detail">
-          <div className="historyorder__table-content">
-            <table className="historyorder__table text-center">
-              <thead className="historyorder__head">
-                <tr className="historyorder__header">
-                  <th style={{ width: 100 }}>No.</th>
-                  <th style={{ width: 200 }}>Table Id</th>
-                  <th>Total</th>
-                  <th>Time</th>
-                  <th style={{ width: 100 }}>Payment</th>
-                  <th style={{ width: 100 }}>State</th>
-                  <th style={{ width: 150 }}>Action</th>
-                </tr>
-              </thead>
-              <tbody className="historyorder__body">
-                {viewList.map((data, index) => (
-                  <tr className="historyorder__row">
-                    <td>{index + 1}</td>
-                    <td>{data.table}</td>
-                    <td>{currencyFormat(data.total)} </td>
-                    <td>{formattedDate(data.updated)} </td>
-                    <td className="text-light">
-                      {data.payment !== undefined && data.payment.status ? (
-                        <span className="bg-success">✓</span>
-                      ) : (
-                        <span className="bg-danger ">✗</span>
-                      )}
-                    </td>
-                    <td className="text-light">
-                      {data.status ? (
-                        <span className="bg-success">✓</span>
-                      ) : (
-                        <span className="bg-danger">✗</span>
-                      )}
-                    </td>
-                    <td>
-                      <button
-                        className="customer__btn-view"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        onClick={() => {
-                          setButt("viewcustomer");
-                          setViewModal(!viewModal);
-                          saveOrder(data._id);
-                        }}
-                      >
-                        <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
-                      </button>
-                      <button
-                        className="historyoder__btn-cancel"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        onClick={() => {
-                          setButt("cancelorder");
-                          setViewModal(!viewModal);
-                          setOrder(data._id);
-                          console.log(data);
-                        }}
-                      >
-                        {/* Cancel */}
-                        <GiIcons.GiCancel className="historyoder__btn-cancelicon" />
-                      </button>
-                    </td>
+          <div className="historyorder__table-header">
+            <table className="historyorder__table"></table>
+          </div>
+          <div className="historyorder__detail">
+            <div className="historyorder__table-content">
+              <table className="historyorder__table text-center">
+                <thead className="historyorder__head">
+                  <tr className="historyorder__header">
+                    <th className="col-1 d-none d-md-table-cell">No.</th>
+                    <th className="col-2">Table</th>
+                    <th>Total</th>
+                    <th>Time</th>
+                    <th className="col-1 d-none d-md-table-cell">Pay</th>
+                    <th className="col-1 d-none d-md-table-cell">State</th>
+                    <th className="col-3 col-md-2">Action</th>
+                    {/* <th style={{ width: 100 }}>No.</th>
+                    <th style={{ width: 100 }}>Table</th>
+                    <th>Total</th>
+                    <th>Time</th>
+                    <th style={{ width: 100 }}>Payment</th>
+                    <th style={{ width: 100 }}>State</th>
+                    <th style={{ width: 150 }}>Action</th> */}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="historyorder__body">
+                  {viewList.map((data, index) => (
+                    <tr className="historyorder__row">
+                      <td className="col-1 d-none d-md-table-cell">
+                        {index + 1}
+                      </td>
+                      <td>{data.table}</td>
+                      <td>{currencyFormat(data.total)} </td>
+                      <td>{formattedDate(data.updated)} </td>
+                      <td className="text-light d-none d-md-table-cell">
+                        {data.payment !== undefined && data.payment.status ? (
+                          <span className="bg-success">✓</span>
+                        ) : (
+                          <span className="bg-danger ">✗</span>
+                        )}
+                      </td>
+                      <td className="text-light d-none d-md-table-cell">
+                        {data.status ? (
+                          <span className="bg-success">✓</span>
+                        ) : (
+                          <span className="bg-danger">✗</span>
+                        )}
+                      </td>
+                      <td>
+                        <button
+                          className="customer__btn-view"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onClick={() => {
+                            setButt("viewcustomer");
+                            // setViewModal(!viewModal);
+                            saveOrder(data._id);
+                          }}
+                        >
+                          <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
+                        </button>
+                        <button
+                          className="historyoder__btn-cancel"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onClick={() => {
+                            setButt("cancelorder");
+                            // setViewModal(!viewModal);
+                            setOrder(data._id);
+                            console.log(data);
+                          }}
+                        >
+                          {/* Cancel */}
+                          <GiIcons.GiCancel className="historyoder__btn-cancelicon" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Modal title
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body text-center">
+                {selectedButt === "cancelorder" ? (
+                  <DeleteOrder
+                    ModalState={callbackModal}
+                    orderId={selectOrder}
+                    setRequestData={setRequestData}
+                  />
+                ) : (
+                  <ViewOrder
+                    ModalState={callbackModal}
+                    editedOrder={editedOrder}
+                  />
+                )}
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  className="newtable__btn newtable__btn--cancle"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content ">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body text-center">
-              {selectedButt === "cancelorder" ? (
-                <DeleteOrder
-                  ModalState={callbackModal}
-                  orderId={selectOrder}
-                  setRequestData={setRequestData}
-                />
-              ) : (
-                <ViewOrder
-                  ModalState={callbackModal}
-                  editedOrder={editedOrder}
-                />
-              )}
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                className="newtable__btn newtable__btn--cancle"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-     </div>
-     <Footer/>
+      <Footer />
     </>
   );
 }

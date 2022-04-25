@@ -197,7 +197,7 @@ function Homepage(props) {
               <p>Chọn một bàn để xem</p>
             ) : (
               <>
-                <ul className="table-control text-center">
+                <ul className="p-0 text-center">
                   <li className="">
                     <h3> Thông tin bàn: {selectedTable.tablePoin}</h3>
                     {/* ({selectedTable._id}) */}
@@ -353,7 +353,6 @@ function Homepage(props) {
                         />
                       </div>
                     </div>
-                    
                   </div>
                 </div>
               </div>
@@ -380,7 +379,7 @@ function Homepage(props) {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

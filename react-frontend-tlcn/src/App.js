@@ -26,7 +26,7 @@ function App() {
           {/* <Header /> */}
           <Routes>
             <Route path="/login" exact={true} element={<Login />} />
-            <Route path="/homepage" exact={true} element={<Homepage />} />
+            <Route path="/" exact={true} element={<Homepage />} />
             <Route path="/home" exact={true} element={<Homepage />} />
             <Route path="/member" exact={true} element={<Member />} />
             <Route

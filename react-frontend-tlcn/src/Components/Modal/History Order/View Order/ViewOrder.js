@@ -49,6 +49,7 @@ function OrderInfo(props) {
             {" "}
             Bill number:{" "}
             <input type="text" value={props.editedOrder._id} readOnly />
+            {/* {JSON.stringify(props.editedOrder)} */}
           </strong>
         </div>
         <div className="checkout__table-header">
@@ -83,7 +84,26 @@ function OrderInfo(props) {
           Total: {currencyFormat(viewList.total)}
           <br />
         </div>
-        
+        <div>
+          <div className="me-1 text-dark d-inline-block">
+            PAYMENT:{" "}
+            {props.editedOrder.payment !== undefined &&
+            props.editedOrder.payment.status ? (
+              <span className="bg-success">✓</span>
+            ) : (
+              <span className="bg-danger ">✗</span>
+            )}
+          </div>
+          |
+          <div className="ms-1 text-dark d-inline-block">
+            STATUS:{" "}
+            {props.editedOrder.status ? (
+              <span className="bg-success">✓</span>
+            ) : (
+              <span className="bg-danger">✗</span>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

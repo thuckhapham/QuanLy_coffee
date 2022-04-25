@@ -127,12 +127,12 @@ function Drink() {
             <table className="drinktable__table  text-center">
               <thead className="drinktable__head">
                 <tr className="drinktable__header">
-                  <th style={{ width: 100 }}>No.</th>
+                  <th className="col-1">No.</th>
                   {/* <th>Drink Id</th> */}
-                  <th style={{ width: 150 }}>Category</th>
-                  <th>Name</th>
-                  <th style={{ width: 200 }}>Price</th>
-                  <th style={{ width: 200 }}>Action</th>
+                  <th className="col-2  d-none d-md-table-cell">Category</th>
+                  <th className="col-4">Name</th>
+                  <th className="col-3">Price</th>
+                  <th className="col-2">Action</th>
                 </tr>
               </thead>
               <tbody className="drinktable__body">
@@ -140,7 +140,9 @@ function Drink() {
                   ? viewList.map((data, index) => (
                       <tr className="drinktable__row">
                         <td>{index + 1}</td>
-                        <td>{data.category}</td>
+                        <td className=" d-none d-md-table-cell">
+                          {data.category}
+                        </td>
                         <td>{data.name}</td>
                         <td>{currencyFormat(data.price)}</td>
                         <td>
