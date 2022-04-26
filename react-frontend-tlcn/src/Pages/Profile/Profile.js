@@ -5,6 +5,8 @@ import "./Profile.css";
 import EditProfile from "../../Components/Modal/Profile/EditProfile/EditProfile";
 import ChangePassword from "../../Components/Modal/Profile/ChangePassword/ChangePassword";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../Components/Footer/Footer";
+import Header2 from "../../NewComponents/Header2/Header";
 
 function Profile(props) {
   const [requestData, setRequestData] = useState(new Date());
@@ -46,7 +48,8 @@ function Profile(props) {
   }, [requestData]);
   return (
     <>
-      <>
+         <Header2/>
+        <div className="container p-3">
         <div className="editprofile__content-header">MY PROFILE</div>
         <div className="editprofile__content-btn">
           <button
@@ -174,7 +177,8 @@ function Profile(props) {
             )}
           </div>
         </div>
-      </>
+</div>
+<Footer/>
     </>
   );
 }

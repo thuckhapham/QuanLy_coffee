@@ -4,7 +4,7 @@ import axios from "axios";
 import * as AiIcons from "react-icons/ai";
 import * as FaIcons from "react-icons/fa";
 import "./CheckOut.css";
-
+import html2canvas from "html2canvas";
 function CheckOut(props) {
   const details = props.orderdetail;
   //Lấy Bearer Token
@@ -20,6 +20,7 @@ function CheckOut(props) {
   // Checkout
   const navigate = useNavigate();
   function checkoutOrder(id) {
+    convertToImage();
     axios({
       method: "get",
       url: `http://localhost:5000/api/order/${props.orderid}/checkout`,
@@ -32,91 +33,121 @@ function CheckOut(props) {
         method: "post",
         url: "http://localhost:5000/api/table/" + res.data.table + "/status",
         data: {
-          tableStatus: "USED",
+          tableStatus: "WAIT",
         },
         headers: {
           Authorization: `bearer ${tokenBearer}`,
           "Content-Type": "application/json",
         },
-      }).then((res) => {
-        navigate("/homepage");
+      }).then(() => {
+        axios({
+          method: "put",
+          url: "http://localhost:5000/api/table/insertOrder/" + res.data.table,
+          data: {
+            orderId: props.orderid,
+          },
+          headers: {
+            Authorization: `bearer ${tokenBearer}`,
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
+          navigate("/home");
+        });
       });
     });
   }
   // Checkout
-  function cancelOrder() {
-    axios({
-      method: "delete",
-      url: `http://localhost:5000/api/order/${props.orderid}`,
-      headers: {
-        Authorization: `bearer ${tokenBearer}`,
-        "Content-Type": "application/json",
-      },
-    }).then(() => {
-      navigate("/homepage");
+  function convertToImage() {
+    html2canvas(document.getElementById("export")).then(function (canvas) {
+      saveAs(
+        canvas.toDataURL(),
+        "Bill_" + props.table + "_" + props.orderid + ".png"
+      );
     });
   }
+
+  function saveAs(uri, filename) {
+    var link = document.createElement("a");
+
+    if (typeof link.download === "string") {
+      link.href = uri;
+      link.download = filename;
+
+      //Firefox requires the link to be in the body
+      document.body.appendChild(link);
+
+      //simulate click
+      link.click();
+
+      //remove the link when done
+      document.body.removeChild(link);
+    } else {
+      window.open(uri);
+    }
+  }
+
   return (
     <>
       <div className="checkout">
-        <div className="checkout__title">
-          <h1>Bill number - #{props.orderid}</h1>
-        </div>
-        <div className="checkout__table-header">
-          <table className="checkout__table">
-            <thead className="checkout__head">
-              <tr className="checkout__header">
-                <th>Id</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div className="checkout__detail">
-          <div className="checkout__table-content">
-            <table className="checkout__table">
-              <tbody className="checkout__body">
-                {details.map((detail, index) => (
-                  <tr className="checkout__row">
-                    <td>{index + 1}</td>
-                    <td>{detail.name}</td>
-                    <td>{detail.quantity}</td>
-                    <td>{currencyFormat(detail.price)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div id="export">
+          <div className="checkout__title">
+            <h3>Bàn {props.table}</h3>
+            <h6>#{props.orderid}</h6>
           </div>
-        </div>
-        <div className="checkout__total">
-          Total: {props.totalprice}
-          <br />
-          Discount: {props.discountprice}
-        </div>
-        <div className="checkout__checkout">Check out: {props.totalprice}</div>
-        <div className="checkout__payment">
-          <ul className="checkout__payment-list">
-            <li className="checkout__payment-item">
-              <label className="payment__rb">
-                <input type="radio" name="radio" />
-                <span className="checkmark"></span>
-                <span className="icon">
-                  <FaIcons.FaRegMoneyBillAlt />
-                </span>
-              </label>
-            </li>
-            <li className="checkout__payment-item">
-              <label className="payment__rb">
-                <input type="radio" name="radio" />
-                <span className="checkmark"></span>
-                <span className="icon">
-                  <AiIcons.AiOutlineCreditCard />
-                </span>
-              </label>
-            </li>
-          </ul>
+          <div className="checkout__detail">
+            <div className="checkout__table-content">
+              <table className="checkout__table">
+                <thead className="checkout__head">
+                  <tr className="checkout__header">
+                    <th style={{ width: 50 }}>Id</th>
+                    <th>Name</th>
+                    <th style={{ width: 50 }}>SL</th>
+                    <th style={{ width: 150 }}>Price</th>
+                  </tr>
+                </thead>
+                <tbody className="checkout__body">
+                  {details.map((detail, index) => (
+                    <tr className="checkout__row">
+                      <td>{index + 1}</td>
+                      <td>{detail.name}</td>
+                      <td>{detail.quantity}</td>
+                      <td>{currencyFormat(detail.price)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="checkout__total">
+            Total: {props.totalprice}
+            <br />
+            Discount: {props.discountprice}
+          </div>
+          <div className="checkout__checkout">
+            Check out: {props.totalprice}
+          </div>
+          <div className="checkout__payment">
+            <ul className="checkout__payment-list">
+              <li className="checkout__payment-item">
+                <label className="payment__rb">
+                  <input type="radio" name="radio" />
+                  <span className="checkmark"></span>
+                  <span className="icon">
+                    <FaIcons.FaRegMoneyBillAlt />
+                  </span>
+                </label>
+              </li>
+              <li className="checkout__payment-item">
+                <label className="payment__rb">
+                  <input type="radio" name="radio" />
+                  <span className="checkmark"></span>
+                  <span className="icon">
+                    <AiIcons.AiOutlineCreditCard />
+                  </span>
+                </label>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="checkout__footer">
           <ul className="checkout__footer-list">

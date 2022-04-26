@@ -9,6 +9,8 @@ import DeleteMember from '../../Components/Modal/Member/Delete Member/DeleteMemb
 import ViewMember from '../../Components/Modal/Member/View Member/ViewMember'
 import NewCustomer from '../../Components/Modal/Member/New Customer/NewCustomer'
 import SetRole from '../../Components/Modal/Member/Set Role/SetRole'
+import Header2 from '../../NewComponents/Header2/Header'
+import Footer from '../../Components/Footer/Footer'
 
 function Member() {
     const [requestData, setRequestData] = useState(new Date());
@@ -83,138 +85,183 @@ function Member() {
         return newdate;
     }
     return (
-        <>
-            <div className="member">
-                <h2>Member</h2>
-                <div className="customer__header-content">
-                    <div className="customer__header-list">
-                        <div className="customer__header-item">
-                            Member ID:
-                            <br />
-                            <input type="text" className="drinksearch__form" placeholder="ID" onChange={e => setFindId(e.target.value)} />
-                        </div>
-                        <div className="customer__header-item">
-                            Name:
-                            <br />
-                            <input type="text" className="drinksearch__form" placeholder="Member's name" />
-                        </div>
-                    </div>
-                    <div className="customer__header-search">
-                        <div className="customer__header-item customer__header-item--left">
-                            Phone:
-                            <br />
-                            <input type="text" className="drinksearch__form" placeholder="Member's phone" />
-                        </div>
-                        <div className="customer__header-item customer__header-item--icon" onClick={() => findMember()}>
-                            <AiIcons.AiOutlineSearch className="customer__header-search customer__header-searchicon" />
-                        </div>
-                    </div>
+      <>
+        <Header2 />
+        <div className="container p-3">
+          <div className="member">
+            <h2>Member</h2>
+            <div className="customer__header-content">
+              <div className="customer__header-list">
+                <div className="customer__header-item">
+                  Member ID:
+                  <br />
+                  <input
+                    type="text"
+                    className="drinksearch__form"
+                    placeholder="ID"
+                    onChange={(e) => setFindId(e.target.value)}
+                  />
                 </div>
-                <div className="customer__header-btn">
-                    <button
-                        className="customer__btn-add"
-                        onClick={() => {
-                            setViewModal(!viewModal)
-                            setButt("newcustomer")
-                        }}
-                    >
-                        + NEW MEMBER
-                    </button>
+                <div className="customer__header-item">
+                  Name:
+                  <br />
+                  <input
+                    type="text"
+                    className="drinksearch__form"
+                    placeholder="Member's name"
+                  />
                 </div>
-                <div className="customer__table-header">
-                    <table className="customer__table">
-                        <thead className="customer__head">
-                            <tr className="customer__header">
-                                <th>Number</th>
-                                <th>Username</th>
-                                <th>Name</th>
-                                <th>State</th>
-                                <th>Created</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
+              </div>
+              <div className="customer__header-search">
+                <div className="customer__header-item customer__header-item--left">
+                  Phone:
+                  <br />
+                  <input
+                    type="text"
+                    className="drinksearch__form"
+                    placeholder="Member's phone"
+                  />
                 </div>
-                <div className="customer__detail">
-                    <div className="customer__table-content">
-                        <table className="customer__table">
-                            <tbody className="customer__body">
-                                {viewList.map((data, index) => (
-                                    <tr className="customer__row" key={data._id}>
-                                        <td>{index + 1}</td>
-                                        <td
-                                            onClick={() => {
-                                                setButt("viewcustomer");
-                                                setViewModal(!viewModal)
-                                                saveCustomer(data._id)
-                                            }}
-                                            className="customer__row customer__row--username"
-                                        >{data.userName}</td>
-                                        <td>{data.lastName}</td>
-                                        <td>{data.enable == true ? "Active" : "Deactive"}</td>
-                                        <td>{formattedDate(data.created)}</td>
-                                        <td>
-                                            <button
-                                                className="customer__btn-view"
-                                                onClick={() => {
-                                                    setButt("setrole");
-                                                    setViewModal(!viewModal)
-                                                    saveCustomer(data._id)
-                                                }}
-                                            >
-                                                <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
-                                            </button>
-                                            <button
-                                                className="customer__btn-edit"
-                                                onClick={() => {
-                                                    setButt("editcustomer");
-                                                    setViewModal(!viewModal)
-                                                    saveCustomer(data._id)
-                                                }}
-                                            >
-                                                <AiIcons.AiFillEdit className="customer__btn-editicon" />
-                                            </button>
-                                            <button
-                                                className="customer__btn-cancel"
-                                                onClick={() => {
-                                                    setViewModal(!viewModal);
-                                                    setButt("cancelcustomer")
-                                                    saveCustomer(data._id)
-                                                }}
-                                            >
-                                                <GiIcons.GiCancel className="customer__btn-cancelicon" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                <div
+                  className="customer__header-item customer__header-item--icon"
+                  onClick={() => findMember()}
+                >
+                  <AiIcons.AiOutlineSearch className="customer__header-search customer__header-searchicon" />
                 </div>
+              </div>
             </div>
-            {/* Modal Layout */}
-            <div className={viewModal ? "modal--unactive" : "modal"}>
-                <div className="modal__overlay"></div>
-                <div className="modal__body">
-                    <div style={{ display: "flex", "justify-content": "flex-end" }}>
-                        <button
-                            className="modal__btn-close"
-                            onClick={() => setViewModal(!viewModal)}
+            <div className="customer__header-btn">
+              <button
+                className="customer__btn-add"
+                onClick={() => {
+                  setViewModal(!viewModal);
+                  setButt("newcustomer");
+                }}
+              >
+                + NEW MEMBER
+              </button>
+            </div>
+            <div className="customer__table-header">
+              <table className="customer__table">
+                <thead className="customer__head">
+                  <tr className="customer__header">
+                    <th>Number</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div className="customer__detail">
+              <div className="customer__table-content">
+                <table className="customer__table">
+                  <tbody className="customer__body">
+                    {viewList.map((data, index) => (
+                      <tr className="customer__row" key={data._id}>
+                        <td>{index + 1}</td>
+                        <td
+                          onClick={() => {
+                            setButt("viewcustomer");
+                            setViewModal(!viewModal);
+                            saveCustomer(data._id);
+                          }}
+                          className="customer__row customer__row--username"
                         >
-                            X
-                        </button>
-                    </div>
-                    {selectedButt === "cancelcustomer" ? (
-                        <DeleteMember ModalState={callbackModal} editedCustomer={editedCustomer} setRequestData={setRequestData} />
-                    ) : selectedButt === "editcustomer" ? (
-                        <EditMember ModalState={callbackModal} editedCustomer={editedCustomer} requestData={requestData} setRequestData={setRequestData} />
-                    ) : selectedButt === "newcustomer" ? <NewCustomer ModalState={callbackModal} setRequestData={setRequestData} /> :
-                        selectedButt === "setrole" ? <SetRole ModalState={callbackModal} editedCustomer={editedCustomer} setRequestData={setRequestData} /> :
-                            <ViewMember ModalState={callbackModal} editedCustomer={editedCustomer} />}
-                </div>
+                          {data.userName}
+                        </td>
+                        <td>{data.lastName}</td>
+                        <td>{data.enable == true ? "Active" : "Deactive"}</td>
+                        <td>{formattedDate(data.created)}</td>
+                        <td>
+                          <button
+                            className="customer__btn-view"
+                            onClick={() => {
+                              setButt("setrole");
+                              setViewModal(!viewModal);
+                              saveCustomer(data._id);
+                            }}
+                          >
+                            <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
+                          </button>
+                          <button
+                            className="customer__btn-edit"
+                            onClick={() => {
+                              setButt("editcustomer");
+                              setViewModal(!viewModal);
+                              saveCustomer(data._id);
+                            }}
+                          >
+                            <AiIcons.AiFillEdit className="customer__btn-editicon" />
+                          </button>
+                          <button
+                            className="customer__btn-cancel"
+                            onClick={() => {
+                              setViewModal(!viewModal);
+                              setButt("cancelcustomer");
+                              saveCustomer(data._id);
+                            }}
+                          >
+                            <GiIcons.GiCancel className="customer__btn-cancelicon" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-        </>
-    )
+          </div>
+          {/* Modal Layout */}
+          <div className={viewModal ? "modal--unactive" : "modal"}>
+            <div className="modal__overlay"></div>
+            <div className="modal__body">
+              <div style={{ display: "flex", "justify-content": "flex-end" }}>
+                <button
+                  className="modal__btn-close"
+                  onClick={() => setViewModal(!viewModal)}
+                >
+                  X
+                </button>
+              </div>
+              {selectedButt === "cancelcustomer" ? (
+                <DeleteMember
+                  ModalState={callbackModal}
+                  editedCustomer={editedCustomer}
+                  setRequestData={setRequestData}
+                />
+              ) : selectedButt === "editcustomer" ? (
+                <EditMember
+                  ModalState={callbackModal}
+                  editedCustomer={editedCustomer}
+                  requestData={requestData}
+                  setRequestData={setRequestData}
+                />
+              ) : selectedButt === "newcustomer" ? (
+                <NewCustomer
+                  ModalState={callbackModal}
+                  setRequestData={setRequestData}
+                />
+              ) : selectedButt === "setrole" ? (
+                <SetRole
+                  ModalState={callbackModal}
+                  editedCustomer={editedCustomer}
+                  setRequestData={setRequestData}
+                />
+              ) : (
+                <ViewMember
+                  ModalState={callbackModal}
+                  editedCustomer={editedCustomer}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        <Footer/>
+      </>
+    );
 }
 
 export default Member
