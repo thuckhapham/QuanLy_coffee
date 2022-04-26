@@ -29,7 +29,7 @@ function Login(props) {
       },
     })
       .then((response) => {
-        navigate("/homepage");
+        navigate("/home");
         localStorage.setItem("tokenBearer", response.data.token);
         console.log(response.data);
         // localStorage.setItem("usernameId",response.data.)

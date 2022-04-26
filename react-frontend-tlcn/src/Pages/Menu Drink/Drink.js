@@ -9,6 +9,7 @@ import DeleteDrink from "../../Components/Modal/Menu Drink/Delete Drink/DeleteDr
 import EditDrink from "../../Components/Modal/Menu Drink/Edit Drink/EditDrink";
 import Footer from "../../Components/Footer/Footer";
 import Header2 from "../../NewComponents/Header2/Header";
+import { DebounceInput } from "react-debounce-input";
 
 function Drink() {
   //Lấy Bearer Token
@@ -19,12 +20,15 @@ function Drink() {
   ]);
   //Lấy Data
   const [requestData, setRequestData] = useState(new Date());
+  const [searchWarn, setSearchWarn] = useState("");
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+  const [originList, setOrigin] = useState([{ phone: 0, name: "", price: 0 }]);
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
       .then((response) => {
         setList(response.data.products);
+        setOrigin(response.data.products);
       });
   }, [requestData]);
   //Lấy Data theo Cate
@@ -32,17 +36,33 @@ function Drink() {
   //Lấy Data theo ID
   const [viewID, setID] = useState("");
   function searchID(id) {
-    if (id) {
-      axios.get(`http://localhost:5000/api/products/${id}`).then((response) => {
-        setList([response.data]);
-      });
+    if (id === "") {
+      setList(originList);
+      setSearchWarn("");
     } else {
-      axios
-        .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
-        .then((response) => {
-          setList(response.data.products);
-        });
+      let newlist = [];
+      originList.map((e) => {
+        if (e.name.toLowerCase().includes(id.toLowerCase())) {
+          newlist.push(e);
+        }
+      });
+      if (newlist.length === 0) setSearchWarn("Không tìm thấy");
+      else {
+        setList(newlist);
+        setSearchWarn("");
+      }
     }
+    // if (id) {
+    //   axios.get(`http://localhost:5000/api/products/${id}`).then((response) => {
+    //     setList([response.data]);
+    //   });
+    // } else {
+    //   axios
+    //     .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
+    //     .then((response) => {
+    //       setList(response.data.products);
+    //     });
+    // }
   }
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
@@ -58,34 +78,31 @@ function Drink() {
   return (
     <>
       <Header2 />
-      <div className="container p-3">
+      <div className="container p-md-3 p-1">
         <h1 className="">Drink Control</h1>
-        <div className="drinktable__header-content">
-          <div className="drinktable__header-list">
-            <div className="drinktable__header-item">
-              Drink ID:
-              <br />
-              <input
-                type="text"
-                className="drinksearch__form"
-                placeholder="ID"
-                value={viewID}
-                onChange={(e) => setID(e.target.value)}
-              />
-            </div>
-            {/* <div className="drinktable__header-item">
-                        Drink's name:
-                        <br />
-                        <input type="text" className="drinksearch__form" placeholder="ID" />
-                    </div> */}
+        <div className="row p-2 m-0">
+          <div className="col-12 col-md-5">
+            <label>Drink name:</label>
+            <DebounceInput
+              type="text"
+              className="drinksearch__form"
+              debounceTimeout={500}
+              onChange={(e) => {
+                searchID(e.target.value);
+              }}
+            />
+            {/* <input
+              placeholder="ex: trà"
+              value={viewID}
+              onChange={(e) => {
+                // if (e.target.value == "")
+                setID(e.target.value);
+                searchID(e.target.value);
+              }}
+            /> */}
           </div>
-          <div className="drinktable__header-search">
-            {/* <div className="drinktable__header-item drinktable__header-item--left">
-                        Drink's price:
-                        <br />
-                        <input type="text" className="drinksearch__form" placeholder="ID" />
-                    </div> */}
-            <div className="drinktable__header-item drinktable__header-item--left">
+          <div className=" col-12 col-md-4">
+            <div className="drinktable__header-item ">
               Drink's category:
               <br />
               <select
@@ -100,28 +117,23 @@ function Drink() {
                 <option value="FRUIT">FRUIT</option>
               </select>
             </div>
-            <div className="drinktable__header-item drinktable__header-item--icon">
-              <AiIcons.AiOutlineSearch
-                className="drinktable__header-search drinktable__header-searchicon"
-                onClick={() => searchID(viewID)}
-              />
-            </div>
+          </div>
+          <div className="text-center my-auto col-12 pt-3 col-md-3">
+            <button
+              className="drinktable__btn-add "
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              onClick={() => {
+                setViewModal(!viewModal);
+                setButt("newdrink");
+              }}
+            >
+              + DRINK
+            </button>
           </div>
         </div>
-        <div className="drinktable__header-btn">
-          <button
-            className="drinktable__btn-add"
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            onClick={() => {
-              setViewModal(!viewModal);
-              setButt("newdrink");
-            }}
-          >
-            + NEW DRINK
-          </button>
-        </div>
+
         <div className="drinktable__detail">
           <div className="drinktable__table-content">
             <table className="drinktable__table  text-center">
@@ -131,22 +143,23 @@ function Drink() {
                   {/* <th>Drink Id</th> */}
                   <th className="col-2  d-none d-md-table-cell">Category</th>
                   <th className="col-4">Name</th>
-                  <th className="col-3">Price</th>
-                  <th className="col-2">Action</th>
+                  <th className="col-sm-3 col-2">Price</th>
+                  <th className="col-sm-2 col-3">Action</th>
                 </tr>
               </thead>
-              <tbody className="drinktable__body">
-                {viewCategory == "ALL"
-                  ? viewList.map((data, index) => (
-                      <tr className="drinktable__row">
-                        <td>{index + 1}</td>
-                        <td className=" d-none d-md-table-cell">
-                          {data.category}
-                        </td>
-                        <td>{data.name}</td>
-                        <td>{currencyFormat(data.price)}</td>
-                        <td>
-                          {/* <button
+              {searchWarn === "" ? (
+                <tbody className="drinktable__body">
+                  {viewCategory == "ALL"
+                    ? viewList.map((data, index) => (
+                        <tr className="drinktable__row">
+                          <td>{index + 1}</td>
+                          <td className=" d-none d-md-table-cell">
+                            {data.category}
+                          </td>
+                          <td>{data.name}</td>
+                          <td>{currencyFormat(data.price)}</td>
+                          <td>
+                            {/* <button
                                                 className="customer__btn-view"
                                                 onClick={() => {
                                                     setButt("editdrink");
@@ -156,75 +169,84 @@ function Drink() {
                                             >
                                                 <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
                                             </button> */}
-                          <button
-                            className="drinktable__btn-edit"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                            onClick={() => {
-                              setButt("editdrink");
-                              setViewModal(!viewModal);
-                              setEditedDrink([data]);
-                            }}
-                          >
-                            <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
-                          </button>
-                          <button
-                            className="drinktable__btn-cancel"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                            onClick={() => {
-                              setViewModal(!viewModal);
-                              setButt("canceldrink");
-                              setEditedDrink([data]);
-                            }}
-                          >
-                            <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  : viewList.map(
-                      (data, index) =>
-                        data.category == viewCategory && (
-                          <tr className="drinktable__row">
-                            <td>{index + 1}</td>
-                            <td>{data.category}</td>
-                            <td>{data.name}</td>
-                            <td>{currencyFormat(data.price)}</td>
-                            <td>
-                              <button
-                                className="drinktable__btn-edit"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
-                                onClick={() => {
-                                  setButt("editdrink");
-                                  setViewModal(!viewModal);
-                                  setEditedDrink([data]);
-                                }}
-                              >
-                                <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
-                              </button>
-                              <button
-                                className="drinktable__btn-cancel"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
-                                onClick={() => {
-                                  setViewModal(!viewModal);
-                                  setButt("canceldrink");
-                                  setEditedDrink([data]);
-                                }}
-                              >
-                                <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                    )}
-              </tbody>
+                            <button
+                              className="drinktable__btn-edit"
+                              type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal"
+                              onClick={() => {
+                                setButt("editdrink");
+                                setViewModal(!viewModal);
+                                setEditedDrink([data]);
+                              }}
+                            >
+                              <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
+                            </button>
+                            <button
+                              className="drinktable__btn-cancel"
+                              type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal"
+                              onClick={() => {
+                                setViewModal(!viewModal);
+                                setButt("canceldrink");
+                                setEditedDrink([data]);
+                              }}
+                            >
+                              <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    : viewList.map(
+                        (data, index) =>
+                          data.category == viewCategory && (
+                            <tr className="drinktable__row">
+                              <td>{index + 1}</td>
+                              <td>{data.category}</td>
+                              <td>{data.name}</td>
+                              <td>{currencyFormat(data.price)}</td>
+                              <td>
+                                <button
+                                  className="drinktable__btn-edit"
+                                  type="button"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal"
+                                  onClick={() => {
+                                    setButt("editdrink");
+                                    setViewModal(!viewModal);
+                                    setEditedDrink([data]);
+                                  }}
+                                >
+                                  <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
+                                </button>
+                                <button
+                                  className="drinktable__btn-cancel"
+                                  type="button"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal"
+                                  onClick={() => {
+                                    setViewModal(!viewModal);
+                                    setButt("canceldrink");
+                                    setEditedDrink([data]);
+                                  }}
+                                >
+                                  <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
+                                </button>
+                              </td>
+                            </tr>
+                          )
+                      )}
+                </tbody>
+              ) : (
+                <tbody>
+                  <tr>
+                    <td colspan="5" className="text-danger">
+                      {searchWarn}
+                  </td>
+                  </tr>
+                </tbody>
+              )}
             </table>
           </div>
         </div>
