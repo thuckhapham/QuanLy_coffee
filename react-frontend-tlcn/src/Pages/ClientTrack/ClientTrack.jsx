@@ -7,6 +7,7 @@ let count = 0;
 function ClientTrack(props) {
   const [requestData, setRequestData] = useState(0);
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
+  const [product, setProduct] = useState([]);
 
   useEffect(() => {
     axios
@@ -14,6 +15,15 @@ function ClientTrack(props) {
       .then((response) => {
         console.log(response.data);
         setList(response.data.tables);
+      });
+    axios
+      .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
+      .then((response) => {
+        setProduct(
+          response.data.products.sort(function (a, b) {
+            return a.category.localeCompare(b.category);
+          })
+        );
       });
   }, [requestData]);
 
@@ -31,12 +41,13 @@ function ClientTrack(props) {
 
   // Order
   const navigate = useNavigate();
-
+  function currencyFormat(num) {
+    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+  }
   return (
     <>
       <div className="row p-0 m-0">
         <h1 className="text-center">Xin quý khách theo dõi bàn của mình!</h1>
-        <h6 className="text-center"></h6>
         <div className="col-12">
           <ul className="w-100 fs-3">
             {/* <div className="col-4 d-inline-block">
@@ -74,6 +85,37 @@ function ClientTrack(props) {
             })}
           </div>
         </div>
+      </div>
+<hr/>
+      <div className="row m-0 text-center">
+        <h1 className="m-0">Menu</h1>
+        {product.map(
+          (e, i) =>
+            (i === 0 || e.category !== product[i - 1].category) && (
+              <div className="col-12 col-sm-6 p-3">
+                <h5 className="m-0">{e.category}</h5>
+                <table className="drinktable__table">
+                  <thead className="drinktable__head">
+                    <tr className="drinktable__header">
+                      <th className="col-4">Name</th>
+                      <th className="col-sm-3 col-2">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody className="drinktable__body">
+                    {product.map(
+                      (data) =>
+                        data.category == e.category && (
+                          <tr className="drinktable__row">
+                            <td>{data.name}</td>
+                            <td>{currencyFormat(data.price)}</td>
+                          </tr>
+                        )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )
+        )}
       </div>
     </>
   );

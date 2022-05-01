@@ -12,37 +12,42 @@ import Login from "./Components/Login/Login";
 import Profile from "./Pages/Profile/Profile";
 import Table from "./Pages/Table/Table.jsx";
 import Report from "./Pages/Report/Report.jsx";
+import About from "./Pages/About/About.jsx";
 import Header2 from "./NewComponents/Header2/Header";
 import ClientTrack from "./Pages/ClientTrack/ClientTrack";
 
 // import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
+import { ParallaxProvider } from "react-scroll-parallax";
 
 function App() {
   return (
     <>
       <div className="app">
-        <Router>
-          {/* <Header2 /> */}
-          {/* <Header /> */}
-          <Routes>
-            <Route path="/login" exact={true} element={<Login />} />
-            <Route path="/" exact={true} element={<Homepage />} />
-            <Route path="/home" exact={true} element={<Homepage />} />
-            <Route path="/member" exact={true} element={<Member />} />
-            <Route
-              path="/order-history"
-              exact={true}
-              element={<HistoryOrder />}
-            />
-            <Route path="/order/:id" exact={true} element={<Order />} />
-            <Route path="/menu-drink" exact={true} element={<Drink />} />
-            <Route path="/profile" exact={true} element={<Profile />} />
-            <Route path="/table" exact={true} element={<Table />} />
-            <Route path="/report" exact={true} element={<Report />} />
-            <Route path="/track" exact={true} element={<ClientTrack />} />
-          </Routes>
-          {/* <OrderHistory /> */}
-        </Router>
+        <ParallaxProvider>
+          <Router>
+            {/* <Header2 /> */}
+            {/* <Header /> */}
+            <Routes>
+              <Route path="/login" exact={true} element={<Login />} />
+              <Route path="/" exact={true} element={<Homepage />} />
+              <Route path="/home" exact={true} element={<Homepage />} />
+              <Route path="/member" exact={true} element={<Member />} />
+              <Route
+                path="/order-history"
+                exact={true}
+                element={<HistoryOrder />}
+              />
+              <Route path="/order/:id" exact={true} element={<Order />} />
+              <Route path="/menu-drink" exact={true} element={<Drink />} />
+              <Route path="/profile" exact={true} element={<Profile />} />
+              <Route path="/table" exact={true} element={<Table />} />
+              <Route path="/report" exact={true} element={<Report />} />
+              <Route path="/track" exact={true} element={<ClientTrack />} />
+              <Route path="/about" exact={true} element={<About />} />
+            </Routes>
+            {/* <OrderHistory /> */}
+          </Router>
+        </ParallaxProvider>
       </div>
     </>
   );

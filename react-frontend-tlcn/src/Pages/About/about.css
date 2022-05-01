@@ -1,0 +1,81 @@
+.chumma {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.snipper {
+  perspective: 250px;
+  width: 50vw;
+  height: 50vw;
+  flex-direction: row;
+  justify-content: space-evenly;
+  display: flex;
+
+  border-color: rgb(255, 204, 0);
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 9999px;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+}
+
+.aspect-21 {
+  aspect-ratio: 2/1;
+}
+
+.aspect-31 {
+  aspect-ratio: 3/1;
+}
+
+.aspect-11 {
+  aspect-ratio: 1/1;
+}
+
+.top-snipper {
+  top: 0;
+  position: absolute;
+  display: flex;
+}
+.left-snipper {
+  position: absolute;
+  left: 0;
+  display: flex;
+}
+
+.right-snipper {
+  position: absolute;
+  right: 0;
+  display: flex;
+}
+
+.bot-snipper {
+  bottom: 0;
+  position: absolute;
+  display: flex;
+}
+
+.inset-0 {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.absolute{
+  position: absolute;
+}
+
+.img-cover{
+  object-fit: cover;
+}
+
+.overflow-hidde{
+  overflow: hidden;
+}
