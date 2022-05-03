@@ -21,7 +21,7 @@ const getReportByDates = async (req, res) => {
       res.status(401).json({ error: "No Order found" });
     }
   } else {
-    res.status(404).json({ error: "Dates not valid" });
+    res.status(401).json({ error: "Dates not valid" });
   }
 };
 
