@@ -16,6 +16,9 @@ import {
 import { Line, Bar } from "react-chartjs-2";
 import html2canvas from "html2canvas";
 
+import checkPermesion from "./../../Components/checkPermession";
+import { useNavigate } from "react-router-dom";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -53,14 +56,41 @@ const Report = () => {
   const [date2, setDate2] = useState({ from: "2022-04-02", to: "2022-05-02" });
   const [sosanh, setSoSanh] = useState(false);
   const [isFetch, setIsFetch] = useState(false);
+  const [numberDay, setNumberDay] = useState({ day1: "30", day2: "30" });
   const [checkBox, setCheckBox] = useState({
     doanhthu: false,
     banchay: false,
     theogio: false,
     report: false,
   });
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const check = checkPermesion(["ADMIN"]);
+    if (check === null) navigate("/login");
+    else if (!check) navigate("/404");
+    setLoading(false);
+  }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setNumberDay((prev) => ({
+      ...prev,
+      day1: days_between(new Date(date1.from), new Date(date1.to)),
+    }));
+  }, [date1]);
+
+  useEffect(() => {
+    setNumberDay((prev) => ({
+      ...prev,
+      day2: days_between(new Date(date2.from), new Date(date2.to)),
+    }));
+  }, [date2]);
+
+  function days_between(date1, date2) {
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+    const differenceMs = Math.abs(date1 - date2);
+    return Math.round(differenceMs / ONE_DAY);
+  }
 
   function formattedDate(date) {
     var dateObj = new Date(date);
@@ -106,7 +136,7 @@ const Report = () => {
           if (checkBox.doanhthu) tinhDoanhThu(res.result, setData, setLable);
           if (checkBox.banchay) tinhBanChay(res.result, false);
           if (checkBox.report) tinhReport(res.result, false);
-          if (checkBox.theogio) tinhTheoGio(res.result, setData, setLable);
+          if (checkBox.theogio) tinhTheoGio(res.result, false);
           if (sosanh) {
             axios({
               method: "get",
@@ -119,21 +149,28 @@ const Report = () => {
                 Authorization: `bearer ${tokenBearer}`,
                 "Content-Type": "application/json",
               },
-            }).then((response2) => {
-              let res2 = response2.data;
-              //sort by day
-              res2.result.sort(function (a, b) {
-                return new Date(b.created) - new Date(a.created);
+            })
+              .then((response2) => {
+                let res2 = response2.data;
+                //sort by day
+                res2.result.sort(function (a, b) {
+                  return new Date(b.created) - new Date(a.created);
+                });
+                if (checkBox.banchay) tinhBanChay(res2.result, true);
+                if (checkBox.report) tinhReport(res2.result, true);
+                if (checkBox.theogio) tinhTheoGio(res2.result, true);
+              })
+              .catch((e) => {
+                if (e.response !== undefined)
+                  alert("So sánh thống kê: " + JSON.stringify(e.response.data));
+                else console.log(e);
               });
-              if (checkBox.banchay) tinhBanChay(res2.result, true);
-              if (checkBox.report) tinhReport(res2.result, true);
-            });
-            // if (checkBox.theogio) tinhTheoGio(res.result, setData, setLable);
           }
           setIsFetch(true);
         })
         .catch((e) => {
-          if (e.response !== undefined) alert(JSON.stringify(e.response.data));
+          if (e.response !== undefined)
+            alert("Chọn ngày thống kê: " + JSON.stringify(e.response.data));
           else console.log(e);
         });
     }
@@ -163,17 +200,31 @@ const Report = () => {
 
   const tinhDoanhThu = (res) => {
     // doanhthu
-    let doanhthu = [];
     let holdLabel = [];
     let day, check;
 
+    let from = new Date(date1.from);
+    let to = new Date(date1.to);
+
+    while (to > from) {
+      holdLabel.push(from.toISOString().split("T")[0]);
+      from.setDate(from.getDate() + 1); // increment date by 1
+    }
+
+    holdLabel.reverse();
+    console.log(holdLabel);
+    let doanhthu = Array(holdLabel.length).fill(0);
+
     res.map((e) => {
-      day = formattedDate(e.created);
-      check = holdLabel.indexOf(day);
-      if (check == -1) {
-        holdLabel.push(day);
-        doanhthu.push(parseInt(e.total));
-      } else {
+      // day = formattedDate(e.created);
+      check = holdLabel.indexOf(e.created.split("T")[0]);
+      console.log(e.created.split("T")[0]);
+      console.log(check);
+
+      if (check !== -1) {
+        //   // holdLabel.push(day);
+        //   doanhthu.push(parseInt(e.total));
+        // } else {
         doanhthu[check] = doanhthu[check] + parseInt(e.total);
       }
     });
@@ -248,7 +299,7 @@ const Report = () => {
     }
   };
 
-  const tinhTheoGio = (res, setState, Lable) => {
+  const tinhTheoGio = (res, isSoSanh) => {
     // doanhthu
     let hoursOrder = Array(19).fill(0);
     let holdLabel = [
@@ -279,8 +330,9 @@ const Report = () => {
     });
     // banchay = banchay.reverse();
     // holdLabel = holdLabel.reverse();
-    setState((prev) => ({ ...prev, hoursOrder: hoursOrder }));
-    Lable((prev) => ({ ...prev, theogio: holdLabel }));
+    if (isSoSanh) setData((prev) => ({ ...prev, hoursOrder2: hoursOrder }));
+    else setData((prev) => ({ ...prev, hoursOrder: hoursOrder }));
+    setLable((prev) => ({ ...prev, theogio: holdLabel }));
   };
 
   function convertToImage() {
@@ -315,340 +367,440 @@ const Report = () => {
   return (
     <div>
       <Header2 />
-      <h1 className="text-center"> REPORT</h1>
-      <div className="border border-4 container">
-        <div className="row">
-          <div className="col-6 col-md-4">
-            <h6>Chọn ngày thống kê:</h6>
-            <tr>
-              <td>From: </td>
-              <td>
-                <input
-                  type="date"
-                  value={date1.from}
-                  onChange={(e) =>
-                    setDate1((prev) => ({ ...prev, from: e.target.value }))
-                  }
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>To: </td>
-              <td>
-                <input
-                  type="date"
-                  value={date1.to}
-                  onChange={(e) =>
-                    setDate1((prev) => ({ ...prev, to: e.target.value }))
-                  }
-                />
-              </td>
-            </tr>
-          </div>
-          <div className="col-6 col-md-4">
-            <h6>
-              <input
-                type="checkbox"
-                value={sosanh}
-                id="sosanh"
-                onChange={(e) => setSoSanh(e.target.checked)}
-              />{" "}
-              <label htmlFor="sosanh">So sánh thống kê (tùy chọn):</label>
-            </h6>
-            {sosanh && (
-              <>
-                <tr>
-                  <td>From: </td>
-                  <td>
+      {loading ? (
+        <h1>Loading</h1>
+      ) : (
+        <>
+          <div className="container p-3">
+            <h1 className="text-center"> REPORT</h1>
+            <div className="border border-4 ">
+              <div className="row">
+                <div className="col-6 col-md-4">
+                  <h6>Chọn ngày thống kê:</h6>
+                  <tr>
+                    <td>From: </td>
+                    <td>
+                      <input
+                        type="date"
+                        value={date1.from}
+                        onChange={(e) =>
+                          setDate1((prev) => ({
+                            ...prev,
+                            from: e.target.value,
+                          }))
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>To: </td>
+                    <td>
+                      <input
+                        type="date"
+                        value={date1.to}
+                        onChange={(e) =>
+                          setDate1((prev) => ({ ...prev, to: e.target.value }))
+                        }
+                      />
+                    </td>
+                  </tr>
+                </div>
+                <div className="col-6 col-md-4">
+                  <h6>
                     <input
-                      type="date"
-                      value={date2.from}
+                      type="checkbox"
+                      value={sosanh}
+                      id="sosanh"
+                      onChange={(e) => setSoSanh(e.target.checked)}
+                    />{" "}
+                    <label htmlFor="sosanh">So sánh thống kê (tùy chọn):</label>
+                  </h6>
+                  {sosanh && (
+                    <>
+                      <tr>
+                        <td>From: </td>
+                        <td>
+                          <input
+                            type="date"
+                            value={date2.from}
+                            onChange={(e) =>
+                              setDate2((prev) => ({
+                                ...prev,
+                                from: e.target.value,
+                              }))
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>To: </td>
+                        <td>
+                          <input
+                            type="date"
+                            value={date2.to}
+                            onChange={(e) =>
+                              setDate2((prev) => ({
+                                ...prev,
+                                to: e.target.value,
+                              }))
+                            }
+                          />
+                        </td>
+                      </tr>
+                    </>
+                  )}
+                </div>
+                <div className="col-12 col-md-4">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="report"
                       onChange={(e) =>
-                        setDate2((prev) => ({ ...prev, from: e.target.value }))
+                        setCheckBox((prev) => ({
+                          ...prev,
+                          report: e.target.checked,
+                        }))
                       }
                     />
-                  </td>
-                </tr>
-                <tr>
-                  <td>To: </td>
-                  <td>
+                    <label class="form-check-label" for="report">
+                      Report
+                    </label>
+                  </div>
+                  <div class="form-check">
                     <input
-                      type="date"
-                      value={date2.to}
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="doanhthu"
                       onChange={(e) =>
-                        setDate2((prev) => ({ ...prev, to: e.target.value }))
+                        setCheckBox((prev) => ({
+                          ...prev,
+                          doanhthu: e.target.checked,
+                        }))
                       }
                     />
-                  </td>
-                </tr>
-              </>
-            )}
-          </div>
-          <div className="col-12 col-md-4">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="report"
-                onChange={(e) =>
-                  setCheckBox((prev) => ({ ...prev, report: e.target.checked }))
-                }
-              />
-              <label class="form-check-label" for="report">
-                Report
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="doanhthu"
-                onChange={(e) =>
-                  setCheckBox((prev) => ({
-                    ...prev,
-                    doanhthu: e.target.checked,
-                  }))
-                }
-              />
-              <label class="form-check-label" for="doanhthu">
-                Thống kê doanh thu
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="banchay"
-                onChange={(e) =>
-                  setCheckBox((prev) => ({
-                    ...prev,
-                    banchay: e.target.checked,
-                  }))
-                }
-              />
-              <label class="form-check-label" for="banchay">
-                Thống kê sản phẩm
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="theogio"
-                onChange={(e) =>
-                  setCheckBox((prev) => ({
-                    ...prev,
-                    theogio: e.target.checked,
-                  }))
-                }
-              />
-              <label class="form-check-label" for="theogio">
-                Order theo thời gian trong ngày
-              </label>
-            </div>
-          </div>
-        </div>
-        <div className="text-center">
-          <div className="btn btn-primary " onClick={thongKe}>
-            Xem
-          </div>
-
-          <button
-            className={
-              "ms-1 " + (isFetch ? "btn btn-primary" : "btn btn-secondary")
-            }
-            onClick={convertToImage}
-            disabled={!isFetch}
-          >
-            Tải về
-          </button>
-        </div>
-        <hr />
-        <div id="export">
-          <h6 className="text-center">
-            Thống kê từ ngày {date1.from} đến {date1.to}
-          </h6>
-          <div className="row">
-            {checkBox.report !== false && data.report !== null && (
-              <div className="col-12 col-12 col-lg-6 d-flex justify-content-center   ">
-                <div className="p-3">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">Danh mục</th>
-                        <th scope="col">Đơn vị</th>
-                        <th scope="col">Số lượng</th>
-                        {sosanh && data.report2 && <th scope="col">So sánh</th>}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Tổng số order</td>
-                        <td>order</td>
-                        <td>{data.report.total}</td>
-                        {sosanh && data.report2 && (
-                          <td>
-                            {(data.report.total - data.report2.total > 0 &&
-                              "+") +
-                              (data.report.total - data.report2.total)}
-                          </td>
-                        )}
-                      </tr>
-                      <tr>
-                        <td>Order đã thanh toán</td>
-                        <td>order</td>
-                        <td>{data.report.sumPayment}</td>
-                        {sosanh && data.report2 && (
-                          <td>
-                            {(data.report.sumPayment - data.report2.sumPayment >
-                              0 && "+") +
-                              (data.report.sumPayment -
-                                data.report2.sumPayment)}
-                          </td>
-                        )}
-                      </tr>
-                      <tr>
-                        <td>Order đã hoàn thành</td>
-                        <td>order</td>
-                        <td>{data.report.sumStatus}</td>
-                        {sosanh && data.report2 && (
-                          <td>
-                            {(data.report.sumStatus - data.report2.sumStatus >
-                              0 && "+") +
-                              (data.report.sumStatus - data.report2.sumStatus)}
-                          </td>
-                        )}
-                      </tr>
-                      <tr>
-                        <td>Tổng tiền thu vào</td>
-                        <td>VNĐ</td>
-                        <td>{data.report.sumMoney}</td>
-                        {sosanh && data.report2 && (
-                          <td>
-                            {(data.report.sumMoney - data.report2.sumMoney >
-                              0 && "+") +
-                              (data.report.sumMoney - data.report2.sumMoney)}
-                          </td>
-                        )}
-                      </tr>
-                      <tr>
-                        <td>Số lượng sản phẩm đã bán</td>
-                        <td>item</td>
-                        <td>{data.report.sumItem}</td>
-                        {sosanh && data.report2 && (
-                          <td>
-                            {(data.report.sumItem - data.report2.sumItem > 0 &&
-                              "+") +
-                              (data.report.sumItem - data.report2.sumItem)}
-                          </td>
-                        )}
-                      </tr>
-                    </tbody>
-                  </table>
+                    <label class="form-check-label" for="doanhthu">
+                      Doanh thu từng ngày
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="banchay"
+                      onChange={(e) =>
+                        setCheckBox((prev) => ({
+                          ...prev,
+                          banchay: e.target.checked,
+                        }))
+                      }
+                    />
+                    <label class="form-check-label" for="banchay">
+                      Thống kê sản phẩm
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="theogio"
+                      onChange={(e) =>
+                        setCheckBox((prev) => ({
+                          ...prev,
+                          theogio: e.target.checked,
+                        }))
+                      }
+                    />
+                    <label class="form-check-label" for="theogio">
+                      Order theo thời gian trong ngày
+                    </label>
+                  </div>
                 </div>
               </div>
-            )}
-            {lable.doanhthu.length !== 0 && data.doanhthu !== null && (
-              <div className="col-12 col-lg-6   ">
-                <Line
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      title: {
-                        display: true,
-                        text: "Thống kê doanh thu",
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: lable.doanhthu,
-                    datasets: [
-                      {
-                        label:
-                          "Doanh thu (" + date1.from + ") - (" + date1.to + ")",
-                        borderColor: "rgb(255, 0, 0)",
-                        data: data.doanhthu,
-                        backgroundColor: "rgba(0,0,0)",
-                      },
-                    ],
-                  }}
-                />
-              </div>
-            )}
+              <div className="text-center">
+                <div className="btn btn-primary " onClick={thongKe}>
+                  Xem
+                </div>
 
-            {lable.banchay.length !== 0 && data.banchay !== null && (
-              <div className="col-12 col-lg-6  ">
-                <Bar
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      title: {
-                        display: true,
-                        text: "Thống kê sản phẩm",
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: lable.banchay,
-                    datasets: [
-                      {
-                        label:
-                          "Sản phẩm đã bán (" +
-                          date1.from +
-                          ") - (" +
-                          date1.to +
-                          ")",
-                        backgroundColor: "rgb(255, 0, 0)",
-                        data: data.banchay,
-                      },
-                      sosanh && {
-                        label:
-                          "Sản phẩm đã bán (" +
-                          date2.from +
-                          ") - (" +
-                          date2.to +
-                          ")",
-                        backgroundColor: "rgba(0,0,255)",
-                        data: data.banchay2,
-                      },
-                    ],
-                  }}
-                />
+                <button
+                  className={
+                    "ms-1 " +
+                    (isFetch ? "btn btn-primary" : "btn btn-secondary")
+                  }
+                  onClick={convertToImage}
+                  disabled={!isFetch}
+                >
+                  Tải về
+                </button>
               </div>
-            )}
+              <hr />
+              <div id="export">
+                <h6 className="text-center">
+                  Thống kê từ ngày {date1.from} đến {date1.to} ({numberDay.day1}{" "}
+                  ngày)
+                  {sosanh && (
+                    <>
+                      {" "}
+                      <br />
+                      So sánh với ngày {date2.from} đến {date2.to} (
+                      {numberDay.day2} ngày)
+                    </>
+                  )}
+                </h6>
+                <div className="row">
+                  {checkBox.report !== false && data.report !== null && (
+                    <div className="col-12 col-12 col-lg-6 d-flex justify-content-center  ">
+                      <div className="bg-faded m-2">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col">Danh mục</th>
+                              <th scope="col">Đơn vị</th>
+                              <th scope="col">Số lượng</th>
+                              {sosanh && data.report2 && (
+                                <th scope="col">So sánh</th>
+                              )}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Tổng số order</td>
+                              <td>order</td>
+                              <td>{data.report.total}</td>
+                              {sosanh &&
+                                data.report2 &&
+                                (data.report.total - data.report2.total > 0 ? (
+                                  <td className="text-success">
+                                    {" "}
+                                    + {data.report.total - data.report2.total}
+                                  </td>
+                                ) : (
+                                  <td className="text-danger">
+                                    {" "}
+                                    {data.report.total - data.report2.total}
+                                  </td>
+                                ))}
+                            </tr>
+                            <tr>
+                              <td>Order đã thanh toán</td>
+                              <td>order</td>
+                              <td>{data.report.sumPayment}</td>
+                              {sosanh &&
+                                data.report2 &&
+                                (data.report.sumPayment -
+                                  data.report2.sumPayment >
+                                0 ? (
+                                  <td className="text-success">
+                                    {" "}
+                                    +{" "}
+                                    {data.report.sumPayment -
+                                      data.report2.sumPayment}
+                                  </td>
+                                ) : (
+                                  <td className="text-danger">
+                                    {" "}
+                                    {data.report.sumPayment -
+                                      data.report2.sumPayment}
+                                  </td>
+                                ))}
+                            </tr>
+                            <tr>
+                              <td>Order đã hoàn thành</td>
+                              <td>order</td>
+                              <td>{data.report.sumStatus}</td>
+                              {sosanh &&
+                                data.report2 &&
+                                (data.report.sumStatus -
+                                  data.report2.sumStatus >
+                                0 ? (
+                                  <td className="text-success">
+                                    {" "}
+                                    +{" "}
+                                    {data.report.sumStatus -
+                                      data.report2.sumStatus}
+                                  </td>
+                                ) : (
+                                  <td className="text-danger">
+                                    {" "}
+                                    {data.report.sumStatus -
+                                      data.report2.sumStatus}
+                                  </td>
+                                ))}
+                            </tr>
+                            <tr>
+                              <td>Tổng tiền thu vào</td>
+                              <td>VNĐ</td>
+                              <td>{data.report.sumMoney}</td>
 
-            {lable.theogio.length !== 0 && data.hoursOrder !== null && (
-              <div className="col-12 col-lg-6  ">
-                <Bar
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      title: {
-                        display: true,
-                        text: "Thống kê sản phẩm",
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: lable.theogio,
-                    datasets: [
-                      {
-                        label: "Số lần order",
-                        backgroundColor: "rgb(255, 0, 0)",
-                        data: data.hoursOrder,
-                      },
-                    ],
-                  }}
-                />
+                              {sosanh &&
+                                data.report2 &&
+                                (data.report.sumMoney - data.report2.sumMoney >
+                                0 ? (
+                                  <td className="text-success">
+                                    {" "}
+                                    +{" "}
+                                    {data.report.sumMoney -
+                                      data.report2.sumMoney}
+                                  </td>
+                                ) : (
+                                  <td className="text-danger">
+                                    {" "}
+                                    {data.report.sumMoney -
+                                      data.report2.sumMoney}
+                                  </td>
+                                ))}
+                            </tr>
+                            <tr>
+                              <td>Số lượng sản phẩm đã bán</td>
+                              <td>item</td>
+                              <td>{data.report.sumItem}</td>
+                              {sosanh &&
+                                data.report2 &&
+                                (data.report.sumItem - data.report2.sumItem >
+                                0 ? (
+                                  <td className="text-success">
+                                    {" "}
+                                    +{" "}
+                                    {data.report.sumItem - data.report2.sumItem}
+                                  </td>
+                                ) : (
+                                  <td className="text-danger">
+                                    {" "}
+                                    {data.report.sumItem - data.report2.sumItem}
+                                  </td>
+                                ))}
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {lable.doanhthu.length !== 0 && data.doanhthu !== null && (
+                    <div className="col-12 col-lg-6 ">
+                      <Line
+                        className="bg-faded m-2"
+                        options={{
+                          responsive: true,
+                          plugins: {
+                            title: {
+                              display: true,
+                              text: "Doanh thu từng ngày",
+                            },
+                          },
+                        }}
+                        data={{
+                          labels: lable.doanhthu,
+                          datasets: [
+                            {
+                              label:
+                                "Doanh thu (" +
+                                date1.from +
+                                ") - (" +
+                                date1.to +
+                                ")",
+                              borderColor: "rgb(255, 0, 0)",
+                              data: data.doanhthu,
+                              backgroundColor: "rgba(0,0,0)",
+                            },
+                          ],
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {lable.banchay.length !== 0 && data.banchay !== null && (
+                    <div className="col-12 col-lg-6 ">
+                      <Bar
+                        className="bg-faded m-2"
+                        options={{
+                          responsive: true,
+                          plugins: {
+                            title: {
+                              display: true,
+                              text: "Thống kê sản phẩm",
+                            },
+                          },
+                        }}
+                        data={{
+                          labels: lable.banchay,
+                          datasets: [
+                            {
+                              label:
+                                "Sản phẩm đã bán (" +
+                                date1.from +
+                                ") - (" +
+                                date1.to +
+                                ")",
+                              backgroundColor: "rgb(255, 0, 0)",
+                              data: data.banchay,
+                            },
+                            sosanh && {
+                              label:
+                                "Sản phẩm đã bán (" +
+                                date2.from +
+                                ") - (" +
+                                date2.to +
+                                ")",
+                              backgroundColor: "rgba(0,0,255)",
+                              data: data.banchay2,
+                            },
+                          ],
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {lable.theogio.length !== 0 && data.hoursOrder !== null && (
+                    <div className="col-12 col-lg-6  ">
+                      <Bar
+                        className="bg-faded m-2"
+                        options={{
+                          responsive: true,
+                          plugins: {
+                            title: {
+                              display: true,
+                              text: "Order trung bình theo giờ",
+                            },
+                          },
+                        }}
+                        data={{
+                          labels: lable.theogio,
+                          datasets: [
+                            {
+                              label:
+                                "Số lần order " +
+                                date1.from +
+                                ") - (" +
+                                date1.to +
+                                ")",
+                              backgroundColor: "rgb(255, 0, 0)",
+                              data: data.hoursOrder,
+                            },
+                            sosanh && {
+                              label:
+                                "Số lần order " +
+                                date1.from +
+                                ") - (" +
+                                date1.to +
+                                ")",
+                              backgroundColor: "rgba(0,0,255)",
+                              data: data.hoursOrder2,
+                            },
+                          ],
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

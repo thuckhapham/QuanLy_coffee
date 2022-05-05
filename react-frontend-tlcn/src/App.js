@@ -1,23 +1,45 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 import Header from "./Components/Header/Header";
-import Footer from "./Components/Footer/Footer";
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
-import Homepage from "./Pages/Homepage/Homepage.jsx";
 import Member from "./Pages/Member/Member";
+import Homepage from "./Pages/Homepage/Homepage.jsx";
 import Order from "./Pages/Order/Order";
 import HistoryOrder from "./Pages/HistoryOrder/HistoryOrder";
 import Drink from "./Pages/Menu Drink/Drink";
 import Login from "./Components/Login/Login";
 import Profile from "./Pages/Profile/Profile";
-import Table from "./Pages/Table/Table.jsx";
 import Report from "./Pages/Report/Report.jsx";
 import About from "./Pages/About/About.jsx";
-import Header2 from "./NewComponents/Header2/Header";
 import ClientTrack from "./Pages/ClientTrack/ClientTrack";
 
-// import { BrowserRouter as Router, Switch , Route } from 'react-router-dom'
 import { ParallaxProvider } from "react-scroll-parallax";
+import Page404 from "./Components/Page404";
+import QLNV from "./Pages/QLNV";
+
+import React from "react";
+
+const PrivateRoute = ({ children }) => {
+  return localStorage.getItem("tokenBearer") !== null ? (
+    children
+  ) : (
+    <Navigate to="/login" />
+  );
+};
+
+const NotLoginAgain = ({ children }) => {
+  return localStorage.getItem("tokenBearer") == null ? (
+    children
+  ) : (
+    <Navigate to="/home" />
+  );
+};
 
 function App() {
   return (
@@ -25,25 +47,107 @@ function App() {
       <div className="app">
         <ParallaxProvider>
           <Router>
-            {/* <Header2 /> */}
-            {/* <Header /> */}
             <Routes>
-              <Route path="/login" exact={true} element={<Login />} />
-              <Route path="/" exact={true} element={<Homepage />} />
-              <Route path="/home" exact={true} element={<Homepage />} />
-              <Route path="/member" exact={true} element={<Member />} />
+              <Route
+                path="/login"
+                exact={true}
+                element={
+                  <NotLoginAgain>
+                    <Login />
+                  </NotLoginAgain>
+                }
+              />
+              <Route
+                path="/"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Homepage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/home"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Homepage />
+                  </PrivateRoute>
+                }
+              />
               <Route
                 path="/order-history"
-                exact={true}
-                element={<HistoryOrder />}
+                element={
+                  <PrivateRoute>
+                    <HistoryOrder />
+                  </PrivateRoute>
+                }
               />
-              <Route path="/order/:id" exact={true} element={<Order />} />
-              <Route path="/menu-drink" exact={true} element={<Drink />} />
-              <Route path="/profile" exact={true} element={<Profile />} />
-              <Route path="/table" exact={true} element={<Table />} />
-              <Route path="/report" exact={true} element={<Report />} />
+              <Route
+                path="/order/:id"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Order />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/menu-drink"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Drink />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/report"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Report />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/track" exact={true} element={<ClientTrack />} />
               <Route path="/about" exact={true} element={<About />} />
+              <Route
+                path="/qlnv"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <QLNV />
+                  </PrivateRoute>
+                }
+              />{" "}
+              <Route
+                path="/404"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Page404 />
+                  </PrivateRoute>
+                }
+              />{" "}
+              <Route
+                path="/*"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <Page404 />
+                  </PrivateRoute>
+                }
+              />
             </Routes>
             {/* <OrderHistory /> */}
           </Router>

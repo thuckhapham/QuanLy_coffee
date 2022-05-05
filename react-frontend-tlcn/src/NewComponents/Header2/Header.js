@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Header2 = (props) => {
   const navigate = useNavigate();
+  const [role, setRole] = useState(localStorage.getItem("coffeeRole"));
   function Logout() {
     if (localStorage.getItem("tokenBearer")) {
       localStorage.removeItem("tokenBearer");
-      navigate("/");
+      localStorage.removeItem("coffeeRole");
+      navigate("/login");
     }
   }
   let pathname = window.location.pathname;
+
+  useEffect(() => {
+    if (localStorage.getItem("coffeeRole") !== role)
+      setRole(localStorage.getItem("coffeeRole"));
+  }, [pathname]);
 
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-sm navbar-light ">
@@ -29,64 +36,96 @@ const Header2 = (props) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {role !== null && (
+              <>
+                <li className="nav-item">
+                  <Link
+                    to="/home"
+                    className={
+                      "nav-link" + (pathname === "/home" ? " active" : "")
+                    }
+                    aria-current="page"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    to="/order-history"
+                    className={
+                      "nav-link" +
+                      (pathname === "/order-history" ? " active" : "")
+                    }
+                  >
+                    Order
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    to="/menu-drink"
+                    className={
+                      "nav-link" + (pathname === "/menu-drink" ? " active" : "")
+                    }
+                  >
+                    Menu
+                  </Link>
+                </li>
+                {role === "ADMIN" && (
+                  <>
+                    <li className="nav-item">
+                      <Link
+                        to="/report"
+                        className={
+                          "nav-link" + (pathname === "/report" ? " active" : "")
+                        }
+                      >
+                        Report
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to="/qlnv"
+                        className={
+                          "nav-link" + (pathname === "/qlnv" ? " active" : "")
+                        }
+                      >
+                        QLNV
+                      </Link>
+                    </li>
+                  </>
+                )}
+                <li className="nav-item">
+                  <Link
+                    to="/profile"
+                    className={
+                      "nav-link" + (pathname === "/profile" ? " active" : "")
+                    }
+                  >
+                    Profile
+                  </Link>
+                </li>
+              </>
+            )}
             <li className="nav-item">
-              <Link
-                to="/home"
-                className={"nav-link" + (pathname === "/home" ? " active" : "")}
-                aria-current="page"
-                href="#"
-              >
-                Home
+              <Link to="/track" className={"nav-link"}>
+                Client-Track
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                to="/order-history"
-                className={
-                  "nav-link" + (pathname === "/order-history" ? " active" : "")
-                }
-                href="#"
-              >
-                Order
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/menu-drink"
-                className={
-                  "nav-link" + (pathname === "/menu-drink" ? " active" : "")
-                }
-                href="#"
-              >
-                Menu
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/report"
-                className={
-                  "nav-link" + (pathname === "/report" ? " active" : "")
-                }
-                href="#"
-              >
-                Report
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/profile"
-                className={
-                  "nav-link" + (pathname === "/profile" ? " active" : "")
-                }
-                href="#"
-              >
-                Profile
-              </Link>
-            </li>
+            {role == null && (
+              <li className="nav-item">
+                <Link to="/about" className={"nav-link"}>
+                 About-MyCofffe
+                </Link>
+              </li>
+            )}
           </ul>
-          <form className="d-flex">
-            <div className="btn btn-outline-danger">Logout</div>
-          </form>
+          {role !== null && (
+            <form className="d-flex">
+              <div className="btn btn-outline-danger" onClick={Logout}>
+                Logout
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </nav>

@@ -78,8 +78,8 @@ function Drink() {
   return (
     <>
       <Header2 />
-      <div className="container p-md-3 p-1">
-        <h1 className="">Drink Control</h1>
+      <div className="container p-3">
+        <h1 className="text-center">Drink Control</h1>
         <div className="row p-2 m-0">
           <div className="col-12 col-md-5">
             <label>Drink name:</label>
@@ -243,7 +243,7 @@ function Drink() {
                   <tr>
                     <td colspan="5" className="text-danger">
                       {searchWarn}
-                  </td>
+                    </td>
                   </tr>
                 </tbody>
               )}

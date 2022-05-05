@@ -35,6 +35,17 @@ function Profile(props) {
   useEffect(() => {
     axios({
       method: "get",
+      url: `http://localhost:5000/api/users`,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      console.log(response.data);
+    });
+
+    axios({
+      method: "get",
       url: `http://localhost:5000/api/users/info`,
       headers: {
         Authorization: `bearer ${tokenBearer}`,
@@ -48,8 +59,8 @@ function Profile(props) {
   }, [requestData]);
   return (
     <>
-         <Header2/>
-        <div className="container p-3">
+      <Header2 />
+      <div className="container p-3">
         <div className="editprofile__content-header">MY PROFILE</div>
         <div className="editprofile__content-btn">
           <button
@@ -177,8 +188,8 @@ function Profile(props) {
             )}
           </div>
         </div>
-</div>
-<Footer/>
+      </div>
+      <Footer />
     </>
   );
 }
