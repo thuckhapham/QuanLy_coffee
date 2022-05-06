@@ -6,7 +6,7 @@ import axios from "axios";
 import Discount from "../../Components/Modal/Order/Discount/Discount";
 import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
 
 function Order() {
@@ -55,7 +55,7 @@ function Order() {
   }
   //Quy đổi số về tiền việt
   function currencyFormat(num) {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   }
   // Thêm nước
   function addingDrink(selectedId) {
@@ -138,15 +138,12 @@ function Order() {
     <>
       <Header2 />
       <div className="container p-3">
+        <h1 className="text-center">Table {billOrder.table}</h1>
         <div className="order">
-          <h1>
-            Order {id} | Table {billOrder.table}
-          </h1>
           <div className="order__table-height text-center">
             <table className="order__table">
               <thead className="order__head">
                 <tr className="order__header">
-                  <th style={{ width: 100 }}>Id</th>
                   <th>Name</th>
                   <th>Quantity</th>
                   <th>Price</th>
@@ -156,9 +153,8 @@ function Order() {
               <tbody className="order__body">
                 {billOrder.orderItem.map((item, index) => (
                   <tr className="order__row">
-                    <td>{index + 1}</td>
                     <td>{item.name}</td>
-                    <td>
+                    <td className="text-center">
                       <button
                         className="order__increase"
                         onClick={() => {
@@ -167,7 +163,10 @@ function Order() {
                       >
                         +
                       </button>
-                      {item.quantity}
+                      <div className="d-block d-md-inline-block ps-1 pe-1">
+                        {" "}
+                        {item.quantity}
+                      </div>
                       <button
                         className="order__decrease"
                         onClick={() => minusDrink(item.ProductID)}
@@ -232,20 +231,17 @@ function Order() {
               </div>
               <div className="col-12 col-md-4 m-0 p-0">
                 <div
-                  className="category__button-member col-12 "
+                  className="category__button-member col-12 d-flex align-items-center"
                   onClick={() => {
-                    // setViewModal(!viewModal);
-                    // setButt("member");
                     cancelOrder();
                   }}
                 >
                   Cancel
                 </div>
                 <div
-                  className="category__button-check col-12"
+                  className="category__button-check col-12 d-flex align-items-center"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
-                  onClick={() => {}}
                 >
                   Check out
                 </div>
@@ -280,6 +276,7 @@ function Order() {
                   orderdetail={billOrder.orderItem}
                   orderid={id}
                   totalprice={currencyFormat(TotalPrice)}
+                  numberPrice={TotalPrice}
                   discountprice={currencyFormat(DiscountPrice)}
                   ModalState={callbackModal}
                   table={billOrder.table}

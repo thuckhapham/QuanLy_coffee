@@ -1,7 +1,8 @@
 import axios from "axios";
 import "./report.css";
 import { useEffect, useState } from "react";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -372,7 +373,7 @@ const Report = () => {
       ) : (
         <>
           <div className="container p-3">
-            <h1 className="text-center"> REPORT</h1>
+            <h1 className="text-center">Report</h1>
             <div className="border border-4 ">
               <div className="row">
                 <div className="col-6 col-md-4">

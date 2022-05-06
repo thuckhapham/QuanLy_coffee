@@ -48,7 +48,6 @@
   background-color: green;
   color: var(--white-color);
   border-radius: 5px;
-  margin-right: 5px;
   font-size: 1rem;
   transform: translateY(-5%);
 }
@@ -56,7 +55,6 @@
   background-color: red;
   color: var(--white-color);
   border-radius: 5px;
-  margin-left: 5px;
   font-size: 1rem;
   transform: translateY(-5%);
 }

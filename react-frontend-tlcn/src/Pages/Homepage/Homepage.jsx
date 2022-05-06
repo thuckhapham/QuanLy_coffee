@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Homepage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
 function Homepage(props) {
   //Lấy Bearer Token

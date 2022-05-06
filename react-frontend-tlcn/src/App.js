@@ -6,9 +6,7 @@ import {
   useNavigate,
   Navigate,
 } from "react-router-dom";
-import Header from "./Components/Header/Header";
-import OrderHistory from "./Components/OrderHistory/OrderHistory";
-import Member from "./Pages/Member/Member";
+
 import Homepage from "./Pages/Homepage/Homepage.jsx";
 import Order from "./Pages/Order/Order";
 import HistoryOrder from "./Pages/HistoryOrder/HistoryOrder";

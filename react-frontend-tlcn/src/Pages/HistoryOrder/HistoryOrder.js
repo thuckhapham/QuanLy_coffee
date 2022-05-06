@@ -7,7 +7,7 @@ import * as AiIcons from "react-icons/ai";
 import * as GrIcons from "react-icons/gr";
 import "./HistoryOrder.css";
 import Footer from "../../Components/Footer/Footer";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 
 function HistoryOrder() {
   //Set Modal Active
@@ -110,23 +110,10 @@ function HistoryOrder() {
     <>
       <Header2 />
       <div className="container p-3">
+        <h1 className="text-center">History Order</h1>
         <div className="historyorder">
           <div className="historyorder__top">
-            <div className="historyorder__title">History Order</div>
-            {/* <div className="historyorder__time-list">
-                        <div className="historyorder__time-item">
-                            From
-                            <br />
-                            <input type="date" className="" id="datefrom" name="datefrom" />
-                        </div>
-                        <div className="historyorder__time-item">
-                            To
-                            <br />
-                            <input type="date" className="" id="dateto" name="dateto" />
-                        </div>
-                    </div> */}
             <div className="historyorder__orderid">
-              Order Id:
               <input
                 type="text"
                 className="historyorder__orderid historyorder__orderid-input"
@@ -137,10 +124,11 @@ function HistoryOrder() {
                 value={viewID}
                 onChange={(e) => setID(e.target.value)}
               />
-              <AiIcons.AiOutlineSearch
-                className="historyorder__orderid historyorder__orderid-icon"
-                onClick={() => orderID()}
-              />
+              <div className="btn btn-outline-dark mb-2">
+                <AiIcons.AiOutlineSearch
+                  onClick={() => orderID()}
+                />
+              </div>
             </div>
           </div>
           <div className="historyorder__table-header">

@@ -1,7 +1,7 @@
 import axios from "axios";
 import "./style.css";
 import { useEffect, useState } from "react";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import Loading from "../../Components/Loading";
 
 import checkPermesion from "../../Components/checkPermession";

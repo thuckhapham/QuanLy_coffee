@@ -4,11 +4,10 @@ import * as AiIcon from "react-icons/ai";
 import "./Login.css";
 import axios from "axios";
 import * as AiIcons from "react-icons/ai";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../Header2/Header";
 import Footer from "../Footer/Footer";
 
 function Login(props) {
-
   //Login
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");

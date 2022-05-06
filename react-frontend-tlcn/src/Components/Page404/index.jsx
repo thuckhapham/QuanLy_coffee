@@ -1,4 +1,4 @@
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../Header2/Header";
 
 const Page404 = (props) => {
   console.log(props);

@@ -56,7 +56,7 @@ function ClientTrack(props) {
             </div> */}
             <div className="col-6 d-inline-block">
               <span className="dot-big table-used d-inline-block table-clientcomplete"></span>
-              Đến quầy nhận nước!
+              Đến nhận nước!
             </div>
             <div className="col-6 d-inline-block">
               <span className="dot-big table-broken d-inline-block"></span>

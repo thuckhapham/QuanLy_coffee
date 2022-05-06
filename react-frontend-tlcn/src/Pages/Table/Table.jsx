@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Table.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
 function Table(props) {
   //Lấy Bearer Token

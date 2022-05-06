@@ -8,7 +8,7 @@ import NewDrink from "../../Components/Modal/Menu Drink/New Drink/NewDrink";
 import DeleteDrink from "../../Components/Modal/Menu Drink/Delete Drink/DeleteDrink";
 import EditDrink from "../../Components/Modal/Menu Drink/Edit Drink/EditDrink";
 import Footer from "../../Components/Footer/Footer";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import { DebounceInput } from "react-debounce-input";
 
 function Drink() {
@@ -86,6 +86,7 @@ function Drink() {
             <DebounceInput
               type="text"
               className="drinksearch__form"
+              placeholder="Cà phê"
               debounceTimeout={500}
               onChange={(e) => {
                 searchID(e.target.value);
