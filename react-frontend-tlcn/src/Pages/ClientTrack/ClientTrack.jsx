@@ -45,8 +45,8 @@ function ClientTrack(props) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
   }
   return (
-    <>
-      <div className="row p-0 m-0">
+    <div className="client-track">
+      <div className="row p-0 m-0 ">
         <h1 className="text-center">Xin quý khách theo dõi bàn của mình!</h1>
         <div className="col-12">
           <ul className="w-100 fs-3">
@@ -86,7 +86,7 @@ function ClientTrack(props) {
           </div>
         </div>
       </div>
-<hr/>
+      <hr />
       <div className="row m-0 text-center">
         <h1 className="m-0">Menu</h1>
         {product.map(
@@ -117,7 +117,7 @@ function ClientTrack(props) {
             )
         )}
       </div>
-    </>
+    </div>
   );
 }
 

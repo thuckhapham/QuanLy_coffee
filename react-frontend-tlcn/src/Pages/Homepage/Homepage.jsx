@@ -194,7 +194,7 @@ function Homepage(props) {
           </div>
           <div className="col-12 col-sm-4">
             {selectedTable === undefined ? (
-              <p>Chọn một bàn để xem</p>
+              <p className="text-center">Chọn một bàn để xem</p>
             ) : (
               <>
                 <ul className="p-0 text-center">

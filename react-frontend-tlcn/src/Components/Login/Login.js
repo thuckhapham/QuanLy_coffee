@@ -44,14 +44,14 @@ function Login(props) {
       <div className="container p-3">
         {/* <div className={values.redirectToReferrer ? "modal--unactive" : "modal"}> */}
         <div className="row">
-          <div className="col-12 col-sm-6 mx-auto d-block">
+          <div className="col-12 col-sm-6 d-flex align-content-center flex-wrap">
             <img
               src="https://www.pngall.com/wp-content/uploads/4/Cafe-Transparent.png"
               alt="logo"
               className="w-100"
             />
           </div>
-          <div className="col-12 col-sm-6 auth-form mx-auto d-block">
+          <div className="col-12 col-sm-6 d-flex align-content-center flex-wrap">
             <div className="auth-form__container">
               <div className="text-center">
                 <h3>Login</h3>
@@ -89,6 +89,11 @@ function Login(props) {
                 >
                   Login
                 </button>
+                {checkError === "Error" && (
+                  <div className="text-danger text-center">
+                    Username or Password is not matched!!
+                  </div>
+                )}
                 {/* </Link> */}
               </div>
             </div>
@@ -101,25 +106,6 @@ function Login(props) {
             <br />
             123123
             <br />
-            {checkError === "Error" && (
-              <>
-                <div className="error__content">
-                  <h2 className="error__content--warn">
-                    WARNING
-                    <AiIcons.AiFillWarning className="deletemember__content deletemember__content-icon" />
-                  </h2>
-                  Username or Password is not matched!!
-                </div>
-                {/* <div className="error__footer">
-                  <button
-                    className="error__btn error__btn-cancel"
-                    onClick={() => setError("")}
-                  >
-                    Close
-                  </button>
-                </div> */}
-              </>
-            )}
           </div>
         </div>
       </div>

@@ -125,9 +125,7 @@ function HistoryOrder() {
                 onChange={(e) => setID(e.target.value)}
               />
               <div className="btn btn-outline-dark mb-2">
-                <AiIcons.AiOutlineSearch
-                  onClick={() => orderID()}
-                />
+                <AiIcons.AiOutlineSearch onClick={() => orderID()} />
               </div>
             </div>
           </div>
@@ -180,7 +178,7 @@ function HistoryOrder() {
                       </td>
                       <td>
                         <button
-                          className="customer__btn-view"
+                          className="bg-success text-light  p-1 me-1"
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#exampleModal"
@@ -190,10 +188,10 @@ function HistoryOrder() {
                             saveOrder(data._id);
                           }}
                         >
-                          <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
+                          <GrIcons.GrCircleInformation className="d-flex align-content-center flex-wrap" />
                         </button>
                         <button
-                          className="historyoder__btn-cancel"
+                          className="bg-danger text-light p-1"
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#exampleModal"
@@ -205,7 +203,7 @@ function HistoryOrder() {
                           }}
                         >
                           {/* Cancel */}
-                          <GiIcons.GiCancel className="historyoder__btn-cancelicon" />
+                          <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
                         </button>
                       </td>
                     </tr>
