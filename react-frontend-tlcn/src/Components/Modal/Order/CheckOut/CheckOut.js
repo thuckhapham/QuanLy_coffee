@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as AiIcons from "react-icons/ai";
@@ -9,6 +9,7 @@ function CheckOut(props) {
   const details = props.orderdetail;
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
+  const [typePayment, setTypePayment] = useState("cash");
   //Đóng Modal
   const sendData = (modalState) => {
     props.ModalState(modalState);
@@ -50,9 +51,23 @@ function CheckOut(props) {
             Authorization: `bearer ${tokenBearer}`,
             "Content-Type": "application/json",
           },
-        }).then((res) => {
-          navigate("/home");
-        });
+        })
+          .then((res) => {
+            let putcheckin = localStorage.getItem("checkin");
+            console.log(putcheckin);
+            putcheckin = JSON.parse(putcheckin);
+            if (putcheckin !== null) {
+              if (typePayment === "cash")
+                putcheckin.cash = putcheckin.cash + parseInt(props.numberPrice);
+              else
+                putcheckin.online =
+                  putcheckin.online + parseInt(props.numberPrice);
+              putcheckin.countOrder++;
+              localStorage.setItem("checkin", JSON.stringify(putcheckin));
+            }
+            navigate("/home");
+          })
+          .catch((e) => console.log(e));
       });
     });
   }
@@ -65,6 +80,11 @@ function CheckOut(props) {
       );
     });
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("checkin") == null)
+      alert("Cảnh báo: Bạn đang thực hiện Order mà chưa Checkin");
+  }, []);
 
   function saveAs(uri, filename) {
     var link = document.createElement("a");
@@ -130,7 +150,12 @@ function CheckOut(props) {
             <ul className="checkout__payment-list">
               <li className="checkout__payment-item">
                 <label className="payment__rb">
-                  <input type="radio" name="radio" />
+                  <input
+                    type="radio"
+                    name="radio"
+                    onChange={(e) => setTypePayment("cash")}
+                    defaultChecked
+                  />
                   <span className="checkmark"></span>
                   <span className="icon">
                     <FaIcons.FaRegMoneyBillAlt />
@@ -139,7 +164,11 @@ function CheckOut(props) {
               </li>
               <li className="checkout__payment-item">
                 <label className="payment__rb">
-                  <input type="radio" name="radio" />
+                  <input
+                    type="radio"
+                    name="radio"
+                    onChange={(e) => setTypePayment("online")}
+                  />
                   <span className="checkmark"></span>
                   <span className="icon">
                     <AiIcons.AiOutlineCreditCard />

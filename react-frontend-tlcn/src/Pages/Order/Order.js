@@ -6,7 +6,7 @@ import axios from "axios";
 import Discount from "../../Components/Modal/Order/Discount/Discount";
 import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
 
 function Order() {
@@ -55,7 +55,7 @@ function Order() {
   }
   //Quy đổi số về tiền việt
   function currencyFormat(num) {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   }
   // Thêm nước
   function addingDrink(selectedId) {
@@ -138,15 +138,12 @@ function Order() {
     <>
       <Header2 />
       <div className="container p-3">
+        <h1 className="text-center">Table {billOrder.table}</h1>
         <div className="order">
-          <h1>
-            Order {id} | Table {billOrder.table}
-          </h1>
           <div className="order__table-height text-center">
             <table className="order__table">
               <thead className="order__head">
                 <tr className="order__header">
-                  <th style={{ width: 100 }}>Id</th>
                   <th>Name</th>
                   <th>Quantity</th>
                   <th>Price</th>
@@ -156,9 +153,8 @@ function Order() {
               <tbody className="order__body">
                 {billOrder.orderItem.map((item, index) => (
                   <tr className="order__row">
-                    <td>{index + 1}</td>
                     <td>{item.name}</td>
-                    <td>
+                    <td className="text-center">
                       <button
                         className="order__increase"
                         onClick={() => {
@@ -167,7 +163,10 @@ function Order() {
                       >
                         +
                       </button>
-                      {item.quantity}
+                      <div className="d-block d-md-inline-block ps-1 pe-1">
+                        {" "}
+                        {item.quantity}
+                      </div>
                       <button
                         className="order__decrease"
                         onClick={() => minusDrink(item.ProductID)}
@@ -187,79 +186,65 @@ function Order() {
             <div className="order__summary">{currencyFormat(TotalPrice)}</div>
           </div>
           <div className="category__container">
-            <div className="category__heading">Category</div>
-            <div className="category__header">{selectedCate}</div>
-            <div className="category__footer">
-              <div className="order__menu">
-                <div className="category__title">
-                  <ul className="category__list">
-                    {viewList
-                      .map((data, index) => {
-                        if (duplicateCheck.includes(data.category)) return null;
-                        duplicateCheck.push(data.category);
-                        return (
-                          <li
-                            className="category__item"
-                            onClick={() => {
-                              setCate(data.category);
-                            }}
-                          >
-                            {data.category}
-                          </li>
-                        );
-                      })
-                      .filter((e) => e)}
-                  </ul>
-                </div>
-                <div className="category__name">
-                  <ul className="category__name-list">
-                    {viewList.map(
-                      (data) =>
-                        data.category === selectedCate && (
-                          <li
-                            className="category__name-item"
-                            onClick={() => {
-                              addingDrink(data._id);
-                              retrieveOrder(id);
-                            }}
-                          >
-                            {data.name}
-                          </li>
-                        )
-                    )}
-                  </ul>
-                </div>
+            <div className="category__heading text-center">Category</div>
+            <div className="w-100 text-center">
+              {viewList
+                .map((data, index) => {
+                  if (duplicateCheck.includes(data.category)) return null;
+                  duplicateCheck.push(data.category);
+                  return (
+                    <div
+                      className={
+                        "category__item d-inline-block " +
+                        (selectedCate == data.category
+                          ? " bg-primary text-light"
+                          : "")
+                      }
+                      onClick={() => {
+                        setCate(data.category);
+                      }}
+                    >
+                      {data.category}
+                    </div>
+                  );
+                })
+                .filter((e) => e)}
+            </div>
+            <hr />
+            <div className="row">
+              <div className="col-12 col-md-8 mb-3 p-0">
+                {viewList.map(
+                  (data) =>
+                    data.category === selectedCate && (
+                      <div
+                        className="category__name-item d-inline-block"
+                        onClick={() => {
+                          addingDrink(data._id);
+                          retrieveOrder(id);
+                        }}
+                      >
+                        {data.name}
+                      </div>
+                    )
+                )}
+                <hr className="d-block d-md-none" />
               </div>
-              <div className="category__button">
-                <ul>
-                  <li
-                    className="category__button-member"
-                    onClick={() => {
-                      // setViewModal(!viewModal);
-                      // setButt("member");
-                      cancelOrder();
-                    }}
-                  >
-                    Cancel
-                  </li>
-                  {/* <li
-                  className="category__button-discount"
+              <div className="col-12 col-md-4 m-0 p-0">
+                <div
+                  className="category__button-member col-12 d-flex align-items-center"
                   onClick={() => {
-                    setViewModal(!viewModal);
-                    setButt("discount");
+                    cancelOrder();
                   }}
                 >
-                  Discount
-                </li> */}
-                  <li
-                    className="category__button-check"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={() => {}}
-                  >
-                    Check out
-                  </li>
-                </ul>
+                  Cancel
+                </div>
+                <div
+                  className="category__button-check col-12 d-flex align-items-center"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                >
+                  Check out
+                </div>
               </div>
             </div>
           </div>
@@ -291,9 +276,10 @@ function Order() {
                   orderdetail={billOrder.orderItem}
                   orderid={id}
                   totalprice={currencyFormat(TotalPrice)}
+                  numberPrice={TotalPrice}
                   discountprice={currencyFormat(DiscountPrice)}
                   ModalState={callbackModal}
-                  table = {billOrder.table}
+                  table={billOrder.table}
                 />
               </div>
             </div>

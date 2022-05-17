@@ -8,7 +8,7 @@ import NewDrink from "../../Components/Modal/Menu Drink/New Drink/NewDrink";
 import DeleteDrink from "../../Components/Modal/Menu Drink/Delete Drink/DeleteDrink";
 import EditDrink from "../../Components/Modal/Menu Drink/Edit Drink/EditDrink";
 import Footer from "../../Components/Footer/Footer";
-import Header2 from "../../NewComponents/Header2/Header";
+import Header2 from "../../Components/Header2/Header";
 import { DebounceInput } from "react-debounce-input";
 
 function Drink() {
@@ -78,14 +78,15 @@ function Drink() {
   return (
     <>
       <Header2 />
-      <div className="container p-md-3 p-1">
-        <h1 className="">Drink Control</h1>
+      <div className="container p-3">
+        <h1 className="text-center">Drink Control</h1>
         <div className="row p-2 m-0">
           <div className="col-12 col-md-5">
             <label>Drink name:</label>
             <DebounceInput
               type="text"
               className="drinksearch__form"
+              placeholder="Cà phê"
               debounceTimeout={500}
               onChange={(e) => {
                 searchID(e.target.value);
@@ -243,7 +244,7 @@ function Drink() {
                   <tr>
                     <td colspan="5" className="text-danger">
                       {searchWarn}
-                  </td>
+                    </td>
                   </tr>
                 </tbody>
               )}

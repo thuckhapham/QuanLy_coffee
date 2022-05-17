@@ -48,7 +48,6 @@
   background-color: green;
   color: var(--white-color);
   border-radius: 5px;
-  margin-right: 5px;
   font-size: 1rem;
   transform: translateY(-5%);
 }
@@ -56,7 +55,6 @@
   background-color: red;
   color: var(--white-color);
   border-radius: 5px;
-  margin-left: 5px;
   font-size: 1rem;
   transform: translateY(-5%);
 }
@@ -131,6 +129,7 @@
   border-radius: 3px;
   width: 117px;
   text-align: center;
+  vertical-align: top;
 }
 .category__name-item:hover {
   cursor: pointer;
@@ -166,10 +165,9 @@
 .category__button-member,
 .category__button-discount,
 .category__button-check {
-  width: 190px;
+  /* width: 190px; */
   height: 74.5px;
   border: 1px solid black;
-  display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
