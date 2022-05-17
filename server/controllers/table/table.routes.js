@@ -6,17 +6,17 @@ const router = express.Router();
 router
   .route("/api/table")
   .get(tableCtrl.list)
-  .post(authCtrl.requireSignin, authCtrl.hasAdmin, tableCtrl.create);
+  .post(authCtrl.requireSignin, tableCtrl.create);
 
 router
   .route("/api/table/:tablePoin")
   .get(tableCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.hasAdmin, tableCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.hasAdmin, tableCtrl.remove);
+  .put(authCtrl.requireSignin, tableCtrl.update)
+  .delete(authCtrl.requireSignin, tableCtrl.remove);
 
 router
   .route("/api/table/insertOrder/:tablePoin")
-  .put(authCtrl.requireSignin, authCtrl.hasAdmin, tableCtrl.insertOrderToTable);
+  .put(authCtrl.requireSignin, tableCtrl.insertOrderToTable);
 router
   .route("/api/table/:tablePoin/status")
   .post(authCtrl.requireSignin, tableCtrl.tableStatus);
