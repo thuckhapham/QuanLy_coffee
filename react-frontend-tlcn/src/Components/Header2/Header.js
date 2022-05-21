@@ -1,8 +1,10 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Header2 = (props) => {
+  const tokenBearer = localStorage.getItem("tokenBearer");
   const navigate = useNavigate();
   const [role, setRole] = useState(localStorage.getItem("coffeeRole"));
   const [checkin, setCheckin] = useState(localStorage.getItem("checkin"));
@@ -30,34 +32,48 @@ const Header2 = (props) => {
   };
 
   const UserCheckOut = () => {
-    // put data api
-    console.log(checkin);
-    // xong rồi remove
-    localStorage.removeItem("checkin");
-    setCheckin(null);
-    alert("Đã checkout thành công");
+    let check = JSON.parse(localStorage.getItem("checkin"));
+    axios({
+      method: "put",
+      url: "http://localhost:5000/api/workshift/" + check._id + "/checkout",
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+      data: { ...check, note: checkin.note },
+    })
+      .then((response) => {
+        console.log(response.data);
+        localStorage.removeItem("checkin");
+        setCheckin(null);
+        alert("Đã checkout thành công");
+      })
+      .catch(function (error) {
+        console.log("error: ", error);
+      });
   };
   const UserCheckIn = () => {
     // call api
-    let responseId = "fsd86xcrr999";
-    localStorage.setItem(
-      "checkin",
-      JSON.stringify({
-        _id: responseId,
-        cash: 0,
-        online: 0,
-        countOrder: 0,
-        note: "",
+    axios({
+      method: "post",
+      url: "http://localhost:5000/api/workshift/checkin",
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log("response: ", response.data.workshift);
+        localStorage.setItem(
+          "checkin",
+          JSON.stringify(response.data.workshift)
+        );
+        setCheckin(response.data.workshift);
+        alert("Đã checkin thành công");
       })
-    );
-    setCheckin({
-      _id: responseId,
-      cash: 0,
-      online: 0,
-      note: "",
-    });
-
-    alert("Đã checkin thành công");
+      .catch(function (error) {
+        console.log("error: ", error);
+      });
   };
 
   function currencyFormat(num) {
@@ -174,7 +190,11 @@ const Header2 = (props) => {
           {role !== null && (
             <div className="d-flex">
               {checkin == null ? (
-                <div className="btn btn-outline-warning" onClick={UserCheckIn}>
+                <div
+                  className="btn btn-outline-warning"
+                  data-bs-toggle="modal"
+                  data-bs-target="#checkinmodal"
+                >
                   Checkin
                 </div>
               ) : (
@@ -219,10 +239,10 @@ const Header2 = (props) => {
 
               <div class="modal-body text-center">
                 {/* {JSON.stringify(checkin)} */}
+                <p>ID ca làm:{checkin._id} </p>
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th scope="col">ID ca làm: </th>
                       <th scope="col">Tiền thu được</th>
                       <th scope="col">Tiền mặt</th>
                       <th scope="col">Thanh toán online</th>
@@ -231,7 +251,6 @@ const Header2 = (props) => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{checkin._id}</td>
                       <td>{currencyFormat(checkin.cash + checkin.online)}</td>
                       <td>{currencyFormat(checkin.cash)}</td>
                       <td>{currencyFormat(checkin.online)}</td>
@@ -261,6 +280,41 @@ const Header2 = (props) => {
           </div>
         </div>
       )}
+      {/* MODAL CHECKIN */}
+      <div
+        class="modal fade"
+        id="checkinmodal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content ">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Bạn muốn checkin?
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div class="modal-body text-center">
+            
+                <div
+                  className="btn btn-danger"
+                  onClick={UserCheckIn}
+                  data-bs-dismiss="modal"
+                >
+                  CHECKIN
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
   );
 };

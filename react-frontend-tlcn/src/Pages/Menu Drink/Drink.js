@@ -73,7 +73,7 @@ function Drink() {
   };
   //Quy đổi số về tiền việt
   function currencyFormat(num) {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
+    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + "đ";
   }
   return (
     <>
@@ -81,7 +81,7 @@ function Drink() {
       <div className="container p-3">
         <h1 className="text-center">Drink Control</h1>
         <div className="row p-2 m-0">
-          <div className="col-12 col-md-5">
+          <div className="col-12 col-md-4">
             <label>Drink name:</label>
             <DebounceInput
               type="text"
@@ -92,15 +92,6 @@ function Drink() {
                 searchID(e.target.value);
               }}
             />
-            {/* <input
-              placeholder="ex: trà"
-              value={viewID}
-              onChange={(e) => {
-                // if (e.target.value == "")
-                setID(e.target.value);
-                searchID(e.target.value);
-              }}
-            /> */}
           </div>
           <div className=" col-12 col-md-4">
             <div className="drinktable__header-item ">
@@ -108,7 +99,7 @@ function Drink() {
               <br />
               <select
                 id="category"
-                className="drinksearch__form drinksearch__form--category"
+                className="drinksearch__form "
                 onChange={(event) => setCategory(event.target.value)}
               >
                 <option value="ALL">ALL</option>
@@ -119,7 +110,7 @@ function Drink() {
               </select>
             </div>
           </div>
-          <div className="text-center my-auto col-12 pt-3 col-md-3">
+          <div className="text-center text-md-end my-auto col-12 pt-3 col-md-4">
             <button
               className="drinktable__btn-add "
               type="button"
@@ -154,7 +145,7 @@ function Drink() {
                     ? viewList.map((data, index) => (
                         <tr className="drinktable__row">
                           <td>{index + 1}</td>
-                          <td className=" d-none d-md-table-cell">
+                          <td className="d-none d-md-table-cell">
                             {data.category}
                           </td>
                           <td>{data.name}</td>
@@ -171,7 +162,7 @@ function Drink() {
                                                 <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
                                             </button> */}
                             <button
-                              className="drinktable__btn-edit"
+                              className="bg-success text-light text-center p-1 me-1"
                               type="button"
                               data-bs-toggle="modal"
                               data-bs-target="#exampleModal"
@@ -181,10 +172,10 @@ function Drink() {
                                 setEditedDrink([data]);
                               }}
                             >
-                              <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
+                              <AiIcons.AiFillEdit className="d-flex align-content-center flex-wrap" />
                             </button>
                             <button
-                              className="drinktable__btn-cancel"
+                              className="bg-danger text-light text-center p-1"
                               type="button"
                               data-bs-toggle="modal"
                               data-bs-target="#exampleModal"
@@ -194,7 +185,7 @@ function Drink() {
                                 setEditedDrink([data]);
                               }}
                             >
-                              <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
+                              <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
                             </button>
                           </td>
                         </tr>
