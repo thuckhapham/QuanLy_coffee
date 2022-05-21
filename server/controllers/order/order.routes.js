@@ -6,16 +6,16 @@ const router = express.Router();
 router
   .route("/api/order")
   .get(authCtrl.requireSignin, orderCtrl.list)
-  .post(authCtrl.requireSignin, authCtrl.hasAdmin, orderCtrl.create);
+  .post(authCtrl.requireSignin, orderCtrl.create);
 
 router
   .route("/api/order/:orderId")
   .get(authCtrl.requireSignin, orderCtrl.read)
-  .delete(authCtrl.requireSignin, authCtrl.hasAdmin, orderCtrl.cancel);
+  .delete(authCtrl.requireSignin, orderCtrl.cancel);
 
 router
   .route("/api/order/:orderId/addProduct")
-  .post(authCtrl.requireSignin, authCtrl.hasAdmin, orderCtrl.addProduct);
+  .post(authCtrl.requireSignin, orderCtrl.addProduct);
 
 router
   .route("/api/order/:orderId/checkout")
