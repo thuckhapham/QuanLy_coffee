@@ -420,7 +420,7 @@ const Report = () => {
                       id="sosanh"
                       onChange={(e) => setSoSanh(e.target.checked)}
                     />{" "}
-                    <label htmlFor="sosanh">So sánh thống kê (tùy chọn):</label>
+                    <label htmlFor="sosanh">So sánh (tùy chọn):</label>
                   </h6>
                   {sosanh && (
                     <>

@@ -100,12 +100,7 @@ function EditDrink(props) {
                             >
                                 Edit
                             </button>
-                            <button
-                                className="editdrink__btn editdrink__btn--cancle"
-                                onClick={() => sendData(true)}
-                            >
-                                Cancel
-                            </button>
+                            
                         </div>
                     </>}
             </div>

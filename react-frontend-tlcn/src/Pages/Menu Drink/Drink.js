@@ -131,7 +131,6 @@ function Drink() {
             <table className="drinktable__table  text-center">
               <thead className="drinktable__head">
                 <tr className="drinktable__header">
-                  <th className="col-1">No.</th>
                   {/* <th>Drink Id</th> */}
                   <th className="col-2  d-none d-md-table-cell">Category</th>
                   <th className="col-4">Name</th>
@@ -144,23 +143,12 @@ function Drink() {
                   {viewCategory == "ALL"
                     ? viewList.map((data, index) => (
                         <tr className="drinktable__row">
-                          <td>{index + 1}</td>
                           <td className="d-none d-md-table-cell">
                             {data.category}
                           </td>
                           <td>{data.name}</td>
                           <td>{currencyFormat(data.price)}</td>
                           <td>
-                            {/* <button
-                                                className="customer__btn-view"
-                                                onClick={() => {
-                                                    setButt("editdrink");
-                                                    setViewModal(!viewModal)
-                                                    setEditedDrink([data])
-                                                }}
-                                            >
-                                                <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
-                                            </button> */}
                             <button
                               className="bg-success text-light text-center p-1 me-1"
                               type="button"
@@ -194,8 +182,9 @@ function Drink() {
                         (data, index) =>
                           data.category == viewCategory && (
                             <tr className="drinktable__row">
-                              <td>{index + 1}</td>
-                              <td>{data.category}</td>
+                              <td className="d-none d-md-table-cell">
+                                {data.category}
+                              </td>
                               <td>{data.name}</td>
                               <td>{currencyFormat(data.price)}</td>
                               <td>
@@ -285,15 +274,6 @@ function Drink() {
                     setRequestData={setRequestData}
                   />
                 )}
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  className="newtable__btn newtable__btn--cancle"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
               </div>
             </div>
           </div>

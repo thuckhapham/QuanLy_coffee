@@ -164,6 +164,8 @@ const QLNV = () => {
                           : "")
                       }
                       onClick={() => selectU(e._id)}
+                      data-bs-toggle="modal"
+                      data-bs-target="#detail"
                     >
                       <td>{e.userName}</td>
                       {/* <td>{e.email}</td> */}
@@ -174,115 +176,148 @@ const QLNV = () => {
                   ))}
                 </tbody>
               </table>
+
               {selectUser == undefined ? (
                 <h6>Chọn 1 nhân viên để xem</h6>
               ) : loadingUser ? (
                 <Loading />
               ) : (
-                <div>
-                  <div className="newtable__input mt-2 ">
-                    <label>ID: </label>
-                    <input
-                      value={selectUser._id}
-                      type="text"
-                      className="newtable__form"
-                      disabled
-                    />
-                    <label>USERNAME: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          userName: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.userName}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="userName"
-                    />
-                    <label>NEW PASSWORD: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          password: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.password}
-                      type="password"
-                      className="newtable__form"
-                      placeholder="password"
-                    />
-                    <label>PHONE: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          phone: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.phone ? selectUser.phone : ""}
-                      type="number"
-                      className="newtable__form"
-                      placeholder="phone"
-                    />
-                    <label>EMAIL: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.email ? selectUser.email : ""}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="email"
-                    />
-                    <label>FIRST NAME: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          firstName: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.firstName ? selectUser.firstName : ""}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="FNAME"
-                    />
-                    <label>LAST NAME: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          lastName: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.lastName ? selectUser.lastName : ""}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="LNAME"
-                    />
-                    <label className="me-1">QUYỀN HẠN: </label>
-                    <select
-                      value={selectUser.role}
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          role: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option value="USER">NHÂN VIÊN</option>
-                      <option value="ADMIN">QUẢN LÍ</option>
-                    </select>
-                  </div>
-                  <div className="text-center">
-                    <div className="btn btn-primary" onClick={updateU}>
-                      UPDATE
+                <div
+                  class="modal fade"
+                  id="detail"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content ">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                          Chi tiết nhân viên
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body text-center">
+                        <div className="newtable__input mt-2 ">
+                          <label>ID: </label>
+                          <input
+                            value={selectUser._id}
+                            type="text"
+                            className="newtable__form"
+                            disabled
+                          />
+                          <label>USERNAME: </label>
+                          <input
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                userName: e.target.value,
+                              }));
+                            }}
+                            value={selectUser.userName}
+                            type="text"
+                            className="newtable__form"
+                            placeholder="userName"
+                          />
+                          <label>NEW PASSWORD: </label>
+                          <input
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                password: e.target.value,
+                              }));
+                            }}
+                            value={selectUser.password}
+                            type="password"
+                            className="newtable__form"
+                            placeholder="New password here"
+                          />
+                          <label>PHONE: </label>
+                          <input
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                phone: e.target.value,
+                              }));
+                            }}
+                            value={selectUser.phone ? selectUser.phone : ""}
+                            type="number"
+                            className="newtable__form"
+                            placeholder="phone"
+                          />
+                          <label>EMAIL: </label>
+                          <input
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                email: e.target.value,
+                              }));
+                            }}
+                            value={selectUser.email ? selectUser.email : ""}
+                            type="text"
+                            className="newtable__form"
+                            placeholder="email"
+                          />
+                          <label>FIRST NAME: </label>
+                          <input
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                firstName: e.target.value,
+                              }));
+                            }}
+                            value={
+                              selectUser.firstName ? selectUser.firstName : ""
+                            }
+                            type="text"
+                            className="newtable__form"
+                            placeholder="FNAME"
+                          />
+                          <label>LAST NAME: </label>
+                          <input
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                lastName: e.target.value,
+                              }));
+                            }}
+                            value={
+                              selectUser.lastName ? selectUser.lastName : ""
+                            }
+                            type="text"
+                            className="newtable__form"
+                            placeholder="LNAME"
+                          />
+                          <label className="me-1">QUYỀN HẠN: </label>
+                          <select
+                            value={selectUser.role}
+                            onChange={(e) => {
+                              setSelectUser((prev) => ({
+                                ...prev,
+                                role: e.target.value,
+                              }));
+                            }}
+                          >
+                            <option value="USER">NHÂN VIÊN</option>
+                            <option value="ADMIN">QUẢN LÍ</option>
+                          </select>
+                        </div>
+                        <div className="text-center mt-1">
+                          <div
+                            className="btn btn-primary"
+                            onClick={updateU}
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            UPDATE
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
