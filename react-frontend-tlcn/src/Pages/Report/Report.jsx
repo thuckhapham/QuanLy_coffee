@@ -53,8 +53,14 @@ const Report = () => {
     banchay2: null,
     doanhthu2: null,
   });
-  const [date1, setDate1] = useState({ from: "2022-04-02", to: "2022-05-02" });
-  const [date2, setDate2] = useState({ from: "2022-04-02", to: "2022-05-02" });
+  const [date1, setDate1] = useState({
+    from: "2022-04-02",
+    to: new Date().toISOString().split("T")[0],
+  });
+  const [date2, setDate2] = useState({
+    from: "2022-04-02",
+    to: new Date().toISOString().split("T")[0],
+  });
   const [sosanh, setSoSanh] = useState(false);
   const [isFetch, setIsFetch] = useState(false);
   const [numberDay, setNumberDay] = useState({ day1: "30", day2: "30" });

@@ -8,6 +8,14 @@ const Header2 = (props) => {
   const navigate = useNavigate();
   const [role, setRole] = useState(localStorage.getItem("coffeeRole"));
   const [checkin, setCheckin] = useState(localStorage.getItem("checkin"));
+  const [date1, setDate1] = useState({
+    from: "2022-04-02",
+    to: "2022-05-02",
+  });
+  const [date2, setDate2] = useState({
+    from: "2022-04-02",
+    to: "2022-05-02",
+  });
   function Logout() {
     // if (localStorage.getItem("checkin") !== null)
     //   alert("Bạn chưa checkout, hãy checkout trước khi login");
@@ -63,12 +71,25 @@ const Header2 = (props) => {
       },
     })
       .then((response) => {
-        console.log("response: ", response.data.workshift);
+        console.log("response: ", response.data);
         localStorage.setItem(
           "checkin",
-          JSON.stringify(response.data.workshift)
+          JSON.stringify({
+            _id: response.data._id,
+            cash: 0,
+            online: 0,
+            countOrder: 0,
+            note: "",
+          })
         );
-        setCheckin(response.data.workshift);
+        setCheckin(
+          JSON.stringify({
+            cash: 0,
+            online: 0,
+            countOrder: 0,
+            note: "",
+          })
+        );
         alert("Đã checkin thành công");
       })
       .catch(function (error) {
@@ -85,7 +106,7 @@ const Header2 = (props) => {
   }
 
   return (
-    <nav className="navbar navbar-dark bg-dark navbar-expand-sm navbar-light ">
+    <nav className="navbar navbar-dark bg-dark navbar-expand-md navbar-light ">
       <div className="container-fluid">
         <h3 className="text-light me-3">MY COFFEE</h3>
         <button
@@ -157,7 +178,17 @@ const Header2 = (props) => {
                           "nav-link" + (pathname === "/qlnv" ? " active" : "")
                         }
                       >
-                        QLNV
+                        User
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to="/shift"
+                        className={
+                          "nav-link" + (pathname === "/shift" ? " active" : "")
+                        }
+                      >
+                        Shift
                       </Link>
                     </li>
                   </>
@@ -176,7 +207,7 @@ const Header2 = (props) => {
             )}
             <li className="nav-item">
               <Link to="/track" className={"nav-link"} target="_blank">
-                Client-Track
+                Tracking
               </Link>
             </li>
             {role == null && (
@@ -239,7 +270,6 @@ const Header2 = (props) => {
 
               <div class="modal-body text-center">
                 {/* {JSON.stringify(checkin)} */}
-                <p>ID ca làm:{checkin._id} </p>
                 <table class="table table-striped">
                   <thead>
                     <tr>
@@ -303,14 +333,13 @@ const Header2 = (props) => {
             </div>
 
             <div class="modal-body text-center">
-            
-                <div
-                  className="btn btn-danger"
-                  onClick={UserCheckIn}
-                  data-bs-dismiss="modal"
-                >
-                  CHECKIN
-                </div>
+              <div
+                className="btn btn-danger"
+                onClick={UserCheckIn}
+                data-bs-dismiss="modal"
+              >
+                CHECKIN
+              </div>
             </div>
           </div>
         </div>

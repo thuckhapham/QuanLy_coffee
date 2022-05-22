@@ -10,11 +10,15 @@ import { useNavigate } from "react-router-dom";
 const ShiftAdmin = () => {
   const tokenBearer = localStorage.getItem("tokenBearer");
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState([]);
-  const [selectUser, setSelectUser] = useState(undefined);
+  const [dataShift, setDataShift] = useState(null);
+  const [selectShift, setSelectShift] = useState(null);
 
+  const [date1, setDate1] = useState({
+    from: "2022-04-02",
+    to: new Date().toISOString().split("T")[0],
+  });
 
-  const [loadingUser, setLoadingUser] = useState(false);
+  // const [loadingDetail, setLoadingDetail] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,23 +32,108 @@ const ShiftAdmin = () => {
   const getListShift = () => {
     axios({
       method: "get",
-      url: "http://localhost:5000/api/users/",
+      url: "http://localhost:5000/api/workshift/dates",
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+      params: { dateFrom: date1.from, dateTo: date1.to },
+    })
+      .then((response) => {
+        let copy = response.data;
+        copy.result.map((e, i) => {
+          copy.result[i].checkin =
+            fotmatDDMMYY(e.checkin) + " " + fotmatHHMM(e.checkin);
+          copy.result[i].checkout =
+            fotmatDDMMYY(e.checkout) + " " + fotmatHHMM(e.checkout);
+        });
+        setDataShift(response.data);
+      })
+      .catch((e) => {
+        setDataShift(null);
+        console.log(e);
+        if (e.response && e.response.status == "401") {
+          alert("Hết hạn đăng nhập, xin đăng nhập lại");
+          localStorage.removeItem("tokenBearer");
+          localStorage.removeItem("coffeeRole");
+          navigate("/login");
+        }
+      });
+  };
+
+  function fotmatDDMMYY(date) {
+    if (date == undefined) return "";
+    var dateObj = new Date(date);
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var newdate = day + "/" + month + "/" + year;
+    return newdate;
+  }
+
+  function fotmatHHMM(date) {
+    if (date == undefined) return "";
+    var dateObj = new Date(date);
+    var hour = dateObj.getHours();
+    if (hour < 10) hour = "0" + hour;
+    var min = dateObj.getMinutes();
+    if (min < 10) min = "0" + min;
+    var newdate = hour + ":" + min;
+    return newdate;
+  }
+
+  function currencyFormat(num) {
+    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  }
+
+  function getEmloyee(employeeId) {
+    setSelectShift((prev) => ({
+      ...prev,
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+    }));
+    axios({
+      method: "get",
+      url: "http://localhost:5000/api/users/" + employeeId,
       headers: {
         Authorization: `bearer ${tokenBearer}`,
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
-        setUserData(response.data);
+        console.log(response.data);
+        setSelectShift((prev) => ({
+          ...prev,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          phone: response.data.phone,
+          email: response.data.email,
+        }));
       })
       .catch((e) => {
         console.log(e);
-        if (e.response.status == "401") {
-          alert("Hết hạn đăng nhập, xin đăng nhập lại");
-          localStorage.removeItem("tokenBearer");
-          localStorage.removeItem("coffeeRole");
-          navigate("/login");
-        }
+      });
+  }
+
+  const removeShift = () => {
+    axios({
+      method: "delete",
+      url: "http://localhost:5000/api/workshift/" + selectShift._id,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        alert("Delete workshift successfully");
+        getListShift();
+
+      })
+      .catch((e) => {
+        alert("Workshift not found!");
+        console.log(e);
       });
   };
 
@@ -56,163 +145,243 @@ const ShiftAdmin = () => {
       ) : (
         <>
           <div className="container p-3">
-            {/* <h1 className="text-center">QLNV</h1> */}
-            <button
-              type="button"
-              className="homepage__btn-add mx-auto d-block"
-              data-bs-toggle="modal"
-              data-bs-target="#create"
-            >
-              + CREATE USER
-            </button>
-            <div className="border border-4  mb-3 mt-2 p-2">
-              <table class="table  table-hover ">
+            <h1 className="text-center">Quản lý ca làm</h1>
+            <div className="col-6">
+              <h6>Chọn ngày hiển thị:</h6>
+              <tr>
+                <td>From: </td>
+                <td>
+                  <input
+                    type="date"
+                    value={date1.from}
+                    onChange={(e) =>
+                      setDate1((prev) => ({
+                        ...prev,
+                        from: e.target.value,
+                      }))
+                    }
+                  />
+                </td>
+              </tr>
+              <tr className="">
+                <td>To: </td>
+                <td>
+                  <input
+                    type="date"
+                    value={date1.to}
+                    onChange={(e) =>
+                      setDate1((prev) => ({ ...prev, to: e.target.value }))
+                    }
+                  />
+                </td>
+              </tr>
+              <tr>
+                <div
+                  className="btn btn-primary mx-auto mt-3"
+                  onClick={() => getListShift()}
+                >
+                  Xem
+                </div>
+              </tr>
+            </div>
+
+            {dataShift !== null && (
+              <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th scope="col">UserName</th>
-                    {/* <th scope="col">Email</th> */}
-                    <th scope="col">FName</th>
-                    <th scope="col">LName</th>
-                    <th scope="col">Created</th>
+                    <th scope="col">STT</th>
+                    <th scope="col">Checkin</th>
+                    <th scope="col">Checkout</th>
+                    <th scope="col">Số Order</th>
+                    <th scope="col">Chi tiết</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {userData.map((e, i) => (
-                    <tr
-                      className={
-                        "user-row" +
-                        (selectUser && selectUser._id == e._id
-                          ? " bg-faded "
-                          : "")
-                      }
-                      onClick={() => selectU(e._id)}
-                    >
-                      <td>{e.userName}</td>
-                      {/* <td>{e.email}</td> */}
-                      <td>{e.firstName}</td>
-                      <td>{e.lastName}</td>
-                      <td>{e.created.split("T")[0]}</td>
+                  {dataShift.result.map((e, i) => (
+                    <tr>
+                      <td>{i}</td>
+                      <td>{e.checkin}</td>
+                      <td>{e.checkout}</td>
+                      <td>{e.countOrder}</td>
+                      <td>
+                        <button
+                          className="btn btn-primary"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#detail"
+                          onClick={() => {
+                            setSelectShift(e);
+                            getEmloyee(e.employee);
+                          }}
+                        >
+                          Click
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              {selectUser == undefined ? (
-                <h6>Chọn 1 nhân viên để xem</h6>
-              ) : loadingUser ? (
-                <Loading />
-              ) : (
-                <div>
-                  <div className="newtable__input mt-2 ">
-                    <label>ID: </label>
-                    <input
-                      value={selectUser._id}
-                      type="text"
-                      className="newtable__form"
-                      disabled
-                    />
-                    <label>USERNAME: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          userName: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.userName}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="userName"
-                    />
-                    <label>NEW PASSWORD: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          password: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.password}
-                      type="password"
-                      className="newtable__form"
-                      placeholder="password"
-                    />
-                    <label>PHONE: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          phone: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.phone ? selectUser.phone : ""}
-                      type="number"
-                      className="newtable__form"
-                      placeholder="phone"
-                    />
-                    <label>EMAIL: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.email ? selectUser.email : ""}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="email"
-                    />
-                    <label>FIRST NAME: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          firstName: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.firstName ? selectUser.firstName : ""}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="FNAME"
-                    />
-                    <label>LAST NAME: </label>
-                    <input
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          lastName: e.target.value,
-                        }));
-                      }}
-                      value={selectUser.lastName ? selectUser.lastName : ""}
-                      type="text"
-                      className="newtable__form"
-                      placeholder="LNAME"
-                    />
-                    <label className="me-1">QUYỀN HẠN: </label>
-                    <select
-                      value={selectUser.role}
-                      onChange={(e) => {
-                        setSelectUser((prev) => ({
-                          ...prev,
-                          role: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option value="USER">NHÂN VIÊN</option>
-                      <option value="ADMIN">QUẢN LÍ</option>
-                    </select>
-                  </div>
-                  <div className="text-center">
-                    <div className="btn btn-primary" onClick={updateU}>
-                      UPDATE
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>{" "}
+            )}
           </div>
         </>
       )}
+      <div
+        class="modal fade"
+        id="detail"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content ">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Chi tiết ca làm
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body text-center">
+              {selectShift !== null && (
+                <div className="row g-3">
+                  <div className="col-12">
+                    <div className="input-group has-validation">
+                      <span className="input-group-text">ID:</span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={selectShift._id}
+                        readOnly
+                      />
+                      <div className="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      Checkin
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.checkin}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="lastName" className="form-label">
+                      Checkout
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.checkout}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      Cash
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={currencyFormat(selectShift.cash)}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      Online
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={currencyFormat(selectShift.online)}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.firstName}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.lastName}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.phone}
+                    />
+                  </div>
+                  <div className="col-sm-6">
+                    <label htmlFor="firstName" className="form-label">
+                      Mail
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.email}
+                    />
+                  </div>
+                  <div className="col-12">
+                    <label htmlFor="firstName" className="form-label">
+                      Note
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      value={selectShift.note}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                className="newtable__btn  newtable__btn--cancle bg-danger"
+                data-bs-dismiss="modal"
+                onClick={() => removeShift()}
+              >
+                Xóa ca
+              </button>
+              <button
+                type="button"
+                className="newtable__btn newtable__btn--cancle"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -168,7 +168,7 @@ function Homepage(props) {
             </ul>
             <div className="row text-center">
               {viewList.map((data, i) => (
-                <div className="col-6 col-sm-4 col-md-3 col-xl-2">
+                <div className="col-6 col-sm-4 col-md-3 col-xl-2 mt-1 mb-1">
                   <button
                     className={
                       "homepage__order-link d-block " +

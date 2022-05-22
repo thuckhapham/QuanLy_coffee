@@ -247,15 +247,7 @@ function HistoryOrder() {
                   />
                 )}
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  className="newtable__btn newtable__btn--cancle"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
+             
             </div>
           </div>
         </div>

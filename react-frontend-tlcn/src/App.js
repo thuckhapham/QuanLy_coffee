@@ -22,6 +22,7 @@ import Page404 from "./Components/Page404";
 import QLNV from "./Pages/QLNV";
 
 import React from "react";
+import ShiftAdmin from "./Pages/ShiftAdmin";
 
 const PrivateRoute = ({ children }) => {
   return localStorage.getItem("tokenBearer") !== null ? (
@@ -105,6 +106,15 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/shift"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <ShiftAdmin />
                   </PrivateRoute>
                 }
               />
