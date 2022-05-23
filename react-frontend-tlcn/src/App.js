@@ -23,6 +23,7 @@ import QLNV from "./Pages/QLNV";
 
 import React from "react";
 import ShiftAdmin from "./Pages/ShiftAdmin";
+import Footer from "./Components/Footer/Footer";
 
 const PrivateRoute = ({ children }) => {
   return localStorage.getItem("tokenBearer") !== null ? (
@@ -160,6 +161,7 @@ function App() {
             {/* <OrderHistory /> */}
           </Router>
         </ParallaxProvider>
+        <Footer />
       </div>
     </>
   );

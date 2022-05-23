@@ -19,6 +19,7 @@ import html2canvas from "html2canvas";
 
 import checkPermesion from "./../../Components/checkPermession";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../Components/Footer/Footer";
 
 ChartJS.register(
   CategoryScale,

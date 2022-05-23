@@ -315,7 +315,7 @@ function Homepage(props) {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
+                  Tạo bàn mới
                 </h5>
                 <button
                   type="button"
@@ -379,7 +379,6 @@ function Homepage(props) {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

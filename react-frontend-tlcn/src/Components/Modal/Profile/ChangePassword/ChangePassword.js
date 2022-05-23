@@ -35,6 +35,7 @@ function ChangePassword(props) {
         sendData(true);
         if (localStorage.getItem("tokenBearer")) {
           localStorage.removeItem("tokenBearer");
+          alert("Change password successfully!");
           navigate("/");
         }
       })
@@ -80,7 +81,9 @@ function ChangePassword(props) {
             </div>
             <div className="text-center p-2">
               <button
-                className="editcustomer__btn editcustomer__btn--add"
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+                aria-label="Close"
                 onClick={() => {
                   editPassword();
                 }}

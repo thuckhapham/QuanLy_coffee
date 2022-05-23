@@ -12,6 +12,7 @@ import Header2 from "../../Components/Header2/Header";
 function HistoryOrder() {
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
+  const [getRole, setRole] = useState(localStorage.getItem("coffeeRole"));
   const [selectedButt, setButt] = useState("");
   const callbackModal = (modalState) => {
     setViewModal(modalState);
@@ -190,21 +191,21 @@ function HistoryOrder() {
                         >
                           <GrIcons.GrCircleInformation className="d-flex align-content-center flex-wrap" />
                         </button>
-                        <button
-                          className="bg-danger text-light p-1"
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          onClick={() => {
-                            setButt("cancelorder");
-                            // setViewModal(!viewModal);
-                            setOrder(data._id);
-                            console.log(data);
-                          }}
-                        >
-                          {/* Cancel */}
-                          <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
-                        </button>
+                        {getRole === "ADMIN" && (
+                          <button
+                            className="bg-danger text-light p-1"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            onClick={() => {
+                              setButt("cancelorder");
+                              setOrder(data._id);
+                              console.log(data);
+                            }}
+                          >
+                            <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -224,7 +225,7 @@ function HistoryOrder() {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
+                  Thông tin Order
                 </h5>
                 <button
                   type="button"
@@ -247,12 +248,10 @@ function HistoryOrder() {
                   />
                 )}
               </div>
-             
             </div>
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

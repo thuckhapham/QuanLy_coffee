@@ -212,13 +212,18 @@ const Header2 = (props) => {
             </li>
             {role == null && (
               <li className="nav-item">
-                <Link to="/about" className={"nav-link"}>
+                <Link
+                  to="/about"
+                  className={
+                    "nav-link" + (pathname === "/about" ? " active" : "")
+                  }
+                >
                   About-MyCofffe
                 </Link>
               </li>
             )}
           </ul>
-          {role !== null && (
+          {role !== null ? (
             <div className="d-flex">
               {checkin == null ? (
                 <div
@@ -241,6 +246,13 @@ const Header2 = (props) => {
               <div className="ms-1 btn btn-outline-danger" onClick={Logout}>
                 Logout
               </div>
+            </div>
+          ) : (
+            <div className="d-flex">
+              {" "}
+              <Link className="btn btn-outline-warning" to="/login">
+                Login
+              </Link>
             </div>
           )}
         </div>
