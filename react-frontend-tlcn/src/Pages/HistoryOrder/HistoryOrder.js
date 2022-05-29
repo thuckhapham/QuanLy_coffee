@@ -37,7 +37,7 @@ function HistoryOrder() {
         "Content-Type": "application/json",
       },
     }).then((response) => {
-      setList(response.data.orders.reverse());
+      setList(response.data.orders);
       if (response.data.orders.length < more.pagesize)
         setMore((prev) => ({ ...prev, hasMore: false }));
     });
