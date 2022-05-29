@@ -24,6 +24,20 @@ const getAllWorkshiftByDates = async (req, res) => {
   }
 };
 
+const getWorkshiftById = async (req, res) => {
+  const id = req.params.id;
+  if (id) {
+    const result = await workshiftModel.findById(id);
+    if (result) {
+      res.status(200).json({ result });
+    } else {
+      res.status(404).json({ error: "No Workshift found!!!" });
+    }
+  } else {
+    res.status(403).json({ error: "Invalid Workshift ID" });
+  }
+};
+
 const createWorkshift = async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const user = await jwt.verify(token, "1234"); // hide the secret
@@ -105,6 +119,7 @@ const checkoutWorkshift = async (req, res) => {
 export {
   createWorkshift,
   checkoutWorkshift,
+  getWorkshiftById,
   getAllWorkshiftByDates,
   updateWorkshift,
   deleteWorkshift,

@@ -77,7 +77,6 @@ const read = async (req, res) => {
   return res.json(req.order);
 };
 
-// add orderID vào table
 const checkOut = async (req, res) => {
   try {
     let order = req.order;
@@ -92,7 +91,7 @@ const checkOut = async (req, res) => {
     order.payment.status = true;
     order.updated = Date.now();
     await order.save();
-    
+
     order.user = undefined;
     return res.json(order);
   } catch (err) {
@@ -120,48 +119,50 @@ const cancel = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    var current = parseInt(req.query.page) - 1;
-    if (isNaN(current)) current = 0;
-    var pagesize = parseInt(req.query.pagesize);
+    let selectedPage = parseInt(req.query.page) - 1;
+    if (isNaN(selectedPage)) selectedPage = 0;
+    let pagesize = parseInt(req.query.pagesize);
     if (isNaN(pagesize)) pagesize = 10;
 
-    const status = req.query.status;
-    const paymentStatus = req.query.paymentStatus;
-    const paymentMethod = req.query.paymentMethod;
-    const topTotal = req.query.topTotal;
-    const botTotal = req.query.botTotal;
-    const table = req.query.table;
+    // const status = req.query.status;
+    // const paymentStatus = req.query.paymentStatus;
+    // const paymentMethod = req.query.paymentMethod;
+    // const topTotal = req.query.topTotal;
+    // const botTotal = req.query.botTotal;
+    // const table = req.query.table;
 
     console.info("get list order");
-    let orders = await Order.find().select();
-    orders = orders.filter(
-      (order) =>
-        (status === undefined || order.status === (status === "true")) &&
-        (paymentStatus === undefined ||
-          order.payment.status === (paymentStatus === "true")) &&
-        (paymentMethod === undefined ||
-          order.payment.paymentMethod === paymentMethod) &&
-        (table === undefined || order.table === table) &&
-        (topTotal === undefined || order.total <= parseFloat(topTotal)) &&
-        (botTotal === undefined || order.total >= parseFloat(botTotal))
-    );
+    let orders = await Order.find()
+      .sort({ created: -1 })
+      .skip(selectedPage * pagesize)
+      .limit(pagesize);
+    // orders = orders.filter(
+    //   (order) =>
+    //     (status === undefined || order.status === (status === "true")) &&
+    //     (paymentStatus === undefined ||
+    //       order.payment.status === (paymentStatus === "true")) &&
+    //     (paymentMethod === undefined ||
+    //       order.payment.paymentMethod === paymentMethod) &&
+    //     (table === undefined || order.table === table) &&
+    //     (topTotal === undefined || order.total <= parseFloat(topTotal)) &&
+    //     (botTotal === undefined || order.total >= parseFloat(botTotal))
+    // );
 
-    const total = orders.length;
-    if (current * pagesize < total) {
-      orders = orders.slice(
-        current * pagesize,
-        Math.min((current + 1) * pagesize, orders.length)
-      );
-    } else {
-      orders = [];
-    }
+    // if (selectedPage * pagesize < total) {
+    //   orders = orders.slice(
+    //     selectedPage * pagesize,
+    //     Math.min((selectedPage + 1) * pagesize, orders.length)
+    //   );
+    // } else {
+    //   orders = [];
+    // }
 
     console.info("get list order finished");
 
     res.json({
-      page: current + 1,
+      page: selectedPage + 1,
       pagesize: pagesize,
-      total: total,
+      total: orders.length,
       orders: orders,
     });
   } catch (err) {
