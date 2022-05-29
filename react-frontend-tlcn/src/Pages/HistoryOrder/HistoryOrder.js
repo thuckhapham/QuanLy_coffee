@@ -26,18 +26,20 @@ function HistoryOrder() {
   const [editedOrder, setEditedOrder] = useState([
     { Order_id: 0, Order_name: "loading" },
   ]);
-  const [more, setMore] = useState({ pagesize: 20, page: 1 });
+  const [more, setMore] = useState({ pagesize: 20, page: 1, hasMore: true });
 
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:5000/api/order/?pagesize=${more.pagesize}&page=${more.page}`,
+      url: `http://localhost:5000/api/order?page=${more.page}&pagesize=${more.pagesize}`,
       headers: {
         Authorization: `bearer ${tokenBearer}`,
         "Content-Type": "application/json",
       },
     }).then((response) => {
       setList(response.data.orders.reverse());
+      if (response.data.orders.length < more.pagesize)
+        setMore((prev) => ({ ...prev, hasMore: false }));
     });
   }, [requestData]);
 
@@ -99,15 +101,19 @@ function HistoryOrder() {
   const fetchMore = () => {
     axios({
       method: "get",
-      url: `http://localhost:5000/api/order/?pagesize=${more.pagesize}&page=${
-        more.page + 1
+      url: `http://localhost:5000/api/order?page=${more.page + 1}&pagesize=${
+        more.pagesize
       }`,
       headers: {
         Authorization: `bearer ${tokenBearer}`,
         "Content-Type": "application/json",
       },
     }).then((response) => {
-      setMore((prev) => ({ ...prev, page: prev.page + 1 }));
+      setMore((prev) => {
+        if (response.data.orders.length < more.pagesize)
+          return { ...prev, page: prev.page + 1, hasMore: false };
+        else return { ...prev, page: prev.page + 1 };
+      });
       setList((prev) => {
         return prev.concat(response.data.orders.reverse());
       });
@@ -166,7 +172,7 @@ function HistoryOrder() {
                 </thead>
                 <tbody className="historyorder__body">
                   {viewList.map((data, index) =>
-                    index === more.page * more.pagesize - 1 ? (
+                    viewList.length - 1 === index && more.hasMore ? (
                       <tr className="w-100 ">
                         <td colSpan={5}>
                           <div
