@@ -14,11 +14,12 @@ import { DebounceInput } from "react-debounce-input";
 function Drink() {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
+  const coffeeRole = localStorage.getItem("coffeeRole");
   //Save Drink Data to array
   const [editedDrink, setEditedDrink] = useState([
     { drink_id: 0, drink_name: "loading" },
   ]);
-  //Lấy Data
+  //Lấy DatacoffeeRole
   const [requestData, setRequestData] = useState(new Date());
   const [searchWarn, setSearchWarn] = useState("");
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
@@ -110,20 +111,22 @@ function Drink() {
               </select>
             </div>
           </div>
-          <div className="text-center text-md-end my-auto col-12 pt-3 col-md-4">
-            <button
-              className="drinktable__btn-add "
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-              onClick={() => {
-                setViewModal(!viewModal);
-                setButt("newdrink");
-              }}
-            >
-              + DRINK
-            </button>
-          </div>
+          {coffeeRole === "ADMIN" && (
+            <div className="text-center text-md-end my-auto col-12 pt-3 col-md-4">
+              <button
+                className="drinktable__btn-add "
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                onClick={() => {
+                  setViewModal(!viewModal);
+                  setButt("newdrink");
+                }}
+              >
+                + DRINK
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="drinktable__detail">
@@ -131,12 +134,13 @@ function Drink() {
             <table className="drinktable__table  text-center">
               <thead className="drinktable__head">
                 <tr className="drinktable__header">
-                  <th className="col-1">No.</th>
                   {/* <th>Drink Id</th> */}
                   <th className="col-2  d-none d-md-table-cell">Category</th>
                   <th className="col-4">Name</th>
                   <th className="col-sm-3 col-2">Price</th>
-                  <th className="col-sm-2 col-3">Action</th>
+                  {coffeeRole === "ADMIN" && (
+                    <th className="col-sm-2 col-3">Action</th>
+                  )}
                 </tr>
               </thead>
               {searchWarn === "" ? (
@@ -144,88 +148,82 @@ function Drink() {
                   {viewCategory == "ALL"
                     ? viewList.map((data, index) => (
                         <tr className="drinktable__row">
-                          <td>{index + 1}</td>
                           <td className="d-none d-md-table-cell">
                             {data.category}
                           </td>
                           <td>{data.name}</td>
                           <td>{currencyFormat(data.price)}</td>
-                          <td>
-                            {/* <button
-                                                className="customer__btn-view"
-                                                onClick={() => {
-                                                    setButt("editdrink");
-                                                    setViewModal(!viewModal)
-                                                    setEditedDrink([data])
-                                                }}
-                                            >
-                                                <GrIcons.GrCircleInformation className="customer__btn-viewicon" />
-                                            </button> */}
-                            <button
-                              className="bg-success text-light text-center p-1 me-1"
-                              type="button"
-                              data-bs-toggle="modal"
-                              data-bs-target="#exampleModal"
-                              onClick={() => {
-                                setButt("editdrink");
-                                setViewModal(!viewModal);
-                                setEditedDrink([data]);
-                              }}
-                            >
-                              <AiIcons.AiFillEdit className="d-flex align-content-center flex-wrap" />
-                            </button>
-                            <button
-                              className="bg-danger text-light text-center p-1"
-                              type="button"
-                              data-bs-toggle="modal"
-                              data-bs-target="#exampleModal"
-                              onClick={() => {
-                                setViewModal(!viewModal);
-                                setButt("canceldrink");
-                                setEditedDrink([data]);
-                              }}
-                            >
-                              <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
-                            </button>
-                          </td>
+                          {coffeeRole === "ADMIN" && (
+                            <td>
+                              <button
+                                className="bg-success text-light text-center p-1 me-1"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                onClick={() => {
+                                  setButt("editdrink");
+                                  setViewModal(!viewModal);
+                                  setEditedDrink([data]);
+                                }}
+                              >
+                                <AiIcons.AiFillEdit className="d-flex align-content-center flex-wrap" />
+                              </button>
+                              <button
+                                className="bg-danger text-light text-center p-1"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                onClick={() => {
+                                  setViewModal(!viewModal);
+                                  setButt("canceldrink");
+                                  setEditedDrink([data]);
+                                }}
+                              >
+                                <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
+                              </button>
+                            </td>
+                          )}
                         </tr>
                       ))
                     : viewList.map(
                         (data, index) =>
                           data.category == viewCategory && (
                             <tr className="drinktable__row">
-                              <td>{index + 1}</td>
-                              <td>{data.category}</td>
+                              <td className="d-none d-md-table-cell">
+                                {data.category}
+                              </td>
                               <td>{data.name}</td>
                               <td>{currencyFormat(data.price)}</td>
-                              <td>
-                                <button
-                                  className="drinktable__btn-edit"
-                                  type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                  onClick={() => {
-                                    setButt("editdrink");
-                                    setViewModal(!viewModal);
-                                    setEditedDrink([data]);
-                                  }}
-                                >
-                                  <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
-                                </button>
-                                <button
-                                  className="drinktable__btn-cancel"
-                                  type="button"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                  onClick={() => {
-                                    setViewModal(!viewModal);
-                                    setButt("canceldrink");
-                                    setEditedDrink([data]);
-                                  }}
-                                >
-                                  <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
-                                </button>
-                              </td>
+                              {coffeeRole === "ADMIN" && (
+                                <td>
+                                  <button
+                                    className="drinktable__btn-edit"
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    onClick={() => {
+                                      setButt("editdrink");
+                                      setViewModal(!viewModal);
+                                      setEditedDrink([data]);
+                                    }}
+                                  >
+                                    <AiIcons.AiFillEdit className="drinktable__btn-editicon" />
+                                  </button>
+                                  <button
+                                    className="drinktable__btn-cancel"
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    onClick={() => {
+                                      setViewModal(!viewModal);
+                                      setButt("canceldrink");
+                                      setEditedDrink([data]);
+                                    }}
+                                  >
+                                    <GiIcons.GiCancel className="drinktable__btn-cancelicon" />
+                                  </button>
+                                </td>
+                              )}
                             </tr>
                           )
                       )}
@@ -253,7 +251,7 @@ function Drink() {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
+                  Drink Modal
                 </h5>
                 <button
                   type="button"
@@ -286,20 +284,10 @@ function Drink() {
                   />
                 )}
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  className="newtable__btn newtable__btn--cancle"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

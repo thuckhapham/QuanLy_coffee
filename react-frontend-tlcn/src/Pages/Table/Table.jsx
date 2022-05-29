@@ -224,7 +224,6 @@ function Table(props) {
         </div>
       </div>
       </div>
-      <Footer/>
     </>
   );
 }

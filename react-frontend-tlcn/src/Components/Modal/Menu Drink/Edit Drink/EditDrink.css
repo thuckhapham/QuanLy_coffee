@@ -22,9 +22,9 @@
   font-size: 1.3rem;
 }
 .editdrink__content-btn {
-  margin: 20px 0;
+  margin: 10px 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 30px;
 }
 .editdrink__btn {

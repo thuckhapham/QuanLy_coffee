@@ -19,6 +19,7 @@ import html2canvas from "html2canvas";
 
 import checkPermesion from "./../../Components/checkPermession";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../Components/Footer/Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -53,8 +54,14 @@ const Report = () => {
     banchay2: null,
     doanhthu2: null,
   });
-  const [date1, setDate1] = useState({ from: "2022-04-02", to: "2022-05-02" });
-  const [date2, setDate2] = useState({ from: "2022-04-02", to: "2022-05-02" });
+  const [date1, setDate1] = useState({
+    from: "2022-04-02",
+    to: new Date().toISOString().split("T")[0],
+  });
+  const [date2, setDate2] = useState({
+    from: "2022-04-02",
+    to: new Date().toISOString().split("T")[0],
+  });
   const [sosanh, setSoSanh] = useState(false);
   const [isFetch, setIsFetch] = useState(false);
   const [numberDay, setNumberDay] = useState({ day1: "30", day2: "30" });
@@ -414,7 +421,7 @@ const Report = () => {
                       id="sosanh"
                       onChange={(e) => setSoSanh(e.target.checked)}
                     />{" "}
-                    <label htmlFor="sosanh">So sánh thống kê (tùy chọn):</label>
+                    <label htmlFor="sosanh">So sánh (tùy chọn):</label>
                   </h6>
                   {sosanh && (
                     <>
@@ -554,7 +561,7 @@ const Report = () => {
                 </h6>
                 <div className="row">
                   {checkBox.report !== false && data.report !== null && (
-                    <div className="col-12 col-12 col-lg-6 d-flex justify-content-center  ">
+                    <div className="col-12 d-flex justify-content-center  ">
                       <div className="bg-faded m-2">
                         <table class="table table-striped">
                           <thead>
@@ -681,7 +688,7 @@ const Report = () => {
                     </div>
                   )}
                   {lable.doanhthu.length !== 0 && data.doanhthu !== null && (
-                    <div className="col-12 col-lg-6 ">
+                    <div className="col-12">
                       <Line
                         className="bg-faded m-2"
                         options={{
@@ -714,7 +721,7 @@ const Report = () => {
                   )}
 
                   {lable.banchay.length !== 0 && data.banchay !== null && (
-                    <div className="col-12 col-lg-6 ">
+                    <div className="col-12">
                       <Bar
                         className="bg-faded m-2"
                         options={{
@@ -756,7 +763,7 @@ const Report = () => {
                   )}
 
                   {lable.theogio.length !== 0 && data.hoursOrder !== null && (
-                    <div className="col-12 col-lg-6  ">
+                    <div className="col-12">
                       <Bar
                         className="bg-faded m-2"
                         options={{

@@ -44,11 +44,13 @@ function DeleteDrink(props) {
                 WARNING
                 <AiIcons.AiFillWarning className="deletedrink__content deletedrink__content-icon" />
               </h2>
-              Do you really want to cancel ? <br/> ({props.orderId})
+              Do you really want to cancel ? <br /> ({props.orderId})
             </div>
             <div className="p-3 ">
               <button
                 className="deletedrink__btn deletedrink__btn-confirm"
+                data-bs-dismiss="modal"
+                aria-label="Close"
                 onClick={() => {
                   cancelOrder();
                 }}

@@ -75,19 +75,6 @@ function EditProfile(props) {
                   />
                 </div>
               </div>
-              {/* <div className="newcustomer__content-item">
-                                <div className="newcustomer__lable">
-                                    ROLE:
-                                </div>
-                                <div className="newcustomer__input">
-                                    <select id="category" className="newdrink__select"
-                                        onChange={(event) => setRole(event.target.value)}
-                                    >
-                                        <option value="ADMIN">ADMIN</option>
-                                        <option value="USER">USER</option>
-                                    </select>
-                                </div>
-                            </div> */}
               <div className="editcustomer__content-item">
                 <div className="editcustomer__lable">FIRST NAME:</div>
                 <div className="editcustomer__input">
@@ -135,7 +122,7 @@ function EditProfile(props) {
             </div>
             <div className="text-center p-2">
               <button
-                className="editcustomer__btn editcustomer__btn--add"
+                className="btn btn-primary"
                 onClick={() => {
                   editProfile();
                 }}

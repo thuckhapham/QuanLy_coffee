@@ -41,6 +41,18 @@ function OrderInfo(props) {
       return "0 đ";
     }
   }
+
+  function formattedDate(date) {
+    var dateObj = new Date(date);
+    if (isNaN(dateObj)) return "?";
+
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var newdate = day + "/" + month + "/" + year;
+    return newdate;
+  }
+
   return (
     <>
       <div className="checkout">
@@ -51,6 +63,10 @@ function OrderInfo(props) {
             <input type="text" value={props.editedOrder._id} readOnly />
             {/* {JSON.stringify(props.editedOrder)} */}
           </strong>
+          <p className="m-0">
+            Created: {formattedDate(props.editedOrder.created)} {"  "}
+            Updated:{formattedDate(props.editedOrder.updated)}
+          </p>
         </div>
         <div className="checkout__table-header">
           <table className="checkout__table">

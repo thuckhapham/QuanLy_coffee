@@ -80,7 +80,7 @@ function Profile(props) {
         </div>
         <div className="editprofile__content-list">
           <div className="editprofile__content-item">
-            <div className="editprofile__lable">MEMBER ID:</div>
+            <div className="editprofile__lable">YOUR ID:</div>
             <div className="editprofile__input">
               <input
                 type="text"
@@ -207,7 +207,6 @@ function Profile(props) {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

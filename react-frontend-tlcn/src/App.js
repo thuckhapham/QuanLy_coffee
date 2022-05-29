@@ -22,6 +22,8 @@ import Page404 from "./Components/Page404";
 import QLNV from "./Pages/QLNV";
 
 import React from "react";
+import ShiftAdmin from "./Pages/ShiftAdmin";
+import Footer from "./Components/Footer/Footer";
 
 const PrivateRoute = ({ children }) => {
   return localStorage.getItem("tokenBearer") !== null ? (
@@ -109,6 +111,15 @@ function App() {
                 }
               />
               <Route
+                path="/shift"
+                exact={true}
+                element={
+                  <PrivateRoute>
+                    <ShiftAdmin />
+                  </PrivateRoute>
+                }
+              />
+              <Route
                 path="/report"
                 exact={true}
                 element={
@@ -150,6 +161,7 @@ function App() {
             {/* <OrderHistory /> */}
           </Router>
         </ParallaxProvider>
+        <Footer />
       </div>
     </>
   );

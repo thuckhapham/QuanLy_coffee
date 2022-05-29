@@ -46,10 +46,12 @@ const createWorkshift = async (req, res) => {
   const result = await workshiftModel.create({
     day: date,
     employee: user._id,
-    cash: 1000,
+    cash: 0,
   });
   if (result) {
-    res.status(201).json({ message: "Create workshif successfully" });
+    res
+      .status(201)
+      .json({ message: "Create workshif successfully", _id: result._id });
   } else {
     res.status(401).json({ error: "Failed to create a workshift" });
   }

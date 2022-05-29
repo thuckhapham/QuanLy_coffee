@@ -5,6 +5,7 @@ import { Parallax, ParallaxBanner, useParallax } from "react-scroll-parallax";
 
 import bg2 from "./../About/image/bg2.png";
 import Footer from "../../Components/Footer/Footer";
+import Header2 from "../../Components/Header2/Header";
 
 const About = () => {
   const [product, setProduct] = useState([]);
@@ -24,7 +25,9 @@ const About = () => {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
   }
   return (
-    <div className="container overflow-hidden">
+    <div className=" overflow-hidden">
+      <Header2/>
+
       <ParallaxBanner
         className="text-center mx-auto d-block aspect-21"
         layers={[
@@ -46,7 +49,6 @@ const About = () => {
             <h6 className="text-light">- since 2019 -</h6>
           </Parallax>
         </div>
-        
       </ParallaxBanner>
 
       <ParallaxBanner
@@ -161,7 +163,6 @@ const About = () => {
         referrerpolicy="no-referrer-when-downgrade"
         className="w-100"
       ></iframe>
-      <Footer className="mt-4"/>
     </div>
   );
 };

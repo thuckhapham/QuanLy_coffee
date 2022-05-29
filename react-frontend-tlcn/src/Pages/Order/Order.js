@@ -262,7 +262,7 @@ function Order() {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
+                  Check out 
                 </h5>
                 <button
                   type="button"
@@ -286,7 +286,7 @@ function Order() {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </>
   );
 }

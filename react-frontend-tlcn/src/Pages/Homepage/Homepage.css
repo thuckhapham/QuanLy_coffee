@@ -37,7 +37,6 @@
   flex-wrap: wrap;
 }
 .homepage__order-link {
-  margin: 10px 0 10px 50px;
   border: none;
   outline: none;
   padding: 23px;
@@ -105,6 +104,7 @@
 
 .table-available {
   background-color: blue;
+  color: white;
 }
 
 .table-broken {
@@ -116,7 +116,7 @@
 }
 
 .table-active-border {
-  color: red !important;
-  transform: scale(1.1);
+  transform: scale(0.9);
   transition: all 1s !important;
+  opacity: 0.8;
 }
