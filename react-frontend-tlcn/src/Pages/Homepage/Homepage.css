@@ -104,6 +104,7 @@
 
 .table-available {
   background-color: blue;
+  color: white;
 }
 
 .table-broken {
@@ -115,7 +116,7 @@
 }
 
 .table-active-border {
-  color: red !important;
-  transform: scale(1.1);
+  transform: scale(0.9);
   transition: all 1s !important;
+  opacity: 0.8;
 }

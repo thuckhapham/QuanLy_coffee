@@ -14,19 +14,24 @@ function HistoryOrder() {
   const [viewModal, setViewModal] = useState(true);
   const [getRole, setRole] = useState(localStorage.getItem("coffeeRole"));
   const [selectedButt, setButt] = useState("");
+  const [viewID, setID] = useState("");
+  const [selectOrder, setOrder] = useState("");
   const callbackModal = (modalState) => {
     setViewModal(modalState);
   };
-  //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
-
-  // Lấy dữ liệu order
   const [viewList, setList] = useState([{ phone: 0, name: "", total: 0 }]);
   const [requestData, setRequestData] = useState(new Date());
+  const [remove0, setRemove0] = useState(false);
+  const [editedOrder, setEditedOrder] = useState([
+    { Order_id: 0, Order_name: "loading" },
+  ]);
+  const [more, setMore] = useState({ pagesize: 20, page: 1 });
+
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:5000/api/order/?pagesize=100`,
+      url: `http://localhost:5000/api/order/?pagesize=${more.pagesize}&page=${more.page}`,
       headers: {
         Authorization: `bearer ${tokenBearer}`,
         "Content-Type": "application/json",
@@ -35,10 +40,7 @@ function HistoryOrder() {
       setList(response.data.orders.reverse());
     });
   }, [requestData]);
-  //Save Order Data to array
-  const [editedOrder, setEditedOrder] = useState([
-    { Order_id: 0, Order_name: "loading" },
-  ]);
+
   function saveOrder(ordId) {
     axios({
       method: "get",
@@ -51,12 +53,10 @@ function HistoryOrder() {
       setEditedOrder(response.data);
     });
   }
-  //Xóa order
-  const [selectOrder, setOrder] = useState("");
+
   //Lấy Data theo ID
-  const [viewID, setID] = useState("");
-  function orderID() {
-    if (viewID) {
+  function searchoOrderID() {
+    if (viewID !== "") {
       axios({
         method: "get",
         url: `http://localhost:5000/api/order/${viewID}`,
@@ -80,44 +80,50 @@ function HistoryOrder() {
       });
     }
   }
-  // Hủy order
-  function cancelOrder(id) {
-    if (id) {
-      axios({
-        method: "delete",
-        url: `http://localhost:5000/api/order/${id}`,
-        headers: {
-          Authorization: `bearer ${tokenBearer}`,
-          "Content-Type": "application/json",
-        },
-      }).then(() => {
-        setRequestData(new Date());
-      });
-    }
-  }
-  //Quy đổi số về tiền việt
+
   function currencyFormat(num) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + " đ";
   }
+
   function formattedDate(date) {
     var dateObj = new Date(date);
+    if (isNaN(dateObj)) return "?";
+
     var month = dateObj.getUTCMonth() + 1;
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
     var newdate = day + "/" + month + "/" + year;
     return newdate;
   }
+
+  const fetchMore = () => {
+    axios({
+      method: "get",
+      url: `http://localhost:5000/api/order/?pagesize=${more.pagesize}&page=${
+        more.page + 1
+      }`,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      setMore((prev) => ({ ...prev, page: prev.page + 1 }));
+      setList((prev) => {
+        return prev.concat(response.data.orders.reverse());
+      });
+    });
+  };
   return (
     <>
       <Header2 />
       <div className="container p-3">
-        <h1 className="text-center">History Order</h1>
+        <h1 className="text-center">History Order </h1>
         <div className="historyorder">
           <div className="historyorder__top">
             <div className="historyorder__orderid">
               <input
                 type="text"
-                className="historyorder__orderid historyorder__orderid-input"
+                className=" historyorder__orderid-input"
                 id="orderid"
                 name="orderid"
                 placeholder="   
@@ -126,8 +132,19 @@ function HistoryOrder() {
                 onChange={(e) => setID(e.target.value)}
               />
               <div className="btn btn-outline-dark mb-2">
-                <AiIcons.AiOutlineSearch onClick={() => orderID()} />
+                <AiIcons.AiOutlineSearch onClick={() => searchoOrderID()} />
               </div>
+            </div>
+            <div className="historyorder__orderid user-select-none">
+              <input
+                id="rm"
+                type="checkbox"
+                className="m-2"
+                onChange={(e) => setRemove0(e.target.checked)}
+              />
+              <label htmlFor="rm" className="pointer">
+                Hide Total = 0
+              </label>
             </div>
           </div>
           <div className="historyorder__table-header">
@@ -138,77 +155,92 @@ function HistoryOrder() {
               <table className="historyorder__table text-center">
                 <thead className="historyorder__head">
                   <tr className="historyorder__header">
-                    <th className="col-1 d-none d-md-table-cell">No.</th>
+                    <th className="col-1 ">No.</th>
                     <th className="col-2">Table</th>
                     <th>Total</th>
-                    <th>Time</th>
-                    <th className="col-1 d-none d-md-table-cell">Pay</th>
-                    <th className="col-1 d-none d-md-table-cell">State</th>
+                    <th>Created</th>
+                    {/* <th className="col-1 d-none d-md-table-cell">Pay</th>
+                    <th className="col-1 d-none d-md-table-cell">State</th> */}
                     <th className="col-3 col-md-2">Action</th>
-                    {/* <th style={{ width: 100 }}>No.</th>
-                    <th style={{ width: 100 }}>Table</th>
-                    <th>Total</th>
-                    <th>Time</th>
-                    <th style={{ width: 100 }}>Payment</th>
-                    <th style={{ width: 100 }}>State</th>
-                    <th style={{ width: 150 }}>Action</th> */}
                   </tr>
                 </thead>
                 <tbody className="historyorder__body">
-                  {viewList.map((data, index) => (
-                    <tr className="historyorder__row">
-                      <td className="col-1 d-none d-md-table-cell">
-                        {index + 1}
-                      </td>
-                      <td>{data.table}</td>
-                      <td>{currencyFormat(data.total)} </td>
-                      <td>{formattedDate(data.updated)} </td>
-                      <td className="text-light d-none d-md-table-cell">
-                        {data.payment !== undefined && data.payment.status ? (
-                          <span className="bg-success">✓</span>
-                        ) : (
-                          <span className="bg-danger ">✗</span>
-                        )}
-                      </td>
-                      <td className="text-light d-none d-md-table-cell">
-                        {data.status ? (
-                          <span className="bg-success">✓</span>
-                        ) : (
-                          <span className="bg-danger">✗</span>
-                        )}
-                      </td>
-                      <td>
-                        <button
-                          className="bg-success text-light  p-1 me-1"
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          onClick={() => {
-                            setButt("viewcustomer");
-                            // setViewModal(!viewModal);
-                            saveOrder(data._id);
-                          }}
-                        >
-                          <GrIcons.GrCircleInformation className="d-flex align-content-center flex-wrap" />
-                        </button>
-                        {getRole === "ADMIN" && (
-                          <button
-                            className="bg-danger text-light p-1"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                            onClick={() => {
-                              setButt("cancelorder");
-                              setOrder(data._id);
-                              console.log(data);
-                            }}
+                  {viewList.map((data, index) =>
+                    index === more.page * more.pagesize - 1 ? (
+                      <tr className="w-100 ">
+                        <td colSpan={5}>
+                          <div
+                            className="btn btn-outline-dark m-1"
+                            onClick={() => fetchMore()}
                           >
-                            <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                            Fetch more
+                          </div>
+                        </td>
+                      </tr>
+                    ) : (
+                      ((remove0 && data.total != 0) || !remove0) && (
+                        <tr
+                          className={
+                            "historyorder__row " +
+                            (data.payment !== undefined && data.payment.status
+                              ? " bg-green-faded"
+                              : "")
+                          }
+                        >
+                          <td className="col-1">{index + 1}</td>
+                          <td>{data.table}</td>
+                          <td>{currencyFormat(data.total)} </td>
+                          <td>{formattedDate(data.created)} </td>
+                          {/* <td className="text-light d-none d-md-table-cell">
+                          {data.payment !== undefined && data.payment.status ? (
+                            <span className="bg-success">✓</span>
+                          ) : (
+                            <span className="bg-danger ">✗</span>
+                          )}
+                        </td>
+                        <td className="text-light d-none d-md-table-cell">
+                          {data.status ? (
+                            <span className="bg-success">✓</span>
+                          ) : (
+                            <span className="bg-danger">✗</span>
+                          )}
+                        </td> */}
+                          <td>
+                            <button
+                              className="btn btn-success text-light  p-1 me-1"
+                              type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#exampleModal"
+                              onClick={() => {
+                                setButt("viewcustomer");
+                                saveOrder(data._id);
+                              }}
+                            >
+                              <GrIcons.GrCircleInformation className="d-flex align-content-center flex-wrap" />
+                            </button>
+                            {getRole === "ADMIN" && (
+                              <button
+                                className={
+                                  "btn btn-danger text-light p-1 " +
+                                  (data.status == true ? "" : "disabled")
+                                }
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                onClick={() => {
+                                  setButt("cancelorder");
+                                  setOrder(data._id);
+                                  console.log(data);
+                                }}
+                              >
+                                <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    )
+                  )}
                 </tbody>
               </table>
             </div>

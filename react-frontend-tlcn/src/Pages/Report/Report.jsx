@@ -561,7 +561,7 @@ const Report = () => {
                 </h6>
                 <div className="row">
                   {checkBox.report !== false && data.report !== null && (
-                    <div className="col-12 col-12 col-lg-6 d-flex justify-content-center  ">
+                    <div className="col-12 d-flex justify-content-center  ">
                       <div className="bg-faded m-2">
                         <table class="table table-striped">
                           <thead>
@@ -688,7 +688,7 @@ const Report = () => {
                     </div>
                   )}
                   {lable.doanhthu.length !== 0 && data.doanhthu !== null && (
-                    <div className="col-12 col-lg-6 ">
+                    <div className="col-12">
                       <Line
                         className="bg-faded m-2"
                         options={{
@@ -721,7 +721,7 @@ const Report = () => {
                   )}
 
                   {lable.banchay.length !== 0 && data.banchay !== null && (
-                    <div className="col-12 col-lg-6 ">
+                    <div className="col-12">
                       <Bar
                         className="bg-faded m-2"
                         options={{
@@ -763,7 +763,7 @@ const Report = () => {
                   )}
 
                   {lable.theogio.length !== 0 && data.hoursOrder !== null && (
-                    <div className="col-12 col-lg-6  ">
+                    <div className="col-12">
                       <Bar
                         className="bg-faded m-2"
                         options={{

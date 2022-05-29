@@ -140,8 +140,8 @@ function CheckOut(props) {
           </div>
           <div className="checkout__total">
             Total: {props.totalprice}
-            <br />
-            Discount: {props.discountprice}
+            {/* <br />
+            Discount: {props.discountprice} */}
           </div>
           <div className="checkout__checkout">
             Check out: {props.totalprice}

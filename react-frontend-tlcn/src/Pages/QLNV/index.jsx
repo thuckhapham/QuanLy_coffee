@@ -69,6 +69,7 @@ const QLNV = () => {
     })
       .then((response) => {
         console.log(response.data);
+        getListUser();
       })
       .catch((e) => {
         console.log(e);
@@ -177,33 +178,29 @@ const QLNV = () => {
                 </tbody>
               </table>
 
-              {selectUser == undefined ? (
-                <h6>Chọn 1 nhân viên để xem</h6>
-              ) : loadingUser ? (
-                <Loading />
-              ) : (
-                <div
-                  class="modal fade"
-                  id="detail"
-                  tabindex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content ">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                          Chi tiết nhân viên
-                        </h5>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div class="modal-body text-center">
-                        <div className="newtable__input mt-2 ">
+              <div
+                class="modal fade"
+                id="detail"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content ">
+                    <div class="modal-header p-3">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Chi tiết nhân viên
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    {selectUser != undefined ? (
+                      <div class="modal-body text-center p-2">
+                        <div className="newtable__input  ">
                           <label>ID: </label>
                           <input
                             value={selectUser._id}
@@ -318,10 +315,12 @@ const QLNV = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <Loading />
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
             </div>{" "}
             {/* MODAL */}
             <div
@@ -333,7 +332,7 @@ const QLNV = () => {
             >
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content ">
-                  <div class="modal-header">
+                  <div class="modal-header p-3">
                     <h5 class="modal-title" id="exampleModalLabel">
                       Create User
                     </h5>
@@ -344,7 +343,7 @@ const QLNV = () => {
                       aria-label="Close"
                     ></button>
                   </div>
-                  <div class="modal-body text-center">
+                  <div class="modal-body text-center p-2">
                     {" "}
                     <div className="m-0">
                       <div className="newtable__content-list">

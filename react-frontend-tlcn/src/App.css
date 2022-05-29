@@ -97,6 +97,10 @@ ul {
   background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
+.bg-green-faded {
+  background-color: rgba(0, 255, 51, 0.15) !important;
+}
+
 .loading {
   z-index: 9999;
 }
@@ -104,4 +108,8 @@ ul {
 .dot {
   width: 10px;
   height: 10px;
+}
+
+.pointer {
+  cursor: pointer;
 }

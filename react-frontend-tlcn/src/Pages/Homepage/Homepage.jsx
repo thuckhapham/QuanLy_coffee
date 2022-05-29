@@ -151,7 +151,7 @@ function Homepage(props) {
         </button>
 
         <div className="row">
-          <div className="col-12 col-sm-8">
+          <div className="col-12">
             <ul className="w-100">
               <li>
                 <span className="dot table-available d-inline-block"></span>:
@@ -168,7 +168,7 @@ function Homepage(props) {
             </ul>
             <div className="row text-center">
               {viewList.map((data, i) => (
-                <div className="col-6 col-sm-4 col-md-3 col-xl-2 mt-1 mb-1">
+                <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
                   <button
                     className={
                       "homepage__order-link d-block " +
@@ -185,6 +185,8 @@ function Homepage(props) {
                       setSelectedTable(data);
                       setActiveTable(i);
                     }}
+                    data-bs-toggle="modal"
+                    data-bs-target="#infotable"
                   >
                     {data.tablePoin}
                   </button>
@@ -192,118 +194,8 @@ function Homepage(props) {
               ))}
             </div>
           </div>
-          <div className="col-12 col-sm-4">
-            {selectedTable === undefined ? (
-              <p className="text-center">Chọn một bàn để xem</p>
-            ) : (
-              <>
-                <ul className="p-0 text-center">
-                  <li className="">
-                    <h3> Thông tin bàn: {selectedTable.tablePoin}</h3>
-                    {/* ({selectedTable._id}) */}
-                  </li>
-                  <li>
-                    Trạng thái:
-                    <select
-                      className="ms-1"
-                      value={selectedTable.status}
-                      onChange={(e) =>
-                        setSelectedTable((prev) => ({
-                          ...prev,
-                          status: e.target.value,
-                        }))
-                      }
-                      disabled
-                    >
-                      <option value={"INIT"}>Chưa có Order</option>
-                      <option value={"WAIT"}>Chờ pha chế</option>
-                      <option value={"COMPLETE"}>Đã hoàn thành</option>
-                    </select>
-                    {/* <div
-                className="homepage__btn-add d-inline-block ms-1"
-                onClick={() => UpdateStatus()}
-              >
-                Update Staus
-              </div> */}
-                  </li>
-                  <li>______________________</li>
-                  <li>
-                    {selectedTable.status === "INIT" ? (
-                      <>
-                        <div
-                          className="homepage__btn-add d-inline-block ms-1"
-                          onClick={() => orderTable(selectedTable.tablePoin)}
-                        >
-                          Go Order
-                        </div>
-                        <div
-                          className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "
-                          onClick={() => removeTable()}
-                        >
-                          Xóa
-                        </div>
-                      </>
-                    ) : selectedTable.status === "WAIT" ? (
-                      <>
-                        <div
-                          className="homepage__btn-add d-inline-block ms-1"
-                          onClick={() => {
-                            UpdateStatus("COMPLETE");
-                          }}
-                        >
-                          Đã pha xong
-                        </div>
-                      </>
-                    ) : (
-                      <div
-                        className="homepage__btn-add d-inline-block ms-1"
-                        onClick={() => removeTable()}
-                      >
-                        Xóa bàn
-                      </div>
-                    )}
-                  </li>
-                  <li>
-                    {orderDetail.orderId !== undefined ? (
-                      <div className="pt-1">
-                        {/* {" "}
-                      Orderid: {orderDetail.orderId[0]}{" "} */}
-                        <div
-                          className="btn btn-warning"
-                          onClick={() => getDetailOrder()}
-                        >
-                          Chi tiết đơn
-                        </div>
-                        {orderDetail.data !== undefined && (
-                          <table className="order__table mt-1">
-                            <thead className="order__head">
-                              <tr className="order__header">
-                                <th>Name</th>
-                                <th>Quantity</th>
-                              </tr>
-                            </thead>
-                            <tbody className="order__body">
-                              {orderDetail.data.orderItem.map((e) => (
-                                <tr className="order__row">
-                                  <td>{e.name}</td>
-                                  <td>{e.quantity}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </li>
-                  <li></li>
-                </ul>
-              </>
-            )}
-          </div>
         </div>
-        {/* Modal Layout */}
+        {/* Modal CREATE TABLE */}
         <div
           class="modal fade"
           id="exampleModal"
@@ -366,14 +258,151 @@ function Homepage(props) {
                 </button>
                 <button
                   data-bs-dismiss="modal"
-                  className="newtable__btn newtable__btn--add"
+                  className={"newtable__btn newtable__btn--add"}
+                  disabled={selectedName!== "" ? false : true}
                   onClick={() => {
                     addingTable(selectedName);
                     setViewModal(!viewModal);
+                    orderTable(selectedName);
                   }}
                 >
                   Add
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* MODAL INFO TABLE */}
+        <div
+          class="modal fade"
+          id="infotable"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Info Table
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body text-center">
+                {selectedTable === undefined ? (
+                  <p className="text-center">Chọn một bàn để xem</p>
+                ) : (
+                  <>
+                    <ul className="p-0 text-center">
+                      <li className="">
+                        <h3> Thông tin bàn: {selectedTable.tablePoin}</h3>
+                      </li>
+                      <li>
+                        Trạng thái:
+                        <select
+                          className="ms-1"
+                          value={selectedTable.status}
+                          onChange={(e) =>
+                            setSelectedTable((prev) => ({
+                              ...prev,
+                              status: e.target.value,
+                            }))
+                          }
+                          disabled
+                        >
+                          <option value={"INIT"}>Chưa có Order</option>
+                          <option value={"WAIT"}>Chờ pha chế</option>
+                          <option value={"COMPLETE"}>Đã hoàn thành</option>
+                        </select>
+                      </li>
+                      <li>______________________</li>
+                      <li>
+                        {selectedTable.status === "INIT" ? (
+                          <>
+                            <div
+                              className="homepage__btn-add d-inline-block ms-1"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                              onClick={() =>
+                                orderTable(selectedTable.tablePoin)
+                              }
+                            >
+                              Go Order
+                            </div>
+                            <div
+                              className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "
+                              onClick={() => removeTable()}
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              Xóa
+                            </div>
+                          </>
+                        ) : selectedTable.status === "WAIT" ? (
+                          <>
+                            <div
+                              className="homepage__btn-add d-inline-block ms-1"
+                              onClick={() => {
+                                UpdateStatus("COMPLETE");
+                              }}
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              Đã pha xong
+                            </div>
+                          </>
+                        ) : (
+                          <div
+                            className="homepage__btn-add d-inline-block ms-1"
+                            onClick={() => removeTable()}
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Xóa bàn
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        {orderDetail.orderId !== undefined ? (
+                          <div className="pt-1">
+                            <div
+                              className="btn btn-warning"
+                              onClick={() => getDetailOrder()}
+                            >
+                              Chi tiết đơn
+                            </div>
+                            {orderDetail.data !== undefined && (
+                              <table className="order__table mt-1">
+                                <thead className="order__head">
+                                  <tr className="order__header">
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="order__body">
+                                  {orderDetail.data.orderItem.map((e) => (
+                                    <tr className="order__row">
+                                      <td>{e.name}</td>
+                                      <td>{e.quantity}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            )}
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </li>
+                      <li></li>
+                    </ul>
+                  </>
+                )}
               </div>
             </div>
           </div>
