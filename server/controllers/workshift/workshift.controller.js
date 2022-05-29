@@ -39,9 +39,9 @@ const getWorkshiftById = async (req, res) => {
 };
 
 const createWorkshift = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-  const user = await jwt.verify(token, "1234"); // hide the secret
-
+  // const token = req.headers.authorization.split(" ")[1];
+  // const user = await jwt.verify(token, "1234"); // hide the secret
+  const user = req.auth;
   const date = new Date().toISOString().slice(0, 10);
   const result = await workshiftModel.create({
     day: date,
@@ -85,8 +85,9 @@ const deleteWorkshift = async (req, res) => {
   }
 };
 const checkoutWorkshift = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-  const user = await jwt.verify(token, "1234"); // hide the secret
+  // const token = req.headers.authorization.split(" ")[1];
+  // const user = await jwt.verify(token, "1234"); // hide the secret
+  const user = req.auth;
   if (user) {
     const shiftID = req.params.id;
     const workshift = await workshiftModel.findByIdAndUpdate(

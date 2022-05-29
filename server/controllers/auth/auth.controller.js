@@ -62,11 +62,25 @@ const signout = (req, res) => {
   });
 };
 
-const requireSignin = expressJwt({
-  secret: config.jwtSecret,
-  userProperty: "auth",
-  algorithms: ["HS256"],
-});
+const requireSignin = async (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  try {
+    const user = await jwt.verify(token, config.jwtSecret);
+    if (user) {
+      req.auth = user;
+      next();
+    } else {
+      res.status(403).json({ error: "Invalid Token" });
+    }
+  } catch (error) {
+    res.status(403).json({ error });
+  }
+};
+// const requireSignin = expressJwt({
+//   secret: config.jwtSecret,
+//   userProperty: "auth",
+//   algorithms: ["HS256"],
+// });
 
 const hasAuthorization = (req, res, next) => {
   const authorized =
