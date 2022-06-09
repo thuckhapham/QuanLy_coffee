@@ -8,7 +8,7 @@ function Footer() {
             <footer className="footer">
                 <div className="footer__content">
                     <h3>Coffee Order System</h3>
-                    <p>@ A project is build by Kha and Hieu</p>
+                    <p>@ A project is build by Kha and Minh</p>
                     <ul>
                         <li>
                             <AIcons.AiFillFacebook />
@@ -22,7 +22,7 @@ function Footer() {
                     </ul>
                 </div>
                 <div className="footer__bottom">
-                    <p>Copyright @2021 by Kha and Hieu</p>
+                    <p>Copyright @2021 by Kha and Minh</p>
                 </div>
             </footer>
         </>
