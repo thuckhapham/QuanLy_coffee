@@ -67,8 +67,9 @@ function HistoryOrder() {
           "Content-Type": "application/json",
         },
       }).then((response) => {
+        console.log(response.data);
         setList([response.data]);
-      });
+      }).catch(()=> alert("Không tìm thấy"))
     } else {
       axios({
         method: "get",
@@ -78,6 +79,7 @@ function HistoryOrder() {
           "Content-Type": "application/json",
         },
       }).then((response) => {
+        console.log(response.data.orders[0]);
         setList(response.data.orders.reverse());
       });
     }
@@ -137,8 +139,11 @@ function HistoryOrder() {
                 value={viewID}
                 onChange={(e) => setID(e.target.value)}
               />
-              <div className="btn btn-outline-dark mb-2">
-                <AiIcons.AiOutlineSearch onClick={() => searchoOrderID()} />
+              <div
+                className="btn btn-outline-dark mb-2"
+                onClick={() => searchoOrderID()}
+              >
+                <AiIcons.AiOutlineSearch />
               </div>
             </div>
             <div className="historyorder__orderid user-select-none">
@@ -172,7 +177,9 @@ function HistoryOrder() {
                 </thead>
                 <tbody className="historyorder__body">
                   {viewList.map((data, index) =>
-                    viewList.length - 1 === index && more.hasMore ? (
+                    viewList.length - 1 === index &&
+                    more.hasMore &&
+                    viewList.length !== 1 ? (
                       <tr className="w-100 ">
                         <td colSpan={5}>
                           <div

@@ -67,10 +67,10 @@ function ClientTrack(props) {
             {viewList.map((data, i) => {
               return (
                 data.status !== "INIT" && (
-                  <div className="col-6 col-sm-3 col-lg-2 col-xl-1">
+                  <div className="col-6 col-sm-3 col-lg-2 col-xl-1 d-flex justify-content-center">
                     <button
                       className={
-                        "homepage__order-link d-block " +
+                        "homepage__order-link d-block m-1 " +
                         (data.status === "WAIT"
                           ? "table-broken table-not-clientcomplete"
                           : "table-clientcomplete  ")
