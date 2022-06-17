@@ -35,6 +35,10 @@ const WorkshiftSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    valid: {
+      type: Boolean,
+      default: true
+    }
   },
   { timestamps: true }
 );

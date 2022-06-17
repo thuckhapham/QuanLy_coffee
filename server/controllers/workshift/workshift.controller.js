@@ -1,5 +1,4 @@
 import workshiftModel from "../../models/workshift.model";
-import jwt from "jsonwebtoken";
 
 const getAllWorkshiftByDates = async (req, res) => {
   const dateFrom = req.query.dateFrom;
@@ -13,6 +12,7 @@ const getAllWorkshiftByDates = async (req, res) => {
         $gte: dateFrom,
         $lt: dateToFormat,
       },
+      valid: true,
     });
     if (result?.length > 0) {
       res.status(200).json({ result });
@@ -39,8 +39,6 @@ const getWorkshiftById = async (req, res) => {
 };
 
 const createWorkshift = async (req, res) => {
-  // const token = req.headers.authorization.split(" ")[1];
-  // const user = await jwt.verify(token, "1234"); // hide the secret
   const user = req.auth;
   const date = new Date().toISOString().slice(0, 10);
   const result = await workshiftModel.create({
@@ -85,8 +83,6 @@ const deleteWorkshift = async (req, res) => {
   }
 };
 const checkoutWorkshift = async (req, res) => {
-  // const token = req.headers.authorization.split(" ")[1];
-  // const user = await jwt.verify(token, "1234"); // hide the secret
   const user = req.auth;
   if (user) {
     const shiftID = req.params.id;
@@ -99,21 +95,9 @@ const checkoutWorkshift = async (req, res) => {
       { returnDocument: "after" }
     );
     if (workshift) {
-      // const { cash, online, note } = req.body;
-      // workshift.checkout = Date.now();
-      // workshift.cash = cash || 0;
-      // workshift.online = online || 0;
-      // workshift.note = note || "";
-      // const save = await workshift.save();
       res.status(200).json({ message: "Checkout workshift successfully" });
-      // if (save) {
-      //   res
-      //     .status(200)
-      //     .json({ message: "Check out of workshift successfully" });
-      // }
     } else {
-      res.status(404).json({ error: "Work shift update failed" });
-      //res.status(404).json({ error: "Work shift not found" });
+      res.status(404).json({ error: "Work shift checkout failed" });
     }
   } else {
     res.status(401).json({ error: "Unauthorized" });
