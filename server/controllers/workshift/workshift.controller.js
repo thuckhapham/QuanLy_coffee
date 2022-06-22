@@ -58,6 +58,8 @@ const createWorkshift = async (req, res) => {
 const updateWorkshift = async (req, res) => {
   const id = req.params.id;
   const workshift = req.body;
+  console.log(id);
+  console.log(workshift);
   if (id) {
     const result = await workshiftModel.findByIdAndUpdate(
       id,

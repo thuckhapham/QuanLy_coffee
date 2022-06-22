@@ -96,6 +96,10 @@ const update = async (req, res) => {
     console.info(`update product: ${req.product.id}`);
     let product = req.product;
     product = extend(product, req.body);
+    
+    console.log(req.product);
+    console.log(req.body);
+
     if (req.file) product.image = req.file.path;
     product.updated = Date.now();
     await product.save();
