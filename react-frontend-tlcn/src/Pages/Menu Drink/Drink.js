@@ -53,17 +53,6 @@ function Drink() {
         setSearchWarn("");
       }
     }
-    // if (id) {
-    //   axios.get(`http://localhost:5000/api/products/${id}`).then((response) => {
-    //     setList([response.data]);
-    //   });
-    // } else {
-    //   axios
-    //     .get(`http://localhost:5000/api/products?page=1&pagesize=100`)
-    //     .then((response) => {
-    //       setList(response.data.products);
-    //     });
-    // }
   }
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
@@ -179,7 +168,10 @@ function Drink() {
                                   setEditedDrink([data]);
                                 }}
                               >
-                                <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
+                                {
+                                  data.available == false ? "xx" :
+                                  <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
+                                }
                               </button>
                             </td>
                           )}
@@ -188,7 +180,7 @@ function Drink() {
                     : viewList.map(
                         (data, index) =>
                           data.category == viewCategory && (
-                            <tr className="drinktable__row">
+                            <tr className={"drinktable__row "}>
                               <td className="d-none d-md-table-cell">
                                 {data.category}
                               </td>

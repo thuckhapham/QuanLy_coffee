@@ -12,6 +12,8 @@ const ShiftAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [dataShift, setDataShift] = useState(null);
   const [selectShift, setSelectShift] = useState(null);
+  const [origin, setOrigin] = useState(null);
+  const [selectOrigin, setSelectOrigin] = useState(null);
 
   const [date1, setDate1] = useState({
     from: "2022-04-02",
@@ -40,7 +42,8 @@ const ShiftAdmin = () => {
       params: { dateFrom: date1.from, dateTo: date1.to },
     })
       .then((response) => {
-        let copy = response.data;
+        setOrigin(response.data);
+        let copy = JSON.parse(JSON.stringify(response.data));
         copy.result.map((e, i) => {
           copy.result[i].checkin =
             fotmatDDMMYY(e.checkin) + " " + fotmatHHMM(e.checkin);
@@ -51,6 +54,7 @@ const ShiftAdmin = () => {
       })
       .catch((e) => {
         setDataShift(null);
+        setOrigin(null);
         console.log(e);
         if (e.response && e.response.status == "401") {
           alert("Hết hạn đăng nhập, xin đăng nhập lại");
@@ -118,14 +122,19 @@ const ShiftAdmin = () => {
   }
 
   const removeShift = () => {
-    axios({
-      method: "delete",
-      url: "http://localhost:5000/api/workshift/" + selectShift._id,
-      headers: {
-        Authorization: `bearer ${tokenBearer}`,
-        "Content-Type": "application/json",
-      },
-    })
+    console.log(selectOrigin);
+    selectOrigin.valid = false;
+    axios
+      .put(
+        "http://localhost:5000/api/workshift/" + selectShift._id,
+        selectOrigin,
+        {
+          headers: {
+            Authorization: `bearer ${tokenBearer}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         alert("Delete workshift successfully");
         getListShift();
@@ -202,6 +211,7 @@ const ShiftAdmin = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#detail"
                           onClick={() => {
+                            setSelectOrigin(origin.result[i]);
                             setSelectShift(e);
                             getEmloyee(e.employee);
                           }}
