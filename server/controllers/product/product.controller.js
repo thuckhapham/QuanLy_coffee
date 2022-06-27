@@ -56,7 +56,7 @@ const list = async (req, res) => {
 
     console.info("get list product");
     let products = await Product.find().select(
-      "_id name category description price image"
+      "_id name category description price image available"
     );
     products = products.filter(
       (product) =>
