@@ -41,70 +41,89 @@ function EditDrink(props) {
         })
     }
     return (
-        <>
-            <div className="editdrink__content">
-                {checkError === "Error" ?
-                    <Error message="You dont' have the authority!" setError={setError} />
-                    :
-                    <>
-                        <div className="editdrink__content-header">
-                            EDIT DRINK
-                        </div>
-                        <div className="editdrink__content-list">
-                            <div className="editdrink__content-item">
-                                <div className="editdrink__lable">
-                                    DRINK ID:
-                                </div>
-                                <div className="editdrink__input">
-                                    <input type="text" className="editdrink__form" placeholder="ID" value={props.editedDrink[0]._id} readOnly />
-                                </div>
-                            </div>
-                            <div className="editdrink__content-item">
-                                <div className="editdrink__lable">
-                                    CATEGORY:
-                                </div>
-                                <div className="editdrink__input">
-                                    <select id="category" className="newdrink__select"
-                                        onChange={(event) => setCategory(event.target.value)}
-                                    >
-                                        <option value="TEA">TEA</option>
-                                        <option value="COFFEE">COFFEE</option>
-                                        <option value="COOKIES">COOKIES</option>
-                                        <option value="FRUIT">FRUIT</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="editdrink__content-item">
-                                <div className="editdrink__lable">
-                                    NAME:
-                                </div>
-                                <div className="editdrink__input">
-                                    <input type="text" className="editdrink__form" placeholder="Drink's name" defaultValue={props.editedDrink[0].name} onChange={e => setName(e.target.value)} />
-                                </div>
-                            </div>
-                            <div className="editdrink__content-item">
-                                <div className="editdrink__lable">
-                                    PRICE:
-                                </div>
-                                <div className="editdrink__input">
-                                    <input type="text" className="editdrink__form" placeholder="Drink's price" defaultValue={props.editedDrink[0].price} onChange={e => setPrice(e.target.value)} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="editdrink__content-btn">
-                            <button
-                                className="editdrink__btn editdrink__btn--add"
-                                onClick={() => {
-                                    editDrink(selectedId, selectedCategory, selectedName, selectedPrice)
-                                }}
-                            >
-                                Edit
-                            </button>
-                            
-                        </div>
-                    </>}
-            </div>
-        </>
-    )
+      <>
+        <div className="editdrink__content">
+          {checkError === "Error" ? (
+            <Error
+              message="You dont' have the authority!"
+              setError={setError}
+            />
+          ) : (
+            <>
+              <div className="editdrink__content-header">EDIT DRINK</div>
+              <div className="editdrink__content-list">
+                <div className="editdrink__content-item">
+                  <div className="editdrink__lable">DRINK ID:</div>
+                  <div className="editdrink__input">
+                    <input
+                      type="text"
+                      className="editdrink__form"
+                      placeholder="ID"
+                      value={props.editedDrink[0]._id}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div className="editdrink__content-item">
+                  <div className="editdrink__lable">CATEGORY:</div>
+                  <div className="editdrink__input">
+                    <select
+                      id="category"
+                      className="newdrink__select"
+                      onChange={(event) => setCategory(event.target.value)}
+                    >
+                      <option value="TEA">TEA</option>
+                      <option value="COFFEE">COFFEE</option>
+                      <option value="COOKIES">COOKIES</option>
+                      <option value="FRUIT">FRUIT</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="editdrink__content-item">
+                  <div className="editdrink__lable">NAME:</div>
+                  <div className="editdrink__input">
+                    <input
+                      type="text"
+                      className="editdrink__form"
+                      placeholder="Drink's name"
+                      defaultValue={props.editedDrink[0].name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="editdrink__content-item">
+                  <div className="editdrink__lable">PRICE:</div>
+                  <div className="editdrink__input">
+                    <input
+                      type="text"
+                      className="editdrink__form"
+                      placeholder="Drink's price"
+                      defaultValue={props.editedDrink[0].price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="editdrink__content-btn">
+                <button
+                  className="editdrink__btn editdrink__btn--add"
+                  data-bs-dismiss="modal"
+                  onClick={() => {
+                    editDrink(
+                      selectedId,
+                      selectedCategory,
+                      selectedName,
+                      selectedPrice
+                    );
+                  }}
+                >
+                  Edit
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </>
+    );
 }
 export default EditDrink

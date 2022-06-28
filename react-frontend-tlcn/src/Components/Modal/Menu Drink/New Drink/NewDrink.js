@@ -115,6 +115,7 @@ function NewDrink(props) {
             <div className="mx-auto mt-3">
               <button
                 className="newdrink__btn newdrink__btn--add"
+                data-bs-dismiss="modal"
                 onClick={() => {
                   addingDrink(selectedName, selectedCate, selectedPrice);
                 }}

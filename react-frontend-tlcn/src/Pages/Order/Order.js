@@ -101,7 +101,7 @@ function Order() {
         "Content-Type": "application/json",
       },
     }).then((response) => {
-      console.log(response.data);
+      console.log(response.data.orderItem);
       setBillOrder(response.data);
     });
   }
@@ -217,10 +217,15 @@ function Order() {
                   (data) =>
                     data.category === selectedCate && (
                       <div
-                        className="category__name-item d-inline-block"
+                        className={
+                          "category__name-item d-inline-block " +
+                          (data.available ? "" : " lineThrough text-muted")
+                        }
                         onClick={() => {
-                          addingDrink(data._id);
-                          retrieveOrder(id);
+                          if (data.available) {
+                            addingDrink(data._id);
+                            retrieveOrder(id);
+                          }
                         }}
                       >
                         {data.name}
@@ -262,7 +267,7 @@ function Order() {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Check out 
+                  Check out
                 </h5>
                 <button
                   type="button"
@@ -286,7 +291,6 @@ function Order() {
           </div>
         </div>
       </div>
-      
     </>
   );
 }

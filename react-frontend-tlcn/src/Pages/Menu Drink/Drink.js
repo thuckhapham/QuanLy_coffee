@@ -4,6 +4,7 @@ import axios from "axios";
 import * as AiIcons from "react-icons/ai";
 import * as GiIcons from "react-icons/gi";
 import * as GrIcons from "react-icons/gr";
+import * as VscDebugRestart from "react-icons/vsc";
 import NewDrink from "../../Components/Modal/Menu Drink/New Drink/NewDrink";
 import DeleteDrink from "../../Components/Modal/Menu Drink/Delete Drink/DeleteDrink";
 import EditDrink from "../../Components/Modal/Menu Drink/Edit Drink/EditDrink";
@@ -136,7 +137,14 @@ function Drink() {
                 <tbody className="drinktable__body">
                   {viewCategory == "ALL"
                     ? viewList.map((data, index) => (
-                        <tr className="drinktable__row">
+                        <tr
+                          className={
+                            "drinktable__row " +
+                            (data.available == false
+                              ? "bg-faded text-muted"
+                              : "")
+                          }
+                        >
                           <td className="d-none d-md-table-cell">
                             {data.category}
                           </td>
@@ -168,10 +176,11 @@ function Drink() {
                                   setEditedDrink([data]);
                                 }}
                               >
-                                {
-                                  data.available == false ? "xx" :
+                                {data.available == false ? (
+                                  <VscDebugRestart.VscDebugRestart className="d-flex align-content-center flex-wrap" />
+                                ) : (
                                   <GiIcons.GiCancel className="d-flex align-content-center flex-wrap" />
-                                }
+                                )}
                               </button>
                             </td>
                           )}

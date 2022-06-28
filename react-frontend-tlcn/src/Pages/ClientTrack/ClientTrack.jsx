@@ -105,8 +105,15 @@ function ClientTrack(props) {
                     {product.map(
                       (data) =>
                         data.category == e.category && (
-                          <tr className="drinktable__row">
-                            <td>{data.name}</td>
+                          <tr
+                            className={
+                              "drinktable__row " +
+                              (data.available ? "" : " lineThrough text-muted")
+                            }
+                          >
+                            <td>
+                              {data.name} 
+                            </td>
                             <td>{currencyFormat(data.price)}</td>
                           </tr>
                         )
