@@ -97,7 +97,7 @@ function Login(props) {
                 {/* </Link> */}
               </div>
             </div>
-            admin1
+            {/* admin1
             <br />
             admin123456
             <br />
@@ -105,7 +105,7 @@ function Login(props) {
             nv420
             <br />
             123123
-            <br />
+            <br /> */}
           </div>
         </div>
       </div>
