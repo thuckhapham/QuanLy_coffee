@@ -137,6 +137,8 @@ const remove = async (req, res) => {
     let table = req.table;
     let deletedTable = await table.remove();
     console.info(`delete table: ${req.table.id} finished`);
+    let newTable = new Table({tablePoin: req.table.tablePoin});
+    await newTable.save();
     res.json(deletedTable);
   } catch (err) {
     console.error(err);
