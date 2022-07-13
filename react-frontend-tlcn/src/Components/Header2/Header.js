@@ -25,6 +25,7 @@ const Header2 = (props) => {
     if (localStorage.getItem("tokenBearer")) {
       localStorage.removeItem("tokenBearer");
       localStorage.removeItem("coffeeRole");
+      localStorage.removeItem("fullName");
       navigate("/login");
     }
   }
@@ -284,7 +285,7 @@ const Header2 = (props) => {
         <div
           class="modal fade"
           id="checkout"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >

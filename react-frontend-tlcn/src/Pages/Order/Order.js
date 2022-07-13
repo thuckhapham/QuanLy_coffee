@@ -8,11 +8,10 @@ import CheckOut from "../../Components/Modal/Order/CheckOut/CheckOut";
 import Member from "../../Components/Modal/Order/Member/Member";
 import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
-
 function Order() {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
-
+  
   const { id } = useParams();
   const [selectedCate, setCate] = useState("COFFEE");
 
@@ -267,7 +266,7 @@ function Order() {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Check out
+                  Thanh Toán
                 </h5>
                 <button
                   type="button"

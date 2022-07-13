@@ -140,3 +140,6 @@
   font-weight: 500;
   transition: ease-in 0.3s;
 }
+.bill__info{
+  text-align: left;
+}

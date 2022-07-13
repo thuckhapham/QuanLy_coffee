@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
+import QRCode from "react-qr-code";
 function Homepage(props) {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
@@ -284,7 +285,7 @@ function Homepage(props) {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Info Table
+                  Thông tin bàn
                 </h5>
                 <button
                   type="button"
@@ -308,15 +309,18 @@ function Homepage(props) {
                           className="ms-1"
                           value={selectedTable.status}
                           onChange={(e) =>
-                            setSelectedTable((prev) => ({
+                            {setSelectedTable((prev) => ({
                               ...prev,
                               status: e.target.value,
                             }))
+                            UpdateStatus(e.target.value);
+                            }
                           }
-                          disabled
+                          // disabled
                         >
                           <option value={"INIT"}>Chưa có Order</option>
                           <option value={"WAIT"}>Chờ pha chế</option>
+                          <option value={"DELIVERED"}>Đã giao nước</option>
                           <option value={"COMPLETE"}>Đã hoàn thành</option>
                         </select>
                       </li>
@@ -332,7 +336,7 @@ function Homepage(props) {
                                 orderTable(selectedTable.tablePoin)
                               }
                             >
-                              Go Order
+                              Đặt đơn
                             </div>
                             <div
                               className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "

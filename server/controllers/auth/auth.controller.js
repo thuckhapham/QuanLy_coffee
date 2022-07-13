@@ -44,8 +44,9 @@ const signin = async (req, res) => {
     console.info(`sigin: ${req.body.userName} finished`);
     return res.json({
       token,
-      role: user.role,
       token_type: "Bearer",
+      name: user.firstName + " " +user.lastName,
+      role: user.role,
     });
   } catch (err) {
     console.error(err);
