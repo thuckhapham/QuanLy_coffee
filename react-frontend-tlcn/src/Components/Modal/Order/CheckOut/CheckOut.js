@@ -6,12 +6,14 @@ import * as FaIcons from "react-icons/fa";
 import "./CheckOut.css";
 import html2canvas from "html2canvas";
 import QRCode from "react-qr-code";
+
+
+
 function CheckOut(props) {
   const details = props.orderdetail;
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
   const employeeName = localStorage.getItem("fullName");
-
   const [typePayment, setTypePayment] = useState("cash");
   //Đóng Modal
   const sendData = (modalState) => {
@@ -68,6 +70,8 @@ function CheckOut(props) {
               putcheckin.countOrder++;
               localStorage.setItem("checkin", JSON.stringify(putcheckin));
             }
+
+            // time
             let timetable = localStorage.getItem("timeTable");
             if (timetable == undefined) {
               timetable = {};

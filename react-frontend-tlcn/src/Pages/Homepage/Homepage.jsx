@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
 import QRCode from "react-qr-code";
+import sound from "./audio/ok.mp3";
+
 function Homepage(props) {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
@@ -19,6 +21,7 @@ function Homepage(props) {
   const [timeCount, setTimeCount] = useState(null);
   const [rerender, setRerender] = useState(0);
   const [updateLocalStore, setUpdateLocalState] = useState(0);
+  const [playing, toggle] = useAudio(sound);
 
   useEffect(() => {
     if (
@@ -81,7 +84,7 @@ function Homepage(props) {
         }, 1000);
         return () => clearInterval(b);
       }
-    }, 500);
+    }, 1000);
   }, [updateLocalStore]);
 
   const removeCount = (table) => {
@@ -168,6 +171,8 @@ function Homepage(props) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
+      if (to == "COMPLETE") toggle();
+
       setSelectedTable(undefined);
       setActiveTable(-1);
       setRequestData(new Date());
@@ -178,6 +183,20 @@ function Homepage(props) {
     axios({
       method: "delete",
       url: "http://localhost:5000/api/table/" + selectedTable.tablePoin,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      setRequestData(new Date());
+    });
+  };
+
+  const removeTakeAway = () => {
+    axios({
+      method: "delete",
+      url:
+        "http://localhost:5000/api/table/takeaway/" + selectedTable.tablePoin,
       headers: {
         Authorization: `bearer ${tokenBearer}`,
         "Content-Type": "application/json",
@@ -218,7 +237,7 @@ function Homepage(props) {
           </li>
         </ul>
         <h3>Tầng 1:</h3>
-        <div className="row text-center">
+        <div className="row justify-content-center text-center">
           {viewList.slice(0, 10).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 col mt-1 mb-1 ">
               <button
@@ -251,7 +270,7 @@ function Homepage(props) {
         <hr />
 
         <h3>Tầng 2:</h3>
-        <div className="row text-center">
+        <div className="row justify-content-center text-center">
           {viewList.slice(10, 20).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
               <button
@@ -295,7 +314,7 @@ function Homepage(props) {
           </button>
         </h3>
 
-        <div className="row text-center">
+        <div className="row  justify-content-center text-center">
           {viewList.slice(20, viewList.length).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
               <button
@@ -469,7 +488,7 @@ function Homepage(props) {
                             {selectedTable.tablePoin.includes("TA") && (
                               <div
                                 className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "
-                                onClick={() => removeTable()}
+                                onClick={() => removeTakeAway()}
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
                               >
@@ -494,7 +513,7 @@ function Homepage(props) {
                         ) : selectedTable.tablePoin.includes("TA") ? (
                           <div
                             className="homepage__btn-add d-inline-block ms-1"
-                            onClick={() => removeTable()}
+                            onClick={() => removeTakeAway()}
                             // Click vô đây thì xóa thiệt
                             data-bs-dismiss="modal"
                             aria-label="Close"
@@ -556,5 +575,25 @@ function Homepage(props) {
     </>
   );
 }
+
+const useAudio = (url) => {
+  const [audio] = useState(new Audio(url));
+  const [playing, setPlaying] = useState(false);
+
+  const toggle = () => setPlaying(!playing);
+
+  useEffect(() => {
+    playing ? audio.play() : audio.pause();
+  }, [playing]);
+
+  useEffect(() => {
+    audio.addEventListener("ended", () => setPlaying(false));
+    return () => {
+      audio.removeEventListener("ended", () => setPlaying(false));
+    };
+  }, []);
+
+  return [playing, toggle];
+};
 
 export default Homepage;
