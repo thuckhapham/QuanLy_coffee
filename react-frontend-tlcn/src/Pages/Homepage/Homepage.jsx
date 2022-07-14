@@ -16,6 +16,9 @@ function Homepage(props) {
   const [selectedTable, setSelectedTable] = useState(undefined);
   const [activeTable, setActiveTable] = useState(-1);
   const [orderDetail, setOrderDetail] = useState({});
+  const [timeCount, setTimeCount] = useState(null);
+  const [rerender, setRerender] = useState(0);
+  const [updateLocalStore, setUpdateLocalState] = useState(0);
 
   useEffect(() => {
     if (
@@ -35,11 +38,69 @@ function Homepage(props) {
     else setOrderDetail({});
   }, [selectedTable]);
 
+  function toHHMMSS(num) {
+    var sec_num = parseInt(num, 10); // don't forget the second param
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - hours * 3600) / 60);
+    var seconds = sec_num - hours * 3600 - minutes * 60;
+
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    if (hours == "00") return minutes + ":" + seconds;
+    else return hours + ":" + minutes + ":" + seconds;
+  }
+
+  useEffect(() => {
+    // settime out fix loi localsttrore chua kip luu
+    setTimeout(() => {
+      let a = localStorage.getItem("timeTable");
+      if (a) {
+        let time = JSON.parse(a);
+        let newTime = {};
+        console.log(time);
+        Object.keys(time).forEach(function (key) {
+          let timestring = (Date.now() - time[key]).toString();
+          newTime[key] = timestring.substring(0, timestring.length - 3);
+        });
+        console.log(newTime);
+
+        let b = setInterval(() => {
+          Object.keys(newTime).forEach(function (key) {
+            newTime[key] = (parseInt(newTime[key]) + 1).toString();
+          });
+          console.log(newTime);
+          setTimeCount(newTime);
+          setRerender((res) => res + 1);
+        }, 1000);
+        return () => clearInterval(b);
+      }
+    }, 500);
+  }, [updateLocalStore]);
+
+  const removeCount = (table) => {
+    let timetable = localStorage.getItem("timeTable");
+    if (timetable == undefined) {
+    } else {
+      timetable = JSON.parse(timetable);
+      delete timetable[table];
+      localStorage.setItem("timeTable", JSON.stringify(timetable));
+      setUpdateLocalState((prev) => prev + 1);
+    }
+  };
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/table?page=1&pagesize=100`)
       .then((response) => {
         console.log(response.data);
+        response.data.tables.sort((a, b) => a.tablePoin - b.tablePoin);
         setList(response.data.tables);
       });
   }, [requestData]);
@@ -53,7 +114,7 @@ function Homepage(props) {
       method: "post",
       url: "http://localhost:5000/api/table/",
       data: {
-        tablePoin: selectedName,
+        tablePoin: "TA-" + selectedName,
       },
       headers: {
         Authorization: `bearer ${tokenBearer}`,
@@ -61,6 +122,7 @@ function Homepage(props) {
       },
     })
       .then((res) => {
+        orderTable("TA-" + selectedName);
         setRequestData(new Date());
         setName("");
       })
@@ -142,60 +204,128 @@ function Homepage(props) {
     <>
       <Header2 />
       <div className="container p-3">
-        <button
-          type="button"
-          className="homepage__btn-add mx-auto d-block"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          + CREATE TABLE
-        </button>
-
-        <div className="row">
-          <div className="col-12">
-            <ul className="w-100">
-              <li>
-                <span className="dot table-available d-inline-block"></span>:
-                Chưa có Order
-              </li>
-              <li>
-                <span className="dot table-used d-inline-block"></span>: Chờ pha
-                chế
-              </li>
-              <li>
-                <span className="dot table-broken d-inline-block"></span>: Hoàn
-                thành
-              </li>
-            </ul>
-            <div className="row text-center">
-              {viewList.map((data, i) => (
-                <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
-                  <button
-                    className={
-                      "homepage__order-link d-block " +
-                      (i === activeTable && "table-active-border") +
-                      " " +
-                      (data.status === "INIT"
-                        ? "table-available"
-                        : data.status === "WAIT"
-                        ? "table-used text-light "
-                        : "table-broken")
-                    }
-                    // onClick={() => orderTable(data.tablePoin)}
-                    onClick={() => {
-                      setSelectedTable(data);
-                      setActiveTable(i);
-                    }}
-                    data-bs-toggle="modal"
-                    data-bs-target="#infotable"
-                  >
-                    {data.tablePoin}
-                  </button>
-                </div>
-              ))}
+        <ul className="w-100">
+          <li>
+            <span className="dot table-available d-inline-block"></span>: Bàn
+            trống
+          </li>
+          <li>
+            <span className="dot table-used d-inline-block"></span>: Chờ pha chế
+          </li>
+          <li>
+            <span className="dot table-broken d-inline-block"></span>: Hoàn
+            thành
+          </li>
+        </ul>
+        <h3>Tầng 1:</h3>
+        <div className="row text-center">
+          {viewList.slice(0, 10).map((data, i) => (
+            <div className="col-4 col-sm-3 col-lg-2 col-xl-1 col mt-1 mb-1 ">
+              <button
+                className={
+                  "homepage__order-link d-block mx-auto " +
+                  (i === activeTable && "table-active-border") +
+                  " " +
+                  (data.status === "INIT"
+                    ? "table-available"
+                    : data.status === "WAIT"
+                    ? "table-used text-light "
+                    : "table-broken")
+                }
+                // onClick={() => orderTable(data.tablePoin)}
+                onClick={() => {
+                  setSelectedTable(data);
+                  setActiveTable(i);
+                }}
+                data-bs-toggle="modal"
+                data-bs-target="#infotable"
+              >
+                {data.tablePoin}
+              </button>
+              {data.status == "WAIT" && timeCount
+                ? toHHMMSS(timeCount[data.tablePoin])
+                : ""}
             </div>
-          </div>
+          ))}
         </div>
+        <hr />
+
+        <h3>Tầng 2:</h3>
+        <div className="row text-center">
+          {viewList.slice(10, 20).map((data, i) => (
+            <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
+              <button
+                className={
+                  "homepage__order-link d-block " +
+                  (i === activeTable && "table-active-border") +
+                  " " +
+                  (data.status === "INIT"
+                    ? "table-available"
+                    : data.status === "WAIT"
+                    ? "table-used text-light "
+                    : "table-broken")
+                }
+                // onClick={() => orderTable(data.tablePoin)}
+                onClick={() => {
+                  setSelectedTable(data);
+                  setActiveTable(i);
+                }}
+                data-bs-toggle="modal"
+                data-bs-target="#infotable"
+              >
+                {data.tablePoin}
+              </button>
+              {data.status == "WAIT" && timeCount
+                ? toHHMMSS(timeCount[data.tablePoin])
+                : ""}
+            </div>
+          ))}
+        </div>
+        <hr />
+
+        <h3>
+          Take away:{" "}
+          <button
+            type="button"
+            className="homepage__btn-add mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            + CREATE TAKEAWAY
+          </button>
+        </h3>
+
+        <div className="row text-center">
+          {viewList.slice(20, viewList.length).map((data, i) => (
+            <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
+              <button
+                className={
+                  "homepage__order-link d-block " +
+                  (i === activeTable && "table-active-border") +
+                  " " +
+                  (data.status === "INIT"
+                    ? "table-available"
+                    : data.status === "WAIT"
+                    ? "table-used text-light "
+                    : "table-broken")
+                }
+                // onClick={() => orderTable(data.tablePoin)}
+                onClick={() => {
+                  setSelectedTable(data);
+                  setActiveTable(i);
+                }}
+                data-bs-toggle="modal"
+                data-bs-target="#infotable"
+              >
+                {data.tablePoin}
+              </button>
+              {data.status == "WAIT" && timeCount
+                ? toHHMMSS(timeCount[data.tablePoin])
+                : ""}
+            </div>
+          ))}
+        </div>
+
         {/* Modal CREATE TABLE */}
         <div
           class="modal fade"
@@ -234,6 +364,7 @@ function Homepage(props) {
                         Ramdom Table
                       </div>
                       <div className="newtable__input mt-2">
+                        TA-
                         <input
                           id="tablePoint"
                           onChange={(e) => {
@@ -260,11 +391,10 @@ function Homepage(props) {
                 <button
                   data-bs-dismiss="modal"
                   className={"newtable__btn newtable__btn--add"}
-                  disabled={selectedName!== "" ? false : true}
+                  disabled={selectedName !== "" ? false : true}
                   onClick={() => {
                     addingTable(selectedName);
                     setViewModal(!viewModal);
-                    orderTable(selectedName);
                   }}
                 >
                   Add
@@ -303,28 +433,26 @@ function Homepage(props) {
                       <li className="">
                         <h3> Thông tin bàn: {selectedTable.tablePoin}</h3>
                       </li>
-                      <li>
+                      {/* <li>
                         Trạng thái:
                         <select
                           className="ms-1"
                           value={selectedTable.status}
-                          onChange={(e) =>
-                            {setSelectedTable((prev) => ({
+                          onChange={(e) => {
+                            setSelectedTable((prev) => ({
                               ...prev,
                               status: e.target.value,
-                            }))
+                            }));
                             UpdateStatus(e.target.value);
-                            }
-                          }
-                          // disabled
+                          }}
+                          disabled
                         >
                           <option value={"INIT"}>Chưa có Order</option>
                           <option value={"WAIT"}>Chờ pha chế</option>
                           <option value={"DELIVERED"}>Đã giao nước</option>
-                          <option value={"COMPLETE"}>Đã hoàn thành</option>
                         </select>
-                      </li>
-                      <li>______________________</li>
+                      </li> */}
+                      {/* <li>______________________</li> */}
                       <li>
                         {selectedTable.status === "INIT" ? (
                           <>
@@ -338,14 +466,16 @@ function Homepage(props) {
                             >
                               Đặt đơn
                             </div>
-                            <div
-                              className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "
-                              onClick={() => removeTable()}
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            >
-                              Xóa
-                            </div>
+                            {selectedTable.tablePoin.includes("TA") && (
+                              <div
+                                className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "
+                                onClick={() => removeTable()}
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                Xóa
+                              </div>
+                            )}
                           </>
                         ) : selectedTable.status === "WAIT" ? (
                           <>
@@ -353,6 +483,7 @@ function Homepage(props) {
                               className="homepage__btn-add d-inline-block ms-1"
                               onClick={() => {
                                 UpdateStatus("COMPLETE");
+                                removeCount(selectedTable.tablePoin);
                               }}
                               data-bs-dismiss="modal"
                               aria-label="Close"
@@ -360,6 +491,16 @@ function Homepage(props) {
                               Đã pha xong
                             </div>
                           </>
+                        ) : selectedTable.tablePoin.includes("TA") ? (
+                          <div
+                            className="homepage__btn-add d-inline-block ms-1"
+                            onClick={() => removeTable()}
+                            // Click vô đây thì xóa thiệt
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            Giao cho khách
+                          </div>
                         ) : (
                           <div
                             className="homepage__btn-add d-inline-block ms-1"
@@ -367,7 +508,7 @@ function Homepage(props) {
                             data-bs-dismiss="modal"
                             aria-label="Close"
                           >
-                            Xóa bàn
+                            Dọn bàn
                           </div>
                         )}
                       </li>

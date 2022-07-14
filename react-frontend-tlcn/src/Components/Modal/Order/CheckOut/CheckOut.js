@@ -55,7 +55,7 @@ function CheckOut(props) {
             "Content-Type": "application/json",
           },
         })
-          .then((res) => {
+          .then(() => {
             let putcheckin = localStorage.getItem("checkin");
             console.log(putcheckin);
             putcheckin = JSON.parse(putcheckin);
@@ -67,6 +67,16 @@ function CheckOut(props) {
                   putcheckin.online + parseInt(props.numberPrice);
               putcheckin.countOrder++;
               localStorage.setItem("checkin", JSON.stringify(putcheckin));
+            }
+            let timetable = localStorage.getItem("timeTable");
+            if (timetable == undefined) {
+              timetable = {};
+              timetable[res.data.table] = Date.now();
+              localStorage.setItem("timeTable", JSON.stringify(timetable));
+            } else {
+              timetable = JSON.parse(timetable);
+              timetable[res.data.table] = Date.now();
+              localStorage.setItem("timeTable", JSON.stringify(timetable));
             }
             navigate("/home");
           })
@@ -109,20 +119,27 @@ function CheckOut(props) {
     }
   }
 
-  const currentTime = ()=>{
+  const currentTime = () => {
     let today = new Date();
-    let date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-    let time = today.getHours() + ":" + today.getMinutes()
-    let dateTime = date+' '+time;
+    let date =
+      today.getDate() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getFullYear();
+    let time = today.getHours() + ":" + today.getMinutes();
+    let dateTime = date + " " + time;
     return dateTime;
-  }
+  };
   return (
     <>
       <div className="checkout">
         <div id="export">
           <div className="checkout__title">
             <h3 className="">Bàn {props.table}</h3>
-            <h6 className="bill__info">Địa chỉ: số 1 Võ Văn Ngân, thành phố Thủ Đức</h6>
+            <h6 className="bill__info">
+              Địa chỉ: số 1 Võ Văn Ngân, thành phố Thủ Đức
+            </h6>
             <h6 className="bill__info">Thu ngân : {employeeName}</h6>
             <h6 className="bill__info">Thời gian : {currentTime()}</h6>
           </div>
@@ -170,7 +187,7 @@ function CheckOut(props) {
                     defaultChecked
                   />
                   <span className="checkmark"></span>
-                  <span className="" style={{paddingTop:'15px'}}>
+                  <span className="" style={{ paddingTop: "15px" }}>
                     Tiền mặt
                   </span>
                 </label>
@@ -183,16 +200,21 @@ function CheckOut(props) {
                     onChange={(e) => setTypePayment("online")}
                   />
                   <span className="checkmark"></span>
-                  <span className="" style={{paddingTop:'15px'}}>
+                  <span className="" style={{ paddingTop: "15px" }}>
                     Thẻ
                   </span>
                 </label>
               </li>
             </ul>
           </div>
-        <QRCode value={`id:${props.orderid} table: ${props.table} total:${props.totalprice} created:${currentTime()}` } size={90} ></QRCode>
+          <QRCode
+            value={`id:${props.orderid} table: ${props.table} total:${
+              props.totalprice
+            } created:${currentTime()}`}
+            size={90}
+          ></QRCode>
         </div>
-                        <span style={{marginTop:'5px'}}> .</span>
+        <span style={{ marginTop: "5px" }}> .</span>
         <div className="checkout__footer">
           <ul className="checkout__footer-list">
             <li className="checkout__footer-item">

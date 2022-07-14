@@ -129,7 +129,7 @@ function Order() {
         "Content-Type": "application/json",
       },
     }).then(() => {
-      navigate("/homepage");
+      navigate("/home");
     });
   }
 

@@ -161,7 +161,7 @@ function App() {
             {/* <OrderHistory /> */}
           </Router>
         </ParallaxProvider>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );
