@@ -100,21 +100,29 @@ function Homepage(props) {
     if (startCount > 0) {
       console.log("STARTTTTTTTTTTTTTTTTTT");
       let newTime = {};
+      let longgg = {};
       console.log(viewList);
       viewList.map((e, i) => {
         if (e.status == "WAIT") {
           let timestring = (Date.now() - parseInt(e.updated)).toString();
-          newTime[e.tablePoin] = timestring.substring(0, timestring.length - 3);
+          let x = timestring.substring(0, timestring.length - 3);
+          newTime[e.tablePoin] = x;
+          if (parseInt(x) > 300) longgg[e.tablePoin] = true;
+          else longgg[e.tablePoin] = false;
         }
       });
       console.log(newTime);
       //
       let a = setInterval(() => {
         Object.keys(newTime).forEach(function (key) {
-          newTime[key] = (parseInt(newTime[key]) + 1).toString();
+          let x = (parseInt(newTime[key]) + 1).toString();
+          newTime[key] = x;
+          if (parseInt(x) > 300) longgg[key] = true;
+          else longgg[key] = false;
         });
         setTimeCount(newTime);
         setRerender((res) => res + 1);
+        setLongTime(longgg);
       }, 1000);
       //
       return () => {
@@ -265,6 +273,7 @@ function Homepage(props) {
             thành
           </li>
         </ul>
+
         <h3>Tầng 1:</h3>
         <div className="row justify-content-center text-center">
           {viewList.slice(0, 10).map((data, i) => (
@@ -290,13 +299,20 @@ function Homepage(props) {
               >
                 {data.tablePoin}
               </button>
-              {data.status == "WAIT" && timeCount
-                ? toHHMMSS(timeCount[data.tablePoin], data.tablePoin)
-                : ""}
+              <div
+                className={
+                  longTime[data.tablePoin] ? " text-danger fw-bold" : ""
+                }
+              >
+                {data.status == "WAIT" && timeCount
+                  ? toHHMMSS(timeCount[data.tablePoin], data.tablePoin)
+                  : ""}
+              </div>
             </div>
           ))}
         </div>
         <hr />
+        {JSON.stringify(longTime)}
 
         <h3>Tầng 2:</h3>
         <div className="row justify-content-center text-center">
