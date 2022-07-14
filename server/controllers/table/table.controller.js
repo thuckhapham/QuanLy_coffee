@@ -145,6 +145,17 @@ const remove = async (req, res) => {
     return res.status(400).json({ error: "bad request" });
   }
 };
+const deleteTakeaway = async (req, res) => {
+  try {
+    let table = req.table;
+    let deletedTable = await table.remove();
+    console.info(`delete take away table: ${req.table.id} finished`);
+    res.json(deletedTable);
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({ error: "bad request" });
+  }
+};
 const tableStatus = async (req, res) => {
   try {
     console.info(`update table status: ${req.table.id}`);
@@ -180,6 +191,7 @@ export default {
   create,
   tableById,
   tableByPoin,
+  deleteTakeaway,
   read,
   list,
   remove,

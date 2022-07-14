@@ -13,7 +13,9 @@ router
   .get(tableCtrl.read)
   .put(authCtrl.requireSignin, tableCtrl.update)
   .delete(authCtrl.requireSignin, tableCtrl.remove);
-
+router
+  .route("/api/table/takeaway/:tablePoin")
+  .delete(authCtrl.requireSignin, tableCtrl.deleteTakeaway);
 router
   .route("/api/table/insertOrder/:tablePoin")
   .put(authCtrl.requireSignin, tableCtrl.insertOrderToTable);
