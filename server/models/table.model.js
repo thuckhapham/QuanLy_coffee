@@ -12,7 +12,7 @@ const TableSchema = new mongoose.Schema({
     default: "INIT",
     enum: ["INIT", "WAIT", "DELIVERED", "COMPLETE"],
   },
-  updated: { type: Date, default: null },
+  updated: { type: String, default: null },
   created: {
     type: Date,
     default: Date.now,
