@@ -80,7 +80,7 @@ const list = async (req, res) => {
     const pagesize = parseInt(req.query.pagesize);
     if (isNaN(pagesize)) pagesize = 0;
     console.info("get list table");
-    let tables = await Table.find().select("tablePoin status created");
+    let tables = await Table.find().select("tablePoin status updated");
 
     const total = tables.length;
     console.info(`total: ${total}`);
@@ -161,7 +161,7 @@ const tableStatus = async (req, res) => {
     console.info(`update table status: ${req.table.id}`);
     let table = req.table;
     table.status = req.body.tableStatus;
-
+    table.updated= Date.now();
     await table.save();
     console.info(`update table status: ${req.table.id} finished`);
     res.json(table);

@@ -10,9 +10,9 @@ const TableSchema = new mongoose.Schema({
   status: {
     type: String,
     default: "INIT",
-    enum: ["INIT", "WAIT", "DELIVERED" ,"COMPLETE"],
+    enum: ["INIT", "WAIT", "DELIVERED", "COMPLETE"],
   },
-  updated: Date,
+  updated: { type: Date, default: null },
   created: {
     type: Date,
     default: Date.now,
