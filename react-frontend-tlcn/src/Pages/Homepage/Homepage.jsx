@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Header2 from "../../Components/Header2/Header";
 import Footer from "../../Components/Footer/Footer";
 import QRCode from "react-qr-code";
+import sound from "./audio/ok.mp3";
+
 function Homepage(props) {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
@@ -19,6 +21,7 @@ function Homepage(props) {
   const [timeCount, setTimeCount] = useState(null);
   const [rerender, setRerender] = useState(0);
   const [updateLocalStore, setUpdateLocalState] = useState(0);
+  const [playing, toggle] = useAudio(sound);
 
   useEffect(() => {
     if (
@@ -168,6 +171,8 @@ function Homepage(props) {
         "Content-Type": "application/json",
       },
     }).then((res) => {
+      if (to == "COMPLETE") toggle();
+
       setSelectedTable(undefined);
       setActiveTable(-1);
       setRequestData(new Date());
@@ -556,5 +561,25 @@ function Homepage(props) {
     </>
   );
 }
+
+const useAudio = (url) => {
+  const [audio] = useState(new Audio(url));
+  const [playing, setPlaying] = useState(false);
+
+  const toggle = () => setPlaying(!playing);
+
+  useEffect(() => {
+    playing ? audio.play() : audio.pause();
+  }, [playing]);
+
+  useEffect(() => {
+    audio.addEventListener("ended", () => setPlaying(false));
+    return () => {
+      audio.removeEventListener("ended", () => setPlaying(false));
+    };
+  }, []);
+
+  return [playing, toggle];
+};
 
 export default Homepage;

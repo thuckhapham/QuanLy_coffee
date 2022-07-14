@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./ClientTrack.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 let count = 0;
+
 function ClientTrack(props) {
   const [requestData, setRequestData] = useState(0);
   const [viewList, setList] = useState([{ phone: 0, name: "", price: 0 }]);
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
+    console.log("UPDATE!");
     axios
       .get(`http://localhost:5000/api/table?page=1&pagesize=100`)
       .then((response) => {
@@ -30,12 +31,12 @@ function ClientTrack(props) {
   useEffect(() => {
     // 10s Call API để update 1 lần
     let a = setInterval(() => {
-      count = count + 1;
-      if (count === 5) {
-        setRequestData((res) => res + 1);
-        count = 0;
-      }
-    }, 1000);
+      // count = count + 1;
+      // if (count === 5) {
+      setRequestData((res) => res + 1);
+      // count = 0;
+      // }
+    }, 5000);
     return () => clearInterval(a);
   }, []);
 
@@ -48,6 +49,7 @@ function ClientTrack(props) {
     <div className="client-track">
       <div className="row p-0 m-0 ">
         <h1 className="text-center">Xin quý khách theo dõi bàn của mình!</h1>
+        <div></div>
         <div className="col-12">
           <ul className="w-100 fs-3">
             {/* <div className="col-4 d-inline-block">
@@ -111,9 +113,7 @@ function ClientTrack(props) {
                               (data.available ? "" : " lineThrough text-muted")
                             }
                           >
-                            <td>
-                              {data.name} 
-                            </td>
+                            <td>{data.name}</td>
                             <td>{currencyFormat(data.price)}</td>
                           </tr>
                         )
