@@ -84,7 +84,7 @@ function Homepage(props) {
         }, 1000);
         return () => clearInterval(b);
       }
-    }, 500);
+    }, 1000);
   }, [updateLocalStore]);
 
   const removeCount = (table) => {
@@ -192,6 +192,20 @@ function Homepage(props) {
     });
   };
 
+  const removeTakeAway = () => {
+    axios({
+      method: "delete",
+      url:
+        "http://localhost:5000/api/table/takeaway/" + selectedTable.tablePoin,
+      headers: {
+        Authorization: `bearer ${tokenBearer}`,
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      setRequestData(new Date());
+    });
+  };
+
   const getDetailOrder = () => {
     axios({
       method: "get",
@@ -223,7 +237,7 @@ function Homepage(props) {
           </li>
         </ul>
         <h3>Tầng 1:</h3>
-        <div className="row text-center">
+        <div className="row justify-content-center text-center">
           {viewList.slice(0, 10).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 col mt-1 mb-1 ">
               <button
@@ -256,7 +270,7 @@ function Homepage(props) {
         <hr />
 
         <h3>Tầng 2:</h3>
-        <div className="row text-center">
+        <div className="row justify-content-center text-center">
           {viewList.slice(10, 20).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
               <button
@@ -300,7 +314,7 @@ function Homepage(props) {
           </button>
         </h3>
 
-        <div className="row text-center">
+        <div className="row  justify-content-center text-center">
           {viewList.slice(20, viewList.length).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
               <button
@@ -474,7 +488,7 @@ function Homepage(props) {
                             {selectedTable.tablePoin.includes("TA") && (
                               <div
                                 className="newtable__btn newtable__btn--cancle d-inline-block ms-1 "
-                                onClick={() => removeTable()}
+                                onClick={() => removeTakeAway()}
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
                               >
@@ -499,7 +513,7 @@ function Homepage(props) {
                         ) : selectedTable.tablePoin.includes("TA") ? (
                           <div
                             className="homepage__btn-add d-inline-block ms-1"
-                            onClick={() => removeTable()}
+                            onClick={() => removeTakeAway()}
                             // Click vô đây thì xóa thiệt
                             data-bs-dismiss="modal"
                             aria-label="Close"
