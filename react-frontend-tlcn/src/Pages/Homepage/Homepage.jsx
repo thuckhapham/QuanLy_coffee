@@ -7,6 +7,7 @@ import Footer from "../../Components/Footer/Footer";
 import QRCode from "react-qr-code";
 import sound from "./audio/ok.mp3";
 
+let loicaiconcac = {};
 function Homepage(props) {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
@@ -20,8 +21,9 @@ function Homepage(props) {
   const [orderDetail, setOrderDetail] = useState({});
   const [timeCount, setTimeCount] = useState(null);
   const [rerender, setRerender] = useState(0);
-  const [updateLocalStore, setUpdateLocalState] = useState(0);
+  const [longTime, setLongTime] = useState({});
   const [playing, toggle] = useAudio(sound);
+  const [startCount, setStat] = useState(0);
 
   useEffect(() => {
     if (
@@ -41,7 +43,7 @@ function Homepage(props) {
     else setOrderDetail({});
   }, [selectedTable]);
 
-  function toHHMMSS(num) {
+  function toHHMMSS(num, table) {
     var sec_num = parseInt(num, 10); // don't forget the second param
     var hours = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - hours * 3600) / 60);
@@ -56,47 +58,32 @@ function Homepage(props) {
     if (seconds < 10) {
       seconds = "0" + seconds;
     }
+    // if (parseInt(minutes) > 5) {
+    //   let a = {};
+    //   a[table] = true;
+    //   setLongTime((prev) => ({ ...prev, ...a }));
+    // }
     if (hours == "00") return minutes + ":" + seconds;
     else return hours + ":" + minutes + ":" + seconds;
   }
 
-  useEffect(() => {
-    // settime out fix loi localsttrore chua kip luu
-    setTimeout(() => {
-      let a = localStorage.getItem("timeTable");
-      if (a) {
-        let time = JSON.parse(a);
-        let newTime = {};
-        console.log(time);
-        Object.keys(time).forEach(function (key) {
-          let timestring = (Date.now() - time[key]).toString();
-          newTime[key] = timestring.substring(0, timestring.length - 3);
-        });
-        console.log(newTime);
+  // useEffect(() => {
+  //   // settime out fix loi localsttrore chua kip luu
 
-        let b = setInterval(() => {
-          Object.keys(newTime).forEach(function (key) {
-            newTime[key] = (parseInt(newTime[key]) + 1).toString();
-          });
-          console.log(newTime);
-          setTimeCount(newTime);
-          setRerender((res) => res + 1);
-        }, 1000);
-        return () => clearInterval(b);
-      }
-    }, 1000);
-  }, [updateLocalStore]);
+  // }, [updateLocalStore]);
 
-  const removeCount = (table) => {
-    let timetable = localStorage.getItem("timeTable");
-    if (timetable == undefined) {
-    } else {
-      timetable = JSON.parse(timetable);
-      delete timetable[table];
-      localStorage.setItem("timeTable", JSON.stringify(timetable));
-      setUpdateLocalState((prev) => prev + 1);
-    }
-  };
+  const getTimeCount = (time) => {};
+
+  // const removeCount = (table) => {
+  //   let timetable = localStorage.getItem("timeTable");
+  //   if (timetable == undefined) {
+  //   } else {
+  //     timetable = JSON.parse(timetable);
+  //     delete timetable[table];
+  //     localStorage.setItem("timeTable", JSON.stringify(timetable));
+  //     setUpdateLocalState((prev) => prev + 1);
+  //   }
+  // };
 
   useEffect(() => {
     axios
@@ -105,8 +92,50 @@ function Homepage(props) {
         console.log(response.data);
         response.data.tables.sort((a, b) => a.tablePoin - b.tablePoin);
         setList(response.data.tables);
+        setStat((prev) => prev + 1);
       });
   }, [requestData]);
+
+  useEffect(() => {
+    if (startCount > 0) {
+      console.log("STARTTTTTTTTTTTTTTTTTT");
+      let newTime = {};
+      console.log(viewList);
+      viewList.map((e, i) => {
+        if (e.status == "WAIT") {
+          let timestring = (Date.now() - parseInt(e.updated)).toString();
+          newTime[e.tablePoin] = timestring.substring(0, timestring.length - 3);
+        }
+      });
+      console.log(newTime);
+      //
+      let a = setInterval(() => {
+        Object.keys(newTime).forEach(function (key) {
+          newTime[key] = (parseInt(newTime[key]) + 1).toString();
+        });
+        setTimeCount(newTime);
+        setRerender((res) => res + 1);
+      }, 1000);
+      //
+      return () => {
+        clearInterval(getTimeCount(a));
+      };
+    }
+  }, [startCount]);
+
+  // useEffect(() => {
+  //   console.log("START");
+  //   let newTime = {};
+  //   let a = setInterval(() => {
+  //     newTime[2] = Date.now();
+  //     console.log(newTime);
+  //     setTimeCount(newTime);
+  //   }, 1000);
+  //   return () => {
+  //     clearInterval(getTimeCount(a));
+  //   };
+  // }, []);
+
   //Set Modal Active
   const [viewModal, setViewModal] = useState(true);
   //Default new table
@@ -262,7 +291,7 @@ function Homepage(props) {
                 {data.tablePoin}
               </button>
               {data.status == "WAIT" && timeCount
-                ? toHHMMSS(timeCount[data.tablePoin])
+                ? toHHMMSS(timeCount[data.tablePoin], data.tablePoin)
                 : ""}
             </div>
           ))}
@@ -295,7 +324,7 @@ function Homepage(props) {
                 {data.tablePoin}
               </button>
               {data.status == "WAIT" && timeCount
-                ? toHHMMSS(timeCount[data.tablePoin])
+                ? toHHMMSS(timeCount[data.tablePoin], data.tablePoin)
                 : ""}
             </div>
           ))}
@@ -339,11 +368,12 @@ function Homepage(props) {
                 {data.tablePoin}
               </button>
               {data.status == "WAIT" && timeCount
-                ? toHHMMSS(timeCount[data.tablePoin])
+                ? toHHMMSS(timeCount[data.tablePoin], data.tablePoin)
                 : ""}
             </div>
           ))}
         </div>
+        {JSON.stringify(loicaiconcac)}
 
         {/* Modal CREATE TABLE */}
         <div
@@ -502,7 +532,7 @@ function Homepage(props) {
                               className="homepage__btn-add d-inline-block ms-1"
                               onClick={() => {
                                 UpdateStatus("COMPLETE");
-                                removeCount(selectedTable.tablePoin);
+                                // removeCount(selectedTable.tablePoin);
                               }}
                               data-bs-dismiss="modal"
                               aria-label="Close"
