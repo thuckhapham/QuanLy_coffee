@@ -80,7 +80,7 @@ const list = async (req, res) => {
     const pagesize = parseInt(req.query.pagesize);
     if (isNaN(pagesize)) pagesize = 0;
     console.info("get list table");
-    let tables = await Table.find().select("tablePoin status");
+    let tables = await Table.find().select("tablePoin status created");
 
     const total = tables.length;
     console.info(`total: ${total}`);
