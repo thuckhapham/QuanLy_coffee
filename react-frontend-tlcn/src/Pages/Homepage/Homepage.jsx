@@ -58,10 +58,11 @@ function Homepage(props) {
     if (seconds < 10) {
       seconds = "0" + seconds;
     }
-    // if (parseInt(minutes) > 5) {
+    // if (parseInt(seconds) > 7) {
     //   let a = {};
     //   a[table] = true;
-    //   setLongTime((prev) => ({ ...prev, ...a }));
+    //   console.log("Long time")
+    //   // setLongTime((prev) => ({ ...prev, ...a }));
     // }
     if (hours == "00") return minutes + ":" + seconds;
     else return hours + ":" + minutes + ":" + seconds;
@@ -312,7 +313,7 @@ function Homepage(props) {
           ))}
         </div>
         <hr />
-        {JSON.stringify(longTime)}
+        {/* {JSON.stringify(longTime)} */}
 
         <h3>Tầng 2:</h3>
         <div className="row justify-content-center text-center">
@@ -389,7 +390,7 @@ function Homepage(props) {
             </div>
           ))}
         </div>
-        {JSON.stringify(loicaiconcac)}
+        {/* {JSON.stringify(loicaiconcac)} */}
 
         {/* Modal CREATE TABLE */}
         <div
