@@ -384,7 +384,7 @@ const Report = () => {
             <div className="border border-4 ">
               <div className="row">
                 <div className="col-6 col-md-4">
-                  <h6>Chọn ngày thống kê:</h6>
+                  <h6>Choose report days:</h6>
                   <tr>
                     <td>From: </td>
                     <td>
@@ -421,7 +421,7 @@ const Report = () => {
                       id="sosanh"
                       onChange={(e) => setSoSanh(e.target.checked)}
                     />{" "}
-                    <label htmlFor="sosanh">So sánh (tùy chọn):</label>
+                    <label htmlFor="sosanh">Compare:</label>
                   </h6>
                   {sosanh && (
                     <>
@@ -490,7 +490,7 @@ const Report = () => {
                       }
                     />
                     <label class="form-check-label" for="doanhthu">
-                      Doanh thu từng ngày
+                      Profits by day
                     </label>
                   </div>
                   <div class="form-check">
@@ -507,7 +507,7 @@ const Report = () => {
                       }
                     />
                     <label class="form-check-label" for="banchay">
-                      Thống kê sản phẩm
+                      Products
                     </label>
                   </div>
                   <div class="form-check">
@@ -524,14 +524,14 @@ const Report = () => {
                       }
                     />
                     <label class="form-check-label" for="theogio">
-                      Order theo thời gian trong ngày
+                      Order by time in day
                     </label>
                   </div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="btn btn-primary " onClick={thongKe}>
-                  Xem
+                  View
                 </div>
 
                 <button
@@ -542,19 +542,19 @@ const Report = () => {
                   onClick={convertToImage}
                   disabled={!isFetch}
                 >
-                  Tải về
+                  Download
                 </button>
               </div>
               <hr />
               <div id="export">
                 <h6 className="text-center">
-                  Thống kê từ ngày {date1.from} đến {date1.to} ({numberDay.day1}{" "}
-                  ngày)
+                  Statistics from {date1.from} to {date1.to} ({numberDay.day1}{" "}
+                  days)
                   {sosanh && (
                     <>
                       {" "}
                       <br />
-                      So sánh với ngày {date2.from} đến {date2.to} (
+                      Compare from {date2.from} to {date2.to} (
                       {numberDay.day2} ngày)
                     </>
                   )}
@@ -566,11 +566,11 @@ const Report = () => {
                         <table class="table table-striped">
                           <thead>
                             <tr>
-                              <th scope="col">Danh mục</th>
-                              <th scope="col">Đơn vị</th>
-                              <th scope="col">Số lượng</th>
+                              <th scope="col">Category</th>
+                              <th scope="col">Unit</th>
+                              <th scope="col">Quantity</th>
                               {sosanh && data.report2 && (
-                                <th scope="col">So sánh</th>
+                                <th scope="col">Compare</th>
                               )}
                             </tr>
                           </thead>

@@ -7,7 +7,6 @@ import Footer from "../../Components/Footer/Footer";
 import QRCode from "react-qr-code";
 import sound from "./audio/ok.mp3";
 
-let loicaiconcac = {};
 function Homepage(props) {
   //Lấy Bearer Token
   const tokenBearer = localStorage.getItem("tokenBearer");
@@ -118,8 +117,11 @@ function Homepage(props) {
         Object.keys(newTime).forEach(function (key) {
           let x = (parseInt(newTime[key]) + 1).toString();
           newTime[key] = x;
-          if (parseInt(x) > 300) longgg[key] = true;
+          if (parseInt(x) > 300) longgg[key] = true; //set timer danger
           else longgg[key] = false;
+          if(parseInt(x) == 300){
+            alert("Thông báo: Có bàn chờ lâu!!! ");
+          }
         });
         setTimeCount(newTime);
         setRerender((res) => res + 1);
@@ -263,19 +265,17 @@ function Homepage(props) {
       <div className="container p-3">
         <ul className="w-100">
           <li>
-            <span className="dot table-available d-inline-block"></span>: Bàn
-            trống
+            <span className="dot table-available d-inline-block"></span>: Available table
           </li>
           <li>
-            <span className="dot table-used d-inline-block"></span>: Chờ pha chế
+            <span className="dot table-used d-inline-block"></span>: Waiting for order
           </li>
           <li>
-            <span className="dot table-broken d-inline-block"></span>: Hoàn
-            thành
+            <span className="dot table-broken d-inline-block"></span>: Completed
           </li>
         </ul>
 
-        <h3>Tầng 1:</h3>
+        <h3>First Floor:</h3>
         <div className="row justify-content-center text-center">
           {viewList.slice(0, 10).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 col mt-1 mb-1 ">
@@ -315,7 +315,7 @@ function Homepage(props) {
         <hr />
         {/* {JSON.stringify(longTime)} */}
 
-        <h3>Tầng 2:</h3>
+        <h3>Second Floor:</h3>
         <div className="row justify-content-center text-center">
           {viewList.slice(10, 20).map((data, i) => (
             <div className="col-4 col-sm-3 col-lg-2 col-xl-1 mt-1 mb-1">
@@ -481,7 +481,7 @@ function Homepage(props) {
             <div class="modal-content ">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Thông tin bàn
+                  
                 </h5>
                 <button
                   type="button"
@@ -497,7 +497,7 @@ function Homepage(props) {
                   <>
                     <ul className="p-0 text-center">
                       <li className="">
-                        <h3> Thông tin bàn: {selectedTable.tablePoin}</h3>
+                        <h3> Table: {selectedTable.tablePoin}</h3>
                       </li>
                       {/* <li>
                         Trạng thái:
@@ -530,7 +530,7 @@ function Homepage(props) {
                                 orderTable(selectedTable.tablePoin)
                               }
                             >
-                              Đặt đơn
+                              Order
                             </div>
                             {selectedTable.tablePoin.includes("TA") && (
                               <div

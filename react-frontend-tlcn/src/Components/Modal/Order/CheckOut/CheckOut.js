@@ -82,7 +82,8 @@ function CheckOut(props) {
               timetable[res.data.table] = Date.now();
               localStorage.setItem("timeTable", JSON.stringify(timetable));
             }
-            navigate("/home");
+            alert("Đặt đơn thành công");
+            // navigate("/home");
           })
           .catch((e) => console.log(e));
       });

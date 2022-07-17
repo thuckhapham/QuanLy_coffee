@@ -153,9 +153,9 @@ const ShiftAdmin = () => {
       ) : (
         <>
           <div className="container p-3">
-            <h1 className="text-center">Quản lý ca làm</h1>
+            <h1 className="text-center">WORK SHIFT</h1>
             <div className="text-center">
-              <h6 className="text-center">Chọn ngày hiển thị:</h6>
+              <h6 className="text-center">Select Date:</h6>
               From:
               <input
                 className="me-3"
@@ -181,7 +181,7 @@ const ShiftAdmin = () => {
                   className="btn btn-primary m-1"
                   onClick={() => getListShift()}
                 >
-                  Xem
+                  View
                 </div>
               </div>
             </div>
