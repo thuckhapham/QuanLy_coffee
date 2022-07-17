@@ -83,7 +83,8 @@ function CheckOut(props) {
               localStorage.setItem("timeTable", JSON.stringify(timetable));
             }
             alert("Đặt đơn thành công");
-            // navigate("/home");
+            setTimeout(()=>
+            navigate("/home"),1000)
           })
           .catch((e) => console.log(e));
       });
@@ -141,12 +142,12 @@ function CheckOut(props) {
       <div className="checkout">
         <div id="export">
           <div className="checkout__title">
-            <h3 className="">Bàn {props.table}</h3>
+            <h3 className="">Table: {props.table}</h3>
             <h6 className="bill__info">
-              Địa chỉ: số 1 Võ Văn Ngân, thành phố Thủ Đức
+              Address: số 1 Võ Văn Ngân, Linh Chiểu, thành phố Thủ Đức
             </h6>
-            <h6 className="bill__info">Thu ngân : {employeeName}</h6>
-            <h6 className="bill__info">Thời gian : {currentTime()}</h6>
+            <h6 className="bill__info">Employee : {employeeName}</h6>
+            <h6 className="bill__info">Time : {currentTime()}</h6>
           </div>
           <div className="checkout__detail">
             <div className="checkout__table-content">
@@ -155,7 +156,7 @@ function CheckOut(props) {
                   <tr className="checkout__header">
                     <th style={{ width: 50 }}>Id</th>
                     <th>Name</th>
-                    <th style={{ width: 50 }}>SL</th>
+                    <th style={{ width: 50 }}>Quantity</th>
                     <th style={{ width: 150 }}>Price</th>
                   </tr>
                 </thead>
@@ -173,7 +174,7 @@ function CheckOut(props) {
             </div>
           </div>
           <div className="checkout__total  bill__info">
-            Tổng: {props.totalprice}
+            Total: {props.totalprice}
             {/* <br />
             Discount: {props.discountprice} */}
           </div>
@@ -181,7 +182,7 @@ function CheckOut(props) {
             Check out: {props.totalprice}
           </div> */}
           <div className="checkout__payment">
-            <h5 className="bill__info"> Phương thức thanh toán:</h5>
+            <h5 className="bill__info"> Payment Method:</h5>
             <ul className="checkout__payment-list">
               <li className="checkout__payment-item">
                 <label className="payment__rb">
@@ -193,7 +194,7 @@ function CheckOut(props) {
                   />
                   <span className="checkmark"></span>
                   <span className="" style={{ paddingTop: "15px" }}>
-                    Tiền mặt
+                    Cash
                   </span>
                 </label>
               </li>
@@ -206,7 +207,7 @@ function CheckOut(props) {
                   />
                   <span className="checkmark"></span>
                   <span className="" style={{ paddingTop: "15px" }}>
-                    Thẻ
+                    Card
                   </span>
                 </label>
               </li>
