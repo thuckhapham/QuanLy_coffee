@@ -208,6 +208,7 @@ const QLNV = () => {
                             className="newtable__form"
                             disabled
                           />
+                          <br/>
                           <label>USERNAME: </label>
                           <input
                             onChange={(e) => {
@@ -221,6 +222,7 @@ const QLNV = () => {
                             className="newtable__form"
                             placeholder="userName"
                           />
+                          <br/>
                           <label>NEW PASSWORD: </label>
                           <input
                             onChange={(e) => {
@@ -234,6 +236,7 @@ const QLNV = () => {
                             className="newtable__form"
                             placeholder="New password here"
                           />
+                          <br/>
                           <label>PHONE: </label>
                           <input
                             onChange={(e) => {
@@ -247,6 +250,7 @@ const QLNV = () => {
                             className="newtable__form"
                             placeholder="phone"
                           />
+                          <br/>
                           <label>EMAIL: </label>
                           <input
                             onChange={(e) => {
@@ -260,6 +264,7 @@ const QLNV = () => {
                             className="newtable__form"
                             placeholder="email"
                           />
+                          <br/>
                           <label>FIRST NAME: </label>
                           <input
                             onChange={(e) => {
@@ -275,6 +280,7 @@ const QLNV = () => {
                             className="newtable__form"
                             placeholder="FNAME"
                           />
+                          <br/>
                           <label>LAST NAME: </label>
                           <input
                             onChange={(e) => {
@@ -290,6 +296,7 @@ const QLNV = () => {
                             className="newtable__form"
                             placeholder="LNAME"
                           />
+                          <br/>
                           <label className="me-1">QUYỀN HẠN: </label>
                           <select
                             value={selectUser.role}
@@ -375,6 +382,7 @@ const QLNV = () => {
                               className="newtable__form"
                               placeholder="password"
                             />
+                            <br/>
                             <label>PHONE: </label>
                             <input
                               onChange={(e) => {
@@ -388,6 +396,7 @@ const QLNV = () => {
                               className="newtable__form"
                               placeholder="phone"
                             />
+                            <br/>
                             <label>EMAIL: </label>
                             <input
                               onChange={(e) => {
@@ -401,6 +410,7 @@ const QLNV = () => {
                               className="newtable__form"
                               placeholder="email"
                             />
+                            <br/>
                             <label>FIRST NAME: </label>
                             <input
                               onChange={(e) => {
@@ -414,6 +424,7 @@ const QLNV = () => {
                               className="newtable__form"
                               placeholder="FNAME"
                             />
+                            <br/>
                             <label>LAST NAME: </label>
                             <input
                               onChange={(e) => {
@@ -427,6 +438,7 @@ const QLNV = () => {
                               className="newtable__form"
                               placeholder="LNAME"
                             />
+                            <br/>
                             <label className="me-1">QUYỀN HẠN: </label>
                             <select
                               value={newUser.role}
