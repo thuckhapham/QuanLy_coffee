@@ -23,7 +23,7 @@ function Homepage(props) {
   const [longTime, setLongTime] = useState({});
   const [playing, toggle] = useAudio(sound);
   const [startCount, setStat] = useState(0);
-
+  const [waitTooLong,setWaitTooLong] = useState(false);
   useEffect(() => {
     if (
       selectedTable !== undefined &&
@@ -42,6 +42,10 @@ function Homepage(props) {
     else setOrderDetail({});
   }, [selectedTable]);
 
+  useEffect(()=>{
+    if(waitTooLong)
+      alert("Cảnh báo đơn đợi lâu");
+  },[waitTooLong])
   function toHHMMSS(num, table) {
     var sec_num = parseInt(num, 10); // don't forget the second param
     var hours = Math.floor(sec_num / 3600);
@@ -120,7 +124,8 @@ function Homepage(props) {
           if (parseInt(x) > 300) longgg[key] = true; //set timer danger
           else longgg[key] = false;
           if(parseInt(x) == 300){
-            alert("Thông báo: Có bàn chờ lâu!!! ");
+            setWaitTooLong(true);
+            // console.log(waitTooLong);
           }
         });
         setTimeCount(newTime);
