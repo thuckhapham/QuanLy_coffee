@@ -28,7 +28,7 @@ function Login(props) {
         localStorage.setItem("tokenBearer", response.data.token);
         localStorage.setItem("coffeeRole", response.data.role);
         localStorage.setItem("fullName",response.data.name)
-        console.log(response.data);
+        // console.log(response.data);
         navigate("/home");
         // localStorage.setItem("usernameId",response.data.)
       })
