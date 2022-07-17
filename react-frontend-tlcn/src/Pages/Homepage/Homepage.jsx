@@ -44,7 +44,8 @@ function Homepage(props) {
 
   useEffect(()=>{
     if(waitTooLong)
-      alert("Cảnh báo đơn đợi lâu");
+      if(window.confirm("Cảnh báo có đơn đợi lâu") )
+          setWaitTooLong(false);
   },[waitTooLong])
   function toHHMMSS(num, table) {
     var sec_num = parseInt(num, 10); // don't forget the second param
